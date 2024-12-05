@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orian</title>
+    <link rel="stylesheet" id="theme" href="css/light.css">
+    <script src="lib/marked.min.js" integrity="sha384-dZulhREgb+hCgQMhZ2VG0l37VQj5pJBq2w0h7Jn3tdMn36aXNepF1+FMLBB4O649"
+            crossorigin="anonymous"></script>
+    <script src="lib/prism.js"></script>
+    <script src="lib/pdf.min.js"></script>
+    <link href="css/prism.css" rel="stylesheet">
+    <link href="css/output.css" rel="stylesheet">
+    <link href="css/tailwind.css" rel="stylesheet">
+</head>
+<body class="h-screen w-[436px]">
+<div class="text-sm text-gray-500 font-sans flex flex-col h-full w-full bg-scroll bg-contain bg-center bg-repeat-x px-5 py-4"
+     style="background-image: url('assets/images/background.png')">
+    <div class="flex-none h-48 space-y-2">
+        <div class="flex flex-col">
+            <div class="flex flex-row items-center justify-between">
+                <img class="w-52 h-14" src="assets/images/banner.png">
+                <img class="size-6" src="assets/images/logo.png">
+            </div>
+        </div>
+        <div class="flex-1">
+            <div class="grid place-items-start">
+                <div class="text-white text-xs z-10 bg-cover bg-no-repeat bg-center w-48 h-[75px] ml-8 -mb-3 pl-2 pr-6 py-2 text-ellipsis text-wrap break-words"
+                        style="background-image: url('assets/images/message_background.png')">
+                    Always Remember invest in the feature, not just the present!
+                </div>
+            </div>
+            <div class="grid place-items-end">
+                <div class="relative justify-self-end  bg-cover bg-no-repeat bg-center w-52 h-16"
+                     style="background-image: url('assets/images/cloud.png')">
+                    <img class="size-20 absolute -top-8 right-16" src="assets/images/xiao_gui.png">
+                </div>
+            </div>
+        
+        </div>
+    </div>
+    <div class="flex-1 overflow-y-auto mt-4" id="chatBox">
+        <div class="mb-2 flex flex-col w-full max-w-[320px] leading-1.5 p-2 border-gray-200 bg-gray-100 rounded-xl">
+            <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">Hey, Blommy! Can u tell me how to find
+                100x Crypto Gems?</p>
+        </div>
+    </div>
+    <div class="relative flex-none h-20 p-0.5">
+        <div class="bg-cover bg-origin-border p-4 h-full"
+             style="background-image: url('assets/images/chat_box.png');">
+                <textarea id="inputBox" placeholder="CHAT WITH ME..."
+                          class="w-full h-full outline-none resize-none bg-transparent focus:outline-none focus:border-transparent"></textarea>
+        </div>
+        <div class="inline-flex rounded-md shadow-sm gap-x-1 absolute bottom-2 right-4" style="top: -20px" role="group">
+            <button id="tokenButton" type="button"
+                    class="text-white bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-xs px-2 py-1 text-center">
+                TokenWatch
+            </button>
+            <button id="translateButton" type="button"
+                    class="text-white bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-xs px-2 py-1 text-center">
+                Translate
+            </button>
+            <button id="memoButton" type="button"
+                    class="text-white bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-xs px-2 py-1 text-center">
+                Memo
+            </button>
+        </div>
+        <span class="text-white bg-blue-500 p-1 rounded-lg hover:bg-blue-700 hover:text-slate-500 cursor-pointer right-0" id="submit">&#x23CE; Enter</span>      
+    </div>
+</div>
+
+<script>
+    // 初始消息
+    const messages = [
+        'Finding potential 100x crypto gems involves a mix of research, strategy, and a bit of luck. Here are some tips to help you identify promising cryptocurrencies:',
+        '1. Research Projects: Look for projects with solid fundamentals. Read their whitepapers, understand their goals, and evaluate their use cases.',
+        '2. Team and Advisors: Investigate the team behind the project. Experienced and reputable team members can significantly increase the project\'s chances of success.',
+        '3. Community Engagement: Join communities on platforms like Reddit, Telegram, or Discord. A strong, active community can indicate a project\'s potential.',
+    ];
+    // 聊天框
+    const chatBox = document.getElementById('chatBox');
+    // 输入框
+    const inputBox = document.getElementById('inputBox');
+    const tokenButton = document.getElementById('tokenButton');
+    const translateButton = document.getElementById('translateButton');
+    const memoButton = document.getElementById('memoButton');
+    tokenButton.addEventListener('click', () => {
+        console.log('click the token button');
+    });
+    translateButton.addEventListener('click', () => {
+        console.log('click the translate button');
+    });
+    memoButton.addEventListener('click', () => {
+        console.log('click the memo button');
+    });
+    // 发送消息
+    const sendMessage = () => {
+        const message = inputBox.value.trim();
+        if (message) {
+            messages.push(message);
+            inputBox.value = '';
+            const messageDiv = createMessage(message);
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            waitForResponse(message);
+            postRequest(message);
+        }
+    };
+    // 渲染消息组中的消息
+    const renderMessage = () => {
+        messages.forEach((message) => {
+            const messageDiv = createMessage(message);
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+      +  });
+    };
+    // 创建消息DOM节点
+    const createMessage = (message) => {
+        const messageDiv = document.createElement('div');
+        messageDiv.className =
+                'mb-2 flex flex-col w-full max-w-[320px] leading-1.5 p-2 border-gray-200 bg-gray-100 rounded-xl';
+        messageDiv.innerHTML = `<p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">${message}</p>`;
+        return messageDiv;
+    };
+    // 请求远程响应并追加消息
+    const waitForResponse = (question) => {
+        const response = 'I have no idea!!!';
+        messages.push(response);
+        const messageDiv = createMessage(response);
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    // 监听输入框的回车事件发送消息
+    inputBox.addEventListener('keydown', (event) => {
+        if (event.key == 'Enter') {
+            event.preventDefault();
+            sendMessage();
+        }
+    });
+    // 监听DOM渲染好之后渲染消息
+    document.addEventListener('DOMContentLoaded', () => {
+        renderMessage();
+    });
+    const AGENT_ID = "157e86f3-7fb2-0c10-bae5-b4137f0176a8";
+    const URL = `http://97.64.20.241:3000/${AGENT_ID}/watcher`;
+    
+    async function postRequest(data) {
+        //const URL = `${ollama_host}/api/generate`;
+        //const URL = "https://web3ai.cloud/openai/v0";
+        //const URL = `http://192.168.1.6:3000/${AGENT_ID}/watcher`;
+        const URL = `http://97.64.20.241:3000/${AGENT_ID}/watcher`;
+        console.log(data);
+        
+        try {
+            const response = await fetch(URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+                signal: controller.signal
+            });
+            console.log("response")
+            console.log(response)
+            
+            if (!response.ok) {
+                const errorData = await response.json(); // Or response.text
+                alert(`API returned an error: ${errorData.message}`)
+                
+            }
+            
+            return response; // Assuming the API returns JSON
+        } catch (error) {
+            console.error(error);
+            status_failed = true
+            if (error.name === 'AbortError') {
+                alert("The request has been aborted.")
+            } else {
+                alert('Failed to post request ' + ollama_host + ' ')
+                
+            }
+            throw error; // Rethrow or handle as needed
+        }
+    }
+</script>
+<script type="module" src="scripts/PanelUI/panel.js"></script>
+
+</body>
+<style>
+    .chat {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        padding-top: .25rem;
+        padding-bottom: .25rem;
+        background-color: rgb(243 244 246);
+    }
+    
+    .chat-end {
+        place-items: end;
+        grid-template-columns: 1fr auto;
+    }
+    
+    .chat-start {
+        place-items: start;
+        grid-template-columns: auto 1fr;
+    }
+    
+    .chat-end .chat-bubble {
+        grid-column-start: 1;
+        border-end-end-radius: 0px;
+    }
+    
+    .chat-bubble {
+        position: relative;
+        display: block;
+        width: fit-content;
+        padding: .5rem .5rem;
+        max-width: 80%;
+        min-height: 2.75rem;
+        min-width: 2.75rem;
+        --tw-bg-opacity: 1;
+        --tw-text-opacity: 1;
+    }
+</style>
+</html>
