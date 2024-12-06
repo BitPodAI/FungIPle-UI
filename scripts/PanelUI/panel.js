@@ -1,4 +1,5 @@
 import { translate, getModelFromStorage } from "./service.js";
+import { showAlert } from "./utils.js";
 
 const notFoundString = `
 <p>failed to load</p>
@@ -8,18 +9,11 @@ const notResponseString = `
 <p>failed to load</p>
 `;
 
-const AGENT_ID = "157e86f3-7fb2-0c10-bae5-b4137f0176a8";
-
-//const AGENT_HOST = `http://192.168.1.6:3000/`;
-//const AGENT_URL = `http://web3ai.cloud/openai/v0`;
-const AGENT_URL = `http://web3ai.cloud/openai/v1`;
-
 
 let API_KEY = '';
 let messages = [];
 let conversationHistory = '[no existing conversation]';
 var version = chrome.runtime.getManifest().version;
-var ollama_host = 'podai.io'
 let model = ''
 var rebuildRules = undefined;
 var status_failed = false
@@ -66,57 +60,6 @@ if (typeof chrome !== "undefined" && chrome.runtime && chrome.runtime.id) {
 }
 
 let controller = new AbortController();
-
-// API Function to send a POST request to the Ollama
-async function postRequest(data) {
-  console.log(data);
-
-  try {
-    const response = await fetch(AGENT_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-      signal: controller.signal
-    });
-    console.log("response")
-    console.log(response)
-
-    if (!response.ok) {
-      const errorData = await response.json(); // Or response.text
-      showAlert(`API returned an error: ${errorData.message}`)
-    }
-
-    return response; // Assuming the API returns JSON
-  } catch (error) {
-    status_failed = true
-    if (error.name === 'AbortError') {
-      showAlert("The request has been aborted.")
-    } else {
-      showAlert('Failed to post request ' + ollama_host + ' ')
-    }
-    throw error; // Rethrow or handle as needed
-  }
-}
-
-// API Function to stream the response from the server
-async function getResponse(response) {
-  console.log(response);
-  const reader = response.body.getReader();
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) {
-      break;
-    }
-    // Decode the received value and split by lines
-    const textChunk = new TextDecoder().decode(value);
-    let resp = JSON.parse(textChunk);
-    return resp;
-  }
-}
-
 
 
 const chatlog = document.getElementById('chatlog');
@@ -182,7 +125,7 @@ async function submitRequest() {
   //console.log(full_prompt)
 
   try {
-    const response = await postRequest(data);
+    const response = await postAgentRequest(data);
     processResponse(response, chatlog, chatResponse, loading, chatResponse_div);
   } catch (error) {
     //displayError(error, chatlog);
@@ -623,7 +566,7 @@ reportButton.addEventListener('click', async () => {
   const [chatResponse, chatResponse_div] = createChatResponseElement(chatlog);
 
   try {
-    const response = await postRequest(data);
+    const response = await postAgentRequest(data);
     processResponse(response, chatlog, chatResponse, loading, chatResponse_div);
   } catch (error) {
     //displayError(error, chatlog);
@@ -697,19 +640,6 @@ document.addEventListener('DOMContentLoaded', function () {
   // showAlert("Response it aborted")
 });
 
-function showAlert(message) {
-  const alertDiv = document.querySelector('#alert-1');
-
-  alertDiv.querySelector('.alert-message').textContent = message;
-  alertDiv.classList.remove('hidden', '-translate-y-full');
-  alertDiv.classList.add('flex');
-
-  // Close the alert after 3 seconds
-  setTimeout(() => {
-    alertDiv.classList.add('hidden', '-translate-y-full');
-    alertDiv.classList.remove('flex');
-  }, 5000);
-}
 
 // MutationObserver to detect changes in the chat log and scroll to the bottom
 var chatLog = document.getElementById('chatlog');
