@@ -6,7 +6,6 @@ const AGENT_ID = "157e86f3-7fb2-0c10-bae5-b4137f0176a8";
 //const AGENT_URL = `http://web3ai.cloud/openai/v0`;
 const AGENT_URL = `http://web3ai.cloud/openai/v1`;
 
-
 export async function getModelFromStorage() {
   return new Promise((resolve, reject) => {
     chrome.storage.local.get('model', function (result) {
@@ -19,19 +18,15 @@ export async function getModelFromStorage() {
 
 // API Function to send a POST request to the Ollama
 export async function postAgentRequest(data) {
-  console.log(data);
-
+  let url = AGENT_URL;
   try {
-    const response = await fetch(AGENT_URL, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data),
-      signal: controller.signal
+      body: JSON.stringify(data)
     });
-    console.log("response")
-    console.log(response)
 
     if (!response.ok) {
       const errorData = await response.json(); // Or response.text
@@ -52,7 +47,6 @@ export async function postAgentRequest(data) {
 
 // API Function to stream the response from the server
 export async function getResponse(response) {
-  console.log(response);
   const reader = response.body.getReader();
 
   while (true) {

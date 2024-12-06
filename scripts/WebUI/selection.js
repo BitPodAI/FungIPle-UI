@@ -5,7 +5,7 @@
  * 
  * @param {MouseEvent} event - The mouseup event object.
  */
-document.addEventListener('mouseup', async (event) => {
+document.addEventListener('mouseup', (event) => {
   let selectedText = '';
 
   // Handle selection for inputs and textareas
@@ -15,6 +15,7 @@ document.addEventListener('mouseup', async (event) => {
     // Handle selection for regular elements
     selectedText = window.getSelection().toString().trim();
   }
+  console.log(selectedText);
 
   // If selected text is not empty, send it to the Chrome extension
   if (selectedText) {

@@ -16,7 +16,6 @@ const submitBtn = document.getElementById('submitButton');
 
 // Events
 tokenButton.addEventListener('click', async () => {
-    console.log('click the token button');
     const reqParam = {
         text: "get report",
         userId: "user",
@@ -26,21 +25,26 @@ tokenButton.addEventListener('click', async () => {
 
     try {
         let resp = await postAgentRequest(reqParam);
-        processResponse(await getResponse(resp));
+        let respData = await getResponse(resp);
+        //let respData = dataMock;
+
+        messageList.push(respData);
+        const table = createTable(respData);
+        chatBox.appendChild(table);
+        chatBox.scrollTop = chatBox.scrollHeight;
     } catch (error) {
-        //displayError(error, chatlog);
+        console.log(error);
     }
 });
 
 // translate Event
 translateButton.addEventListener('click', async () => {
-    console.log('click the translate button');
     try {
         const message = inputBox.value.trim();
         let resp = await translate(message);
         processResponse(resp);
     } catch (error) {
-        //displayError(error, chatlog);
+        console.log(error);
     }
 });
 
@@ -51,7 +55,6 @@ memoButton.addEventListener('click', async () => {
 
 // submit Event
 submitBtn.addEventListener('click', async () => {
-    console.log('click the submit button');
     sendMessage();
 })
 
@@ -67,6 +70,7 @@ const sendMessage = () => {
 
         doRequest(message).then((res) => {
             console.log(res);
+            //renderMessage();
         }).catch((e) => {
             console.log(e);
         });
@@ -91,7 +95,8 @@ const createMessageBox = (message, me) => {
         messageDiv.className = 'grid place-items-start';
     }
     messageDiv.innerHTML = `
-    <div class="mb-2 flex flex-col w-full max-w-[320px] leading-1.5 p-2 border-gray-200 bg-gray-200 rounded-xl">
+    <div class="mb-2 flex flex-col max-w-[275px] leading-1.5 p-2 border-gray-200 bg-gray-200 rounded-xl"
+        style="padding-left: 8px;">
         <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">${message}</p>
     </div>
     `;
@@ -99,9 +104,14 @@ const createMessageBox = (message, me) => {
 };
 
 const processResponse = (response) => {
-    messageList.push(response);
-    const messageDiv = createMessageBox(response);
+    let txt = JSON.stringify(response);
+    if (typeof response === "object" && response !== null) {
+        txt = JSON.parse(response[0]).text;
+    }
+    messageList.push(txt);
+    const messageDiv = createMessageBox(txt);
     chatBox.appendChild(messageDiv);
+    chatBox.scrollTop = chatBox.scrollHeight;
 }
 
 // Remote Request
@@ -132,7 +142,7 @@ inputBox.addEventListener('keydown', (event) => {
 
 // Chat Render
 document.addEventListener('DOMContentLoaded', () => {
-    renderMessage();
+    //renderMessage();
 });
 
 const renderTable = (headers, rows) => {
@@ -162,7 +172,6 @@ const renderTable = (headers, rows) => {
 };
 
 async function doRequest(data) {
-    console.log(data);
     const reqParam = {
         text: data,
         userId: "user",
@@ -189,3 +198,46 @@ chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
       }
     }
 });
+
+// 创建表格元素
+const createTable = (input) => {
+    let data = Object.values(input);
+    const table = document.createElement('table');
+    table.style.margin = "5px";
+    table.style.padding = "5px";
+    table.style.borderCollapse = 'collapse';
+    table.style.width = '90%';
+    table.style.border = '0px solid black';
+    table.className = 'border-gray-200 bg-gray-200 rounded-xl';
+
+    // 创建表头
+    const thead = document.createElement('thead');
+    const headerRow = document.createElement('tr');
+    ['Token', ' Level ', ' Index ', 'Hot'].forEach((header) => {
+      const th = document.createElement('th');
+      th.textContent = header;
+      th.style.border = '0px solid black';
+      th.style.padding = '2px';
+      th.style.textAlign = 'center';
+      headerRow.appendChild(th);
+    });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    // 创建表格内容
+    const tbody = document.createElement('tbody');
+    data.forEach((item) => {
+      const row = document.createElement('tr');
+      Object.values(item).forEach((value) => {
+        const td = document.createElement('td');
+        td.textContent = value;
+        td.style.border = '0px solid black';
+        td.style.padding = '2px';
+        row.appendChild(td);
+      });
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+
+    return table;
+};

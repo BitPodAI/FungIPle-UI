@@ -242,7 +242,7 @@ window.addEventListener('popstate', handleUrlChange);
 function onDocumentReady(currentTabUrl) {
 
   if (currentTabUrl.includes("www.google.com/search")) {// Home page
-    googleSearchComponent()
+    //googleSearchComponent()
   }
   /*else if (currentTabUrl.includes("mail.google.com")) {
     console.log("You are on Google Mail.");

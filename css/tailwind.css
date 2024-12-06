@@ -1505,7 +1505,7 @@ input.tab:checked + .tab-content,
 }
 
 .-top-8 {
-  top: -2rem;
+  top: -6rem;
 }
 
 .bottom-2 {
@@ -1513,7 +1513,7 @@ input.tab:checked + .tab-content,
 }
 
 .right-16 {
-  right: 4rem;
+  right: 1.5rem;
 }
 
 .right-4 {
@@ -1533,7 +1533,7 @@ input.tab:checked + .tab-content,
 }
 
 .ml-8 {
-  margin-left: 2rem;
+  margin-left: 3rem;
 }
 
 .mt-4 {
