@@ -8,7 +8,6 @@ export async function getModelFromStorage() {
 }
 
 export async function translate(input) {
-    //const URL = `${ollama_host}/api/generate`;
     const URL = "https://web3ai.cloud/openai/v0";
   
     const payload = {

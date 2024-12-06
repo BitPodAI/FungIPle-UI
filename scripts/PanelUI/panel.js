@@ -10,7 +10,9 @@ const notResponseString = `
 
 const AGENT_ID = "157e86f3-7fb2-0c10-bae5-b4137f0176a8";
 
-const AGENT_HOST = `http://192.168.1.6:3000/`;
+//const AGENT_HOST = `http://192.168.1.6:3000/`;
+//const AGENT_URL = `http://web3ai.cloud/openai/v0`;
+const AGENT_URL = `http://web3ai.cloud/openai/v1`;
 
 
 let API_KEY = '';
@@ -67,11 +69,10 @@ let controller = new AbortController();
 
 // API Function to send a POST request to the Ollama
 async function postRequest(data) {
-  const URL = `${AGENT_HOST}${AGENT_ID}/watcher`;
   console.log(data);
 
   try {
-    const response = await fetch(URL, {
+    const response = await fetch(AGENT_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
