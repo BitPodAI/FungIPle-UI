@@ -7,6 +7,7 @@
             crossorigin="anonymous"></script>
     <script src="lib/prism.js"></script>
     <script src="lib/pdf.min.js"></script>
+    <script src="scripts/PanelUI/panel.js"></script>
     <link href="css/prism.css" rel="stylesheet">
     <link href="css/output.css" rel="stylesheet">
     <link href="css/tailwind.css" rel="stylesheet">
@@ -24,7 +25,7 @@
         <div class="flex-1">
             <div class="grid place-items-start">
                 <div class="text-white text-xs z-10 bg-cover bg-no-repeat bg-center w-48 h-[75px] ml-8 -mb-3 pl-2 pr-6 py-2 text-ellipsis text-wrap break-words"
-                        style="background-image: url('assets/images/message_background.png')">
+                     style="background-image: url('assets/images/message_background.png')">
                     Always Remember invest in the feature, not just the present!
                 </div>
             </div>
@@ -34,14 +35,11 @@
                     <img class="size-20 absolute -top-8 right-16" src="assets/images/xiao_gui.png">
                 </div>
             </div>
-        
+
         </div>
     </div>
     <div class="flex-1 overflow-y-auto mt-4" id="chatBox">
-        <div class="mb-2 flex flex-col w-full max-w-[320px] leading-1.5 p-2 border-gray-200 bg-gray-100 rounded-xl">
-            <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">Hey, Blommy! Can u tell me how to find
-                100x Crypto Gems?</p>
-        </div>
+
     </div>
     <div class="relative flex-none h-20 p-0.5">
         <div class="bg-cover bg-origin-border p-4 h-full"
@@ -49,7 +47,7 @@
                 <textarea id="inputBox" placeholder="CHAT WITH ME..."
                           class="w-full h-full outline-none resize-none bg-transparent focus:outline-none focus:border-transparent"></textarea>
         </div>
-        <div class="inline-flex rounded-md shadow-sm gap-x-1 absolute bottom-2 right-4" style="top: -20px" role="group">
+        <div class="inline-flex rounded-md shadow-sm gap-x-1 absolute bottom-2 right-4" role="group">
             <button id="tokenButton" type="button"
                     class="text-white bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-xs px-2 py-1 text-center">
                 TokenWatch
@@ -62,14 +60,18 @@
                     class="text-white bg-gradient-to-r from-gray-500 via-gray-600 to-gray-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 rounded-lg text-xs px-2 py-1 text-center">
                 Memo
             </button>
+            <button id="submitButton" type="button"
+                    class="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-xs px-2 py-1 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Enter
+            </button>
         </div>
-        <span class="text-white bg-blue-500 p-1 rounded-lg hover:bg-blue-700 hover:text-slate-500 cursor-pointer right-0" id="submit">&#x23CE; Enter</span>      
     </div>
 </div>
 
 <script>
     // 初始消息
-    const messages = [
+    const messageList = [
+        'Hey, Blommy! Can u tell me how to find 100x Crypto Gems?',
         'Finding potential 100x crypto gems involves a mix of research, strategy, and a bit of luck. Here are some tips to help you identify promising cryptocurrencies:',
         '1. Research Projects: Look for projects with solid fundamentals. Read their whitepapers, understand their goals, and evaluate their use cases.',
         '2. Team and Advisors: Investigate the team behind the project. Experienced and reputable team members can significantly increase the project\'s chances of success.',
@@ -82,50 +84,79 @@
     const tokenButton = document.getElementById('tokenButton');
     const translateButton = document.getElementById('translateButton');
     const memoButton = document.getElementById('memoButton');
+    const submitBtn = document.getElementById('submitButton');
+    // token按钮点击事件
     tokenButton.addEventListener('click', () => {
         console.log('click the token button');
     });
+    // translate按钮点击事件
     translateButton.addEventListener('click', () => {
         console.log('click the translate button');
     });
+    // memo按钮点击事件
     memoButton.addEventListener('click', () => {
         console.log('click the memo button');
     });
+    // submit按钮点击事件
+    submitBtn.addEventListener('click', () => {
+        console.log('click the submit button');
+        sendMessage();
+    })
     // 发送消息
     const sendMessage = () => {
         const message = inputBox.value.trim();
         if (message) {
-            messages.push(message);
+            messageList.push(message);
             inputBox.value = '';
-            const messageDiv = createMessage(message);
+            const messageDiv = createMessage(message, true);
             chatBox.appendChild(messageDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
             waitForResponse(message);
-            postRequest(message);
+            doRequest(message).then((res) => {
+                console.log(res);
+            }).catch((e) => {
+                console.log(e);
+            });
         }
     };
     // 渲染消息组中的消息
     const renderMessage = () => {
-        messages.forEach((message) => {
+        messageList.forEach((message) => {
             const messageDiv = createMessage(message);
             chatBox.appendChild(messageDiv);
             chatBox.scrollTop = chatBox.scrollHeight;
-      +  });
+        });
     };
     // 创建消息DOM节点
-    const createMessage = (message) => {
+    const createMessage = (message, me) => {
         const messageDiv = document.createElement('div');
-        messageDiv.className =
-                'mb-2 flex flex-col w-full max-w-[320px] leading-1.5 p-2 border-gray-200 bg-gray-100 rounded-xl';
-        messageDiv.innerHTML = `<p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">${message}</p>`;
+        if (me) {
+            messageDiv.className = 'grid place-items-end'
+        } else {
+            messageDiv.className = 'grid place-items-start';
+        }
+        messageDiv.innerHTML = `
+        <div class="mb-2 flex flex-col w-full max-w-[320px] leading-1.5 p-2 border-gray-200 bg-gray-200 rounded-xl">
+            <p class="text-sm font-normal py-2.5 text-gray-900 dark:text-white">${message}</p>
+        </div>
+        `;
         return messageDiv;
     };
     // 请求远程响应并追加消息
     const waitForResponse = (question) => {
         const response = 'I have no idea!!!';
-        messages.push(response);
+        messageList.push(response);
         const messageDiv = createMessage(response);
         chatBox.appendChild(messageDiv);
+        const hds = ['token', 'index', '1H', '4H', '24H'];
+        const rows = [
+            ['pnut', 786, 78, 189, 487],
+            ['act', 564, 78, 189, 487],
+            ['neiro', 356, 78, 189, 487],
+            ['pepe', 305, 78, 189, 487],
+            ['goat', 286, 78, 189, 487],
+        ];
+        chatBox.appendChild(createMessage(renderTable(hds, rows)));
         chatBox.scrollTop = chatBox.scrollHeight;
     }
     // 监听输入框的回车事件发送消息
@@ -139,18 +170,37 @@
     document.addEventListener('DOMContentLoaded', () => {
         renderMessage();
     });
-    const AGENT_ID = "157e86f3-7fb2-0c10-bae5-b4137f0176a8";
-    const URL = `http://97.64.20.241:3000/${AGENT_ID}/watcher`;
-    
-    async function postRequest(data) {
-        //const URL = `${ollama_host}/api/generate`;
-        //const URL = "https://web3ai.cloud/openai/v0";
-        //const URL = `http://192.168.1.6:3000/${AGENT_ID}/watcher`;
-        const URL = `http://97.64.20.241:3000/${AGENT_ID}/watcher`;
+    const renderTable = (headers, rows) => {
+        const tableDiv = document.createElement('table');
+        tableDiv.className = 'text-center';
+        const theadDiv = document.createElement('thead');
+        const headRowDiv = document.createElement('tr')
+        headers.forEach((hd) => {
+            const columnDiv = document.createElement('th');
+            columnDiv.innerText = hd;
+            headRowDiv.appendChild(columnDiv);
+        });
+        theadDiv.appendChild(headRowDiv);
+        tableDiv.appendChild(theadDiv);
+        const tBodyDiv = document.createElement('tbody')
+        rows.forEach((row) => {
+            const rowDiv = document.createElement('tr');
+            row.forEach((col) => {
+                const colDiv = document.createElement('td');
+                colDiv.innerText = col;
+                rowDiv.appendChild(colDiv);
+            });
+            tBodyDiv.appendChild(rowDiv);
+        });
+        tableDiv.appendChild(tBodyDiv)
+        return tableDiv.outerHTML;
+    };
+
+    async function doRequest(data) {
         console.log(data);
-        
+
         try {
-            const response = await fetch(URL, {
+            const response = await fetch(AGENT_URL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -160,64 +210,28 @@
             });
             console.log("response")
             console.log(response)
-            
+
             if (!response.ok) {
                 const errorData = await response.json(); // Or response.text
                 alert(`API returned an error: ${errorData.message}`)
-                
             }
-            
+
             return response; // Assuming the API returns JSON
         } catch (error) {
-            console.error(error);
             status_failed = true
             if (error.name === 'AbortError') {
                 alert("The request has been aborted.")
             } else {
                 alert('Failed to post request ' + ollama_host + ' ')
-                
             }
             throw error; // Rethrow or handle as needed
         }
     }
 </script>
-<script type="module" src="scripts/PanelUI/panel.js"></script>
+
 
 </body>
 <style>
-    .chat {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        padding-top: .25rem;
-        padding-bottom: .25rem;
-        background-color: rgb(243 244 246);
-    }
-    
-    .chat-end {
-        place-items: end;
-        grid-template-columns: 1fr auto;
-    }
-    
-    .chat-start {
-        place-items: start;
-        grid-template-columns: auto 1fr;
-    }
-    
-    .chat-end .chat-bubble {
-        grid-column-start: 1;
-        border-end-end-radius: 0px;
-    }
-    
-    .chat-bubble {
-        position: relative;
-        display: block;
-        width: fit-content;
-        padding: .5rem .5rem;
-        max-width: 80%;
-        min-height: 2.75rem;
-        min-width: 2.75rem;
-        --tw-bg-opacity: 1;
-        --tw-text-opacity: 1;
-    }
+
 </style>
 </html>
