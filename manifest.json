@@ -33,7 +33,6 @@
     "type": "module"
   },
   "host_permissions": [
-    "http://web3ai.cloud"
   ],
   "side_panel": {
     "default_path": "panel.html",
@@ -54,6 +53,7 @@
         "<all_urls>"
       ],
       "js": [
+        "scripts/PanelUI/control.js",
         "scripts/WebUI/content.js",
         "scripts/WebUI/selection.js"
       ],

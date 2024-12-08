@@ -35,7 +35,6 @@ export async function postAgentRequest(data) {
 
     return response; // Assuming the API returns JSON
   } catch (error) {
-    status_failed = true
     if (error.name === 'AbortError') {
       showAlert("The request has been aborted.")
     } else {
@@ -78,7 +77,7 @@ export async function translate(input) {
       //Scene: "",
       //Context: "",
     };
-    console.log(payload);
+
     try {
       const response = await fetch(URL, {
         method: 'POST',
@@ -88,7 +87,6 @@ export async function translate(input) {
         body: JSON.stringify(payload),
         //signal: controller.signal
       });
-      //console.log(response)
   
       //if (!response.ok) {
         //const errorData = await response.json(); // Or response.text
@@ -102,10 +100,8 @@ export async function translate(input) {
         }
         // Decode the received value and split by lines
         const textChunk = new TextDecoder().decode(value);
-        console.log(textChunk)
         let resp = JSON.parse(textChunk);
         let result = resp.choices[0].message.content;
-        console.log(result)
         if (result.length > 10) {
           let index = result.indexOf("翻译后的内容");
           if (index > 0) {
@@ -118,7 +114,6 @@ export async function translate(input) {
       return "ERROR"; // Assuming the API returns JSON
     } catch (error) {
       console.log(error)
-      status_failed = true
       if (error.name === 'AbortError') {
         //showAlert("The request has been aborted.")
       } else {

@@ -190,12 +190,15 @@ async function doRequest(data) {
 // Chrome Sider Message
 chrome.runtime.onMessage.addListener(async (message, sender, sendResponse) => {
     if (message.type === 'TEXT_SELECTED') {
-      // Translate
-      let preTrText = message.text.toString();
-      if (preTrText.length > 1) {
-        let tr = await translate(preTrText);
-        processResponse(tr);
-      }
+        // Translate
+        let preTrText = message.text.toString();
+        if (preTrText.length > 1) {
+            processResponse(preTrText);
+            let tr = await translate(preTrText);
+            let output = `----------------<br>`;
+            output += tr;
+            processResponse(output);
+        }
     }
 });
 

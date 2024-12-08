@@ -8,6 +8,11 @@
 document.addEventListener('mouseup', (event) => {
   let selectedText = '';
 
+  if (chrome.runtime && chrome.runtime.onMessage) {
+  } else {
+    console.error('Extension context invalidated, unable to process request.');
+  }
+
   // Handle selection for inputs and textareas
   if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
     selectedText = event.target.value.substring(event.target.selectionStart, event.target.selectionEnd).trim();
@@ -15,7 +20,6 @@ document.addEventListener('mouseup', (event) => {
     // Handle selection for regular elements
     selectedText = window.getSelection().toString().trim();
   }
-  console.log(selectedText);
 
   // If selected text is not empty, send it to the Chrome extension
   if (selectedText) {
