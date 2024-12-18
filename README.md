@@ -2,7 +2,7 @@
 The WebUI for PodAI
 
 ## Overview 🔍📊🗂️📋
-**Orian** (PodAI WebUI) is a Chrome extension that provides quick access to the onchain Agent.
+**FungIPle-UI** (AI Agent WebUI) is a Chrome extension that provides quick access to the onchain Agent.
 
 ## 🚀 Features
 - **Open Side Panel:** Access your Agent with a side panel using `Ctrl+Shift+Left` (or `Command+Shift+Left` on macOS).
