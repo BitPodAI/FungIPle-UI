@@ -1,8 +1,5 @@
 node_modules
 dist
 build
-coverage
 .env
 .env.*
-*.css
-*.scss 

@@ -1,38 +1,9 @@
-#root {
-  @apply max-w-5xl mx-auto p-8 text-center;
-}
+@import './custom.css';
 
-.logo {
-  @apply h-24 p-6 transition-all duration-300;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em rgba(100, 108, 255, 0.67));
-}
-
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em rgba(97, 218, 251, 0.67));
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  @apply p-8;
-}
-
-.read-the-docs {
-  @apply text-gray-500;
+/* 自定义样式 */
+.pix-input {
+  background-image: url('./src/assets/images/border-bg/input.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }

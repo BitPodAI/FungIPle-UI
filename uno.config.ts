@@ -4,6 +4,7 @@ export default defineConfig({
   shortcuts: [
     ['frc-center', 'flex flex-row items-center justify-center'],
     ['fcc-center', 'flex flex-col items-center justify-center'],
+    ['frc-start', 'flex flex-row items-center justify-start'],
   ],
   theme: {
     colors: {

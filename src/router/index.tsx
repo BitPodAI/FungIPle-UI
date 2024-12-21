@@ -8,22 +8,18 @@ const Chat = lazy(() => import('../pages/Chat'));
 
 const AppRoutes: React.FC = () => {
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center items-center w-[320px] h-[600px] bg-gradient-to-r from-[#f06daf] to-[#2da1ff] text-xl text-white">
-          Loading...
-        </div>
-      }
-    >
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/egg-select" element={<EggSelect />} />
-        <Route path="/egg-config" element={<EggConfig />} />
-        <Route path="/chat" element={<Chat />} />
-        <Route path="*" element={<Navigate to="chat" replace />} />
-      </Routes>
-    </Suspense>
+    <div className="w-[450px] h-screen light">
+      <Suspense fallback={<div className="frc-center w-[450px] h-screen">Loading...</div>}>
+        <Routes>
+          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/egg-select" element={<EggSelect />} />
+          <Route path="/egg-config" element={<EggConfig />} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="*" element={<Navigate to="chat" replace />} />
+        </Routes>
+      </Suspense>
+    </div>
   );
 };
 

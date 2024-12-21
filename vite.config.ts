@@ -9,9 +9,7 @@ export default defineConfig({
   base: './', // 确保资源路径为相对路径
   resolve: {
     alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
-      '/images': `${path.resolve(__dirname, 'src/assets/images')}/`,
-      '/fonts': `${path.resolve(__dirname, 'src/assets/fonts')}/`,
+      '@/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
   define: {
@@ -23,7 +21,7 @@ export default defineConfig({
     proxy: {
       '/api': {
         // target: "http://18.205.246.62:3000",
-        target: "http://192.168.2.213:3000",
+        target: 'http://192.168.2.213:3000',
         // target: 'http://localhost:3000',
         secure: false,
         ws: true,
@@ -50,4 +48,5 @@ export default defineConfig({
     },
   },
   plugins: [react(), UnoCSS(), crx({ manifest })],
+  assetsInclude: ['**/*.ttf'],
 });
