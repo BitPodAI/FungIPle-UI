@@ -1,8 +1,8 @@
 import Background from '@/components/common/Background';
 import Button from '@/components/common/Button';
 import { BTNCOLOR } from '@/constant/button';
-import userIcon from '@/assets/images/icons/user.svg';
-import passwordIcon from '@/assets/images/icons/lock.svg';
+import userIcon from '@/assets/icons/user.svg';
+import passwordIcon from '@/assets/icons/lock.svg';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {

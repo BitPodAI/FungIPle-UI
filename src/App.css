@@ -1,4 +1,5 @@
-@import './custom.css';
+@import './styles/cursor.css';
+@import './styles/custom.css';
 
 /* 自定义样式 */
 .pix-input {
