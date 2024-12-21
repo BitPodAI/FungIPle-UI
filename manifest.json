@@ -20,5 +20,9 @@
   "side_panel": {
     "default_path": "index.html",
     "openPanelOnActionClick": true
-  }
+  },
+  "web_accessible_resources": [{
+    "resources": ["public/*", "assets/*"],
+    "matches": ["<all_urls>"]
+  }]
 }

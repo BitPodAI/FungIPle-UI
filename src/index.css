@@ -6,10 +6,6 @@
   font-style: normal;
 }
 
-.press-start-2p {
-  font-family: 'Press Start 2P', sans-serif;
-}
-
 :root {
   font-family: 'Press Start 2P', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -37,7 +33,7 @@
 }
 
 body {
-  @apply m-0 flex items-center min-h-screen;
+  @apply m-0 flex items-center min-w-[450px] min-h-screen;
 }
 
 /* 清理 a 原生样式 */
@@ -55,7 +51,7 @@ button {
   @apply border-none;
   @apply outline-none;
   @apply cursor-pointer;
-  font-family: inherit;
+  font-family: 'Press Start 2P', system-ui, Avenir, Helvetica, Arial, sans-serif;
 }
 
 button:hover {

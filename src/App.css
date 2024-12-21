@@ -1,9 +1,14 @@
 @import './styles/cursor.css';
 @import './styles/custom.css';
 
+/* 像素字体 */
+.press-start-2p {
+  font-family: 'Press Start 2P', sans-serif;
+}
+
 /* 自定义样式 */
 .pix-input {
-  background-image: url('./src/assets/images/border-bg/input.svg');
+  background-image: url('./assets/images/border-bg/input.svg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

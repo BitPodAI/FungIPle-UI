@@ -9,7 +9,7 @@ import GirlIcon from '@/assets/icons/girl.svg';
 import { useState } from 'react';
 import { EGG_STYLE, GENDER } from '@/constant/egg';
 
-const EggSelect: React.FC = () => {
+const AgentCustomized: React.FC = () => {
   const navigate = useNavigate();
   const [gender, setGender] = useState<GENDER>(GENDER.GIRL);
   const [agentStyle, setAgentStyle] = useState<EGG_STYLE>(EGG_STYLE.EMOTIONAL);
@@ -32,7 +32,7 @@ const EggSelect: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col justify-start items-center w-full h-full">
+    <div className="page press-start-2p">
       <div className="absolute top-0 left-0 z-[-1] bg-white">
         <Background />
       </div>
@@ -75,14 +75,14 @@ const EggSelect: React.FC = () => {
               className="select-none rounded-xl bg-white w-[205px] translate-x-[25px] p-[2px] transition duration-100 ease-out border-3 border-solid border-[#E3E3E3]"
               onMouseUp={event => handleSelectionChange(event, 'gender')}
             >
-              <MenuItem as="div" data-value="boy">
-                <div className="flex items-center gap-2 text-[12px] text-black rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+              <MenuItem as="div" data-value="Boy">
+                <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                   <img src={BoyIcon} alt="boy" className="w-[16px] h-[16px]" />
                   Boy
                 </div>
               </MenuItem>
-              <MenuItem as="div" data-value="girl">
-                <div className="flex items-center gap-2 text-[12px] text-black rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+              <MenuItem as="div" data-value="Girl">
+                <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                   <img src={GirlIcon} alt="girl" className="w-[16px] h-[16px]" />
                   Girl
                 </div>
@@ -111,7 +111,7 @@ const EggSelect: React.FC = () => {
             >
               {Object.values(EGG_STYLE).map(style => (
                 <MenuItem as="div" data-value={style} key={style}>
-                  <div className="flex items-center gap-2 text-[12px] text-black rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+                  <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                     {style}
                   </div>
                 </MenuItem>
@@ -120,11 +120,11 @@ const EggSelect: React.FC = () => {
           </Menu>
         </div>
         <Button color={BTNCOLOR.BLACK} className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[60px]" type="submit" onClick={handleNext}>
-          OK
+          Welcome!
         </Button>
       </form>
     </div>
   );
 };
 
-export default EggSelect;
+export default AgentCustomized;
