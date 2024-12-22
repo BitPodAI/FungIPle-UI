@@ -25,7 +25,7 @@ const EggSelect: React.FC = () => {
 
   return (
     <div className="page press-start-2p">
-      <div className="absolute top-0 left-0 z-[-1] bg-white">
+      <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
         <Background />
       </div>
 

@@ -33,7 +33,7 @@ const AgentCustomized: React.FC = () => {
 
   return (
     <div className="page press-start-2p">
-      <div className="absolute top-0 left-0 z-[-1] bg-white">
+      <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
         <Background />
       </div>
 
@@ -46,7 +46,7 @@ const AgentCustomized: React.FC = () => {
             <div className="w-[75px] text-[12px]">Name</div>
             <div className="w-[1px] h-[16px] bg-[#E3E3E3] mx-[12px]"></div>
           </div>
-          <input type="text" placeholder="" className="w-full h-full bg-transparent text-[12px] px-2" />
+          <input type="text" placeholder="" className="w-[180px] flex-1 h-full bg-transparent text-[12px] px-2" />
         </div>
         <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
           <div className="frc-start w-[100px]">

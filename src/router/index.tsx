@@ -9,7 +9,7 @@ const Chat = lazy(() => import('../pages/Chat'));
 const AppRoutes: React.FC = () => {
   return (
     <div className="w-full h-screen light">
-      <Suspense fallback={<div className="frc-center w-[450px] h-screen">Loading...</div>}>
+      <Suspense fallback={<div className="frc-center w-full h-screen">Loading...</div>}>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<Login />} />

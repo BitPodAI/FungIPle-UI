@@ -14,7 +14,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="page press-start-2p">
-      <div className="absolute top-0 left-0 z-[-1] bg-white">
+      <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
         <Background />
       </div>
       <div className="text-center w-auto min-w-[290px] mx-[50px] mt-[100px] mb-[50px]">
@@ -25,12 +25,12 @@ const Login: React.FC = () => {
         <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
           <img src={userIcon} alt="x" className="w-[20px] h-[20px]" />
           <div className="w-[1px] h-[16px] bg-[#E3E3E3] mx-[12px]"></div>
-          <input type="text" placeholder="X ACCOUNT" className="w-full h-full bg-transparent text-sm" />
+          <input type="text" placeholder="X ACCOUNT" className="w-[180px] flex-1 h-full bg-transparent text-sm" />
         </div>
         <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
           <img src={passwordIcon} alt="x" className="w-[20px] h-[20px]" />
           <div className="w-[1px] h-[16px] bg-[#E3E3E3] mx-[12px]"></div>
-          <input type="password" placeholder="PASSWORD" className="w-full h-full bg-transparent text-sm" />
+          <input type="password" placeholder="PASSWORD" className="w-[180px] flex-1 h-full bg-transparent text-sm" />
         </div>
         <Button color={BTNCOLOR.ORANGE} className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px]" type="submit" onClick={handleLogin}>
           LOGIN IN
