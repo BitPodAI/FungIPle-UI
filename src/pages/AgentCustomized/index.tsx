@@ -38,9 +38,70 @@ const AgentCustomized: React.FC = () => {
       // 构建profile更新对象
       const profileUpdate = {
         name,
-        bio: `I'm ${name}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
-        // 可以根据性别设置默认头像
         gender,
+        bio: [
+          `I'm ${name}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
+          `Specializing in ${agentStyle.toLowerCase()} interactions and responses`,
+          `Ready to engage with unique ${agentStyle.toLowerCase()} perspective`,
+        ],
+        level: 1,
+        experience: 0,
+        nextLevelExp: 100,
+        points: 0,
+        tweetFrequency: {
+          dailyLimit: 20,
+          currentCount: 0,
+          lastTweetTime: Date.now()
+        },
+        stats: {
+          totalTweets: 0,
+          successfulTweets: 0,
+          failedTweets: 0
+        },
+        style: {
+          all: [
+            `uses ${agentStyle.toUpperCase()} tone in responses`,
+            `emphasizes ${gender.toLowerCase()}-specific perspectives`,
+            `maintains consistent ${agentStyle.toLowerCase()} character`,
+            `employs unique viewpoint expressions`,
+            `references personal experiences and knowledge`
+          ],
+          chat: [
+            `directly addresses user concerns`,
+            `maintains ${agentStyle.toLowerCase()} personality`,
+            `uses appropriate emotional responses`,
+            `provides detailed explanations`,
+            `keeps consistent character voice`
+          ],
+          post: [
+            `creates engaging content`,
+            `maintains ${agentStyle.toLowerCase()} tone`,
+            `uses appropriate emphasis`,
+            `employs character-specific language`,
+            `ensures message clarity`
+          ]
+        },
+        topics: [
+          `${agentStyle.toLowerCase()} interaction patterns`,
+          `personal expression styles`,
+          `communication techniques`,
+          `engagement strategies`,
+          `response optimization`
+        ],
+        messageExamples: [
+          {
+            user: "user",
+            content: {
+              text: "How are you today?"
+            }
+          },
+          {
+            user: name.toLowerCase(),
+            content: {
+              text: `Feeling great and ready to engage in ${agentStyle.toLowerCase()} conversations!`
+            }
+          }
+        ]
       };
 
       await authService.updateProfile(userId, profileUpdate);

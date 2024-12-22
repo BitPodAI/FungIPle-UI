@@ -9,12 +9,10 @@ export interface TwitterProfile {
 }
 
 export interface UserProfile {
-  username: string;
   name: string;
-  email: string;
+  username: string;
   gender?: string;
-  bio?: string;
-  walletAddress?: string;
+  bio: string[];
   level: number;
   experience: number;
   nextLevelExp: number;
@@ -22,13 +20,25 @@ export interface UserProfile {
   tweetFrequency: {
     dailyLimit: number;
     currentCount: number;
-    lastTweetTime?: number;
+    lastTweetTime: number;
   };
   stats: {
     totalTweets: number;
     successfulTweets: number;
     failedTweets: number;
   };
+  style: {
+    all: string[];
+    chat: string[];
+    post: string[];
+  };
+  topics: string[];
+  messageExamples: {
+    user: string;
+    content: {
+      text: string;
+    };
+  }[];
 }
 
 export interface LoginForm {
@@ -38,8 +48,8 @@ export interface LoginForm {
 }
 
 export interface ProfileUpdateRequest {
-  username: string;
-  profile: Partial<UserProfile>;
+  agentId: string;
+  profile: UserProfile;
 }
 
 export interface ProfileUpdateResponse {
@@ -48,6 +58,12 @@ export interface ProfileUpdateResponse {
   data?: {
     profile: UserProfile;
   };
+}
+
+export interface ProfileQueryResponse {
+  success: boolean;
+  profile?: UserProfile;
+  error?: string;
 }
 
 export interface LoginResponse {

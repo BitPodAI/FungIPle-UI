@@ -1,22 +1,21 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
 import { UserProfile, TwitterProfile } from '@/types/auth';
 
 interface UserState {
   // 状态
-  userProfile: UserProfile | null;      // 用户档案
+  userProfile: UserProfile | null; // 用户档案
   twitterProfile: TwitterProfile | null; // Twitter档案
-  isAuthenticated: boolean;             // 是否已认证
-  
+  isAuthenticated: boolean; // 是否已认证
+
   // 操作方法
-  setUserProfile: (profile: UserProfile | null) => void;           // 设置用户档案
-  setTwitterProfile: (profile: TwitterProfile | null) => void;     // 设置Twitter档案
-  login: (userProfile: UserProfile, twitterProfile: TwitterProfile) => void;  // 登录
-  logout: () => void;                                             // 登出
-  updateProfile: (profile: UserProfile) => void;                  // 更新用户档案
-  
+  setUserProfile: (profile: UserProfile | null) => void; // 设置用户档案
+  setTwitterProfile: (profile: TwitterProfile | null) => void; // 设置Twitter档案
+  login: (userProfile: UserProfile, twitterProfile: TwitterProfile) => void; // 登录
+  logout: () => void; // 登出
+  updateProfile: (profile: UserProfile) => void; // 更新用户档案
+
   // 获取器
-  getUserId: () => string | null;  // 获取用户ID
+  getUserId: () => string | null; // 获取用户ID
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
@@ -26,11 +25,9 @@ export const useUserStore = create<UserState>((set, get) => ({
   isAuthenticated: false,
 
   // 状态操作方法
-  setUserProfile: (profile) => 
-    set({ userProfile: profile }),
+  setUserProfile: profile => set({ userProfile: profile }),
 
-  setTwitterProfile: (profile) =>
-    set({ twitterProfile: profile }),
+  setTwitterProfile: profile => set({ twitterProfile: profile }),
 
   login: (userProfile, twitterProfile) => {
     set({
@@ -58,7 +55,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     localStorage.removeItem('userId');
   },
 
-  updateProfile: (profile) => {
+  updateProfile: profile => {
     set({ userProfile: profile });
     localStorage.setItem('userProfile', JSON.stringify(profile));
   },
