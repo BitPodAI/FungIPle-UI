@@ -50,7 +50,7 @@ export const ChatHistory: React.FC<ChatHistoryProps> = ({ messages, loading = fa
   }
 
   return (
-    <div ref={containerRef} onScroll={handleScroll} className={`flex-1 overflow-y-auto p-4 space-y-4 ${className}`}>
+    <div ref={containerRef} onScroll={handleScroll} className={`flex-1 overflow-y-auto p-4 pt-0 space-y-4 ${className}`}>
       {/* 如果消息较多，可以添加"回到顶部"按钮 */}
       {messages.length > 10 && !autoScroll && (
         <button

@@ -11,8 +11,8 @@ export const ChatMessage: React.FC<Message> = ({ text, user }) => {
       <div
         className={`flex flex-col max-w-[80%] items-center px-6 py-2 ${
           isUser
-            ? 'bg-#2A2A2A text-white rounded-tl-xl rounded-tr-xl rounded-bl-xl rounded-br-none'
-            : 'bg-#F3F3F3 text-black rounded-tl-xl rounded-tr-xl rounded-bl-none rounded-br-xl'
+            ? 'bg-#2A2A2A text-white rounded-tl-[24px] rounded-tr-[24px] rounded-bl-[24px] rounded-br-none'
+            : 'bg-#F3F3F3 text-black rounded-tl-[24px] rounded-tr-[24px] rounded-bl-none rounded-br-[24px]'
         }`}
       >
         <p className="text-[12px] inknut-antiqua">{text}</p>

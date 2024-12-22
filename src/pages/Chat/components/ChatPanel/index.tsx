@@ -3,6 +3,8 @@ import './index.css';
 import { ChatInput } from '../ChatInput';
 import { ChatHistory } from '../ChatList/ChatHistory';
 import { Message } from '@/types/chat';
+import { ReactSVG } from 'react-svg';
+import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
 
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
   const [messages, setMessages] = useState<Message[]>([
@@ -31,15 +33,19 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
 
   return (
     <div
-      className={`bg-white w-full flex flex-col justify-between rounded-t-3xl transition-all duration-300 ${
-        isFullScreen ? 'h-screen' : 'h-[3/5]'
+      className={`bg-white z-10 w-full flex flex-col justify-between transition-all duration-300 ${
+        isFullScreen ? 'h-screen' : 'h-[70%] rounded-t-3xl'
       }`}
     >
-      <div className="flex-1 overflow-y-auto p-4 border border-gray-300 relative">
-        <ChatHistory messages={messages} />
-        <div className="absolute top-2 right-2 cursor-pointer text-sm text-blue-500" onClick={toggleFullScreen}>
-          {isFullScreen ? 'Switch to 3/5' : 'Switch to Fullscreen'}
+      <div className="flex-1 overflow-y-auto pt-[48px] pb-[16px] border border-gray-300 relative">
+        <div className="absolute top-0 left-0 p-[16px] box-border w-full frc-center" onClick={toggleFullScreen}>
+          {isFullScreen ? (
+            <ReactSVG src={arrowUpIcon} className="w-4 h-4 rotate-180 link-cursor" />
+          ) : (
+            <ReactSVG src={arrowUpIcon} className="w-4 h-4 link-cursor" />
+          )}
         </div>
+        <ChatHistory messages={messages} />
       </div>
       <div className="textarea-border border-box flex items-center justify-between m-2 p-2">
         <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
