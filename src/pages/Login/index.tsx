@@ -52,8 +52,7 @@ const Login: React.FC = () => {
 
     setLoading(true);
     try {
-      const response = await authService.login(form);
-      authService.storeUserData(response.data);
+      await authService.login(form);
       navigate('/egg-select');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Login failed');
