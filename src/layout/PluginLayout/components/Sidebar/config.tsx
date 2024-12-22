@@ -14,22 +14,22 @@ const mainNavs = [
   {
     title: MAIN_NAVS.CHAT,
     icon: <img src={ChatIcon} alt="chat" />,
-    path: '/chat',
+    path: '/plugin/chat',
   },
   {
     title: MAIN_NAVS.AGENT,
     icon: <img src={AgentIcon} alt="agent" />,
-    path: '/agent',
+    path: '/plugin/agent',
   },
   {
     title: MAIN_NAVS.WATCH_LIST,
     icon: <img src={WatchListIcon} alt="watch-list" />,
-    path: '/watch-list',
+    path: '/plugin/watch-list',
   },
   {
     title: MAIN_NAVS.DISCOVER,
     icon: <img src={DiscoverIcon} alt="discover" />,
-    path: '/discover',
+    path: '/plugin/discover',
   },
 ];
 
@@ -37,12 +37,12 @@ const extendNavs = [
   {
     title: EXTEND_NAVS.MEMO,
     icon: <img src={MemoIcon} alt="memo" />,
-    path: '/memo',
+    path: '/plugin/memo',
   },
   {
     title: EXTEND_NAVS.MORE,
     icon: <img src={MoreIcon} alt="more" />,
-    path: '/more',
+    path: '/plugin/more',
   },
 ];
 
@@ -50,22 +50,22 @@ const otherNavs = [
   {
     title: OTHER_NAVS.GIFT,
     icon: <img src={GiftIcon} alt="gift" />,
-    path: '/gift',
+    path: '/plugin/gift',
   },
   {
     title: OTHER_NAVS.DEVICE,
     icon: <img src={DeviceIcon} alt="device" />,
-    path: '/device',
+    path: '/plugin/device',
   },
   {
     title: OTHER_NAVS.HELP,
     icon: <img src={HelpIcon} alt="help" />,
-    path: '/help',
+    path: '/plugin/help',
   },
   {
     title: OTHER_NAVS.SETTING,
     icon: <img src={SettingIcon} alt="setting" />,
-    path: '/setting',
+    path: '/plugin/setting',
   },
 ];
 

@@ -35,7 +35,7 @@ const Sidebar = () => {
           {otherNavs.map(nav => (
             <li key={nav.title}>
               <Link to={nav.path}>
-                <IconWrap title={nav.title} isSelected={false} onClick={() => {}}>
+                <IconWrap title={nav.title} isShowTitle={false} isSelected={false} onClick={() => {}}>
                   {nav.icon}
                 </IconWrap>
               </Link>
