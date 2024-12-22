@@ -33,6 +33,7 @@ const IconWrap = ({ children, isSelected, title, isShowTitle = true, onClick }: 
             borderRadius: '4px',
             whiteSpace: 'nowrap',
             fontSize: '8px',
+            zIndex: 1000,
           }}
         >
           {title}
