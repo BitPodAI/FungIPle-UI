@@ -1,7 +1,7 @@
 import React from 'react';
 
 const More: React.FC = () => {
-  return <div>More</div>;
+  return <div className="page press-start-2p">More</div>;
 };
 
 export default More;
