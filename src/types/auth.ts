@@ -3,35 +3,46 @@ export enum UserRole {
   ADMIN = 'admin',
 }
 
-export interface User {
-  id: string;
-  username: string;
-  email?: string;
-  role: UserRole;
-  createdAt: Date;
-  updatedAt: Date;
+export interface TwitterProfile {
+  followersCount: number;
+  verified: boolean;
 }
 
-export interface LoginCredentials {
+export interface UserProfile {
+  username: string;
+  email: string;
+  level: number;
+  experience: number;
+  nextLevelExp: number;
+  points: number;
+  tweetFrequency: {
+    dailyLimit: number;
+    currentCount: number;
+  };
+  stats: {
+    totalTweets: number;
+    successfulTweets: number;
+    failedTweets: number;
+  };
+}
+
+export interface LoginForm {
   username: string;
   password: string;
-}
-
-export interface RegisterCredentials {
-  username: string;
-  password: string;
-  // email: string;
-  // verificationCode: string;
-}
-
-export type UserWithoutPassword = Omit<User, 'password'>;
-
-export interface UserPayload {
-  user: UserWithoutPassword;
-  token: string;
+  email: string;
 }
 
 export interface LoginResponse {
   success: boolean;
-  data: UserPayload;
+  message: string;
+  data?: {
+    profile: UserProfile;
+    twitterProfile: TwitterProfile;
+  };
+}
+
+export interface ApiResponse<T = any> {
+  success: boolean;
+  message: string;
+  data?: T;
 }
