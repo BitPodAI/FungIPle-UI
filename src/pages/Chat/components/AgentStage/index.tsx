@@ -17,6 +17,7 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   const tip = tips[Math.floor(Math.random() * tips.length)];
 
   const [currentTip, setCurrentTip] = useState(tip);
+  const [exp, setExp] = useState(50);
 
   // 每10秒换一个tip
   useEffect(() => {
@@ -41,16 +42,21 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
               </span>
               <span className="flex items-center gap-2">
                 <span className="text-[12px]">Exp</span>
-                <img src={lifeBarIcon} alt="life-bar" className="w-[16px] h-[16px] object-cover" />
-                <span className="text-[12px]">100</span>
+                <span className="relative flex items-center gap-1">
+                  <img src={lifeBarIcon} alt="life-bar" className="w-[120px] h-[16px] object-cover" />
+                  {/* 进度条，绿色部分的长度代表百分比进度，底色是白色 */}
+                  <span className="bg-white h-[10px] w-[110px] absolute top-0 left-0 rounded-full ml-4px mr-2px my-2px">
+                    <span className="bg-[#39CE78] h-[10px] absolute top-0 left-0 rounded-full" style={{ width: exp }}></span>
+                  </span>
+                </span>
               </span>
             </div>
           </div>
-          <img src={walletIcon} alt="wallet" className="w-[25px] h-[25px] object-contain" />
+          <img src={walletIcon} alt="wallet" className="w-[25px] h-[25px] object-contain link-cursor" />
         </div>
         {/* agent(脚下椭圆，图片，礼物，血瓶，爱心) */}
         <div className="relative w-full">
-          <div className="absolute z-1 bottom-[50px] left-[70px] frc-center">
+          <div className="absolute z-1 bottom-[50px] right-200px frc-center">
             <div className="dialog-wrap">
               <p className="w-[180px] text-[12px] inknut-antiqua">{currentTip}</p>
             </div>
