@@ -99,6 +99,31 @@ export const authService = {
   },
 
   /**
+   * 获取所有配置数据
+   * @returns 包含styles、kols和quote的配置数据
+   */
+  async getConfig(): Promise<
+    ApiResponse<{
+      styles: string[];
+      kols: string[];
+      quote: string;
+    }>
+  > {
+    try {
+      const response = await fetch(API_CONFIG.API_BASE_URL + '/config', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Get config error:', error);
+      throw error;
+    }
+  },
+
+  /**
    * 用户登出
    * 清除用户状态和本地存储
    */
