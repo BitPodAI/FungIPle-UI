@@ -12,17 +12,17 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "public/icon16.png",
-      "48": "public/icon16.png",
-      "128": "public/icon16.png"
+      "16": "public/icon16.png"
     }
   },
   "side_panel": {
     "default_path": "index.html",
     "openPanelOnActionClick": true
   },
-  "web_accessible_resources": [{
-    "resources": ["public/*", "assets/*"],
-    "matches": ["<all_urls>"]
-  }]
+  "web_accessible_resources": [
+    {
+      "resources": ["public/*", "assets/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }

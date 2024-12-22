@@ -3,7 +3,12 @@
 
 /* 像素字体 */
 .press-start-2p {
-  font-family: 'Press Start 2P', sans-serif;
+  font-family: 'Press Start 2P';
+}
+
+/* 正文字体 */
+.inknut-antiqua {
+  font-family: 'Inknut Antiqua';
 }
 
 /* 自定义样式 */

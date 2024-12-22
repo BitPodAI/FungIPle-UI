@@ -6,7 +6,7 @@ export interface Chat {
 
 export interface Message {
   text: string;
-  user: 'user' | 'cuckoo';
+  user: 'user' | 'agent';
   action: 'NONE' | 'CONTINUE' | 'LECTURE';
   inReplyTo?: string;
   lectureReward?: string;
