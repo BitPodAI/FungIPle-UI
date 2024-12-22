@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { UserProfile, TwitterProfile } from '@/types/auth';
 
 interface UserState {
@@ -12,6 +13,7 @@ interface UserState {
   setTwitterProfile: (profile: TwitterProfile | null) => void;     // 设置Twitter档案
   login: (userProfile: UserProfile, twitterProfile: TwitterProfile) => void;  // 登录
   logout: () => void;                                             // 登出
+  updateProfile: (profile: UserProfile) => void;                  // 更新用户档案
   
   // 获取器
   getUserId: () => string | null;  // 获取用户ID
@@ -54,6 +56,11 @@ export const useUserStore = create<UserState>((set, get) => ({
     localStorage.removeItem('userProfile');
     localStorage.removeItem('twitterProfile');
     localStorage.removeItem('userId');
+  },
+
+  updateProfile: (profile) => {
+    set({ userProfile: profile });
+    localStorage.setItem('userProfile', JSON.stringify(profile));
   },
 
   // 工具方法

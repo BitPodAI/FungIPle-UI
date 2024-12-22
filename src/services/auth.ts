@@ -1,4 +1,4 @@
-import { LoginForm, LoginResponse, ApiResponse } from '../types/auth';
+import { LoginForm, LoginResponse, ApiResponse, ProfileUpdateRequest, ProfileUpdateResponse, UserProfile } from '../types/auth';
 import { useUserStore } from '@/stores/useUserStore';
 import { API_CONFIG } from '@/config/api';
 
@@ -37,6 +37,47 @@ export const authService = {
       return data;
     } catch (err) {
       throw err instanceof Error ? err : new Error('登录失败');
+    }
+  },
+
+  /**
+   * 更新用户档案
+   * @param userId 用户ID
+   * @param profileUpdate 要更新的档案字段
+   * @returns 更新后的用户档案
+   * @throws 更新失败时抛出错误
+   */
+  async updateProfile(userId: string, profileUpdate: Partial<UserProfile>): Promise<ApiResponse<ProfileUpdateResponse['data']>> {
+    try {
+      const response = await fetch(API_CONFIG.API_BASE_URL + '/profile_upd', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          profile: profileUpdate,
+        } as ProfileUpdateRequest),
+      });
+
+      const data: ProfileUpdateResponse = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || '更新档案失败');
+      }
+
+      if (!data.success) {
+        throw new Error(data.message || '更新档案失败');
+      }
+
+      if (data.data?.profile) {
+        // 更新全局状态
+        useUserStore.getState().setUserProfile(data.data.profile);
+      }
+
+      return data;
+    } catch (err) {
+      throw err instanceof Error ? err : new Error('更新档案失败');
     }
   },
 

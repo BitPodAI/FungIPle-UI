@@ -10,7 +10,11 @@ export interface TwitterProfile {
 
 export interface UserProfile {
   username: string;
+  name: string;
   email: string;
+  gender?: string;
+  bio?: string;
+  walletAddress?: string;
   level: number;
   experience: number;
   nextLevelExp: number;
@@ -18,6 +22,7 @@ export interface UserProfile {
   tweetFrequency: {
     dailyLimit: number;
     currentCount: number;
+    lastTweetTime?: number;
   };
   stats: {
     totalTweets: number;
@@ -30,6 +35,19 @@ export interface LoginForm {
   username: string;
   password: string;
   email: string;
+}
+
+export interface ProfileUpdateRequest {
+  userId: string;
+  profile: Partial<UserProfile>;
+}
+
+export interface ProfileUpdateResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    profile: UserProfile;
+  };
 }
 
 export interface LoginResponse {
