@@ -14,7 +14,7 @@ const IconWrap = ({ children, isSelected, title, isShowTitle = true, onClick }: 
     <div className="w-[32px] relative" onClick={onClick} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <div
         className={`rounded-full w-[32px] h-[32px] flex justify-center items-center ${
-          isSelected ? 'bg-black text-white' : 'bg-white text-black'
+          isSelected ? 'bg-black text-white' : 'bg-white text-[#666666]'
         }`}
       >
         {children}
