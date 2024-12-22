@@ -143,6 +143,27 @@ export const authService = {
   },
 
   /**
+   * 发送聊天请求
+   * @param text 用户输入文本
+   * @returns 生成的聊天响应
+   */
+  async handleChat(text: string): Promise<ApiResponse<{ response: string }>> {
+    try {
+      const response = await fetch(API_CONFIG.API_BASE_URL + `/chat`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Chat request error:', error);
+      throw error;
+    }
+  },
+
+  /**
    * 用户登出
    * 清除用户状态和本地存储
    */
