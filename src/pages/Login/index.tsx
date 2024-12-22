@@ -3,6 +3,7 @@ import Button from '@/components/common/Button';
 import { BTNCOLOR } from '@/constant/button';
 import userIcon from '@/assets/icons/user.svg';
 import passwordIcon from '@/assets/icons/lock.svg';
+import emailIcon from '@/assets/icons/email.svg';
 import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
@@ -31,6 +32,11 @@ const Login: React.FC = () => {
           <img src={passwordIcon} alt="x" className="w-[20px] h-[20px]" />
           <div className="w-[1px] h-[16px] bg-[#E3E3E3] mx-[12px]"></div>
           <input type="password" placeholder="PASSWORD" className="w-[180px] flex-1 h-full bg-transparent text-sm" />
+        </div>
+        <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
+          <img src={emailIcon} alt="x" className="w-[20px] h-[20px]" />
+          <div className="w-[1px] h-[16px] bg-[#E3E3E3] mx-[12px]"></div>
+          <input type="email" placeholder="EMAIL" className="w-[180px] flex-1 h-full bg-transparent text-sm" />
         </div>
         <Button color={BTNCOLOR.ORANGE} className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px]" type="submit" onClick={handleLogin}>
           LOGIN IN
