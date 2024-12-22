@@ -55,7 +55,7 @@ export const authService = {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId,
+          username: userId,
           profile: profileUpdate,
         } as ProfileUpdateRequest),
       });

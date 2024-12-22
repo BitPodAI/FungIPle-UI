@@ -38,7 +38,7 @@ export interface LoginForm {
 }
 
 export interface ProfileUpdateRequest {
-  userId: string;
+  username: string;
   profile: Partial<UserProfile>;
 }
 
