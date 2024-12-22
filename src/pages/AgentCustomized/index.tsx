@@ -6,7 +6,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import BoyIcon from '@/assets/icons/boy.svg';
 import GirlIcon from '@/assets/icons/girl.svg';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { EGG_STYLE, GENDER } from '@/constant/egg';
 import { authService } from '@/services/auth';
 import { useUserStore } from '@/stores/useUserStore';
@@ -15,9 +15,23 @@ const AgentCustomized: React.FC = () => {
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [gender, setGender] = useState<GENDER>(GENDER.GIRL);
-  const [agentStyle, setAgentStyle] = useState<EGG_STYLE>(EGG_STYLE.EMOTIONAL);
+  const [agentStyle, setAgentStyle] = useState<string>('');
+  const [styles, setStyles] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchStyles = async () => {
+      try {
+        const { data } = await authService.getConfig();
+        setStyles(data?.styles || []);
+        setAgentStyle(data?.styles[0] || '');
+      } catch (error) {
+        console.error('Failed to fetch styles:', error);
+      }
+    };
+    fetchStyles();
+  }, []);
 
   const handleNext = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,12 +65,12 @@ const AgentCustomized: React.FC = () => {
         tweetFrequency: {
           dailyLimit: 20,
           currentCount: 0,
-          lastTweetTime: Date.now()
+          lastTweetTime: Date.now(),
         },
         stats: {
           totalTweets: 0,
           successfulTweets: 0,
-          failedTweets: 0
+          failedTweets: 0,
         },
         style: {
           all: [
@@ -64,44 +78,44 @@ const AgentCustomized: React.FC = () => {
             `emphasizes ${gender.toLowerCase()}-specific perspectives`,
             `maintains consistent ${agentStyle.toLowerCase()} character`,
             `employs unique viewpoint expressions`,
-            `references personal experiences and knowledge`
+            `references personal experiences and knowledge`,
           ],
           chat: [
             `directly addresses user concerns`,
             `maintains ${agentStyle.toLowerCase()} personality`,
             `uses appropriate emotional responses`,
             `provides detailed explanations`,
-            `keeps consistent character voice`
+            `keeps consistent character voice`,
           ],
           post: [
             `creates engaging content`,
             `maintains ${agentStyle.toLowerCase()} tone`,
             `uses appropriate emphasis`,
             `employs character-specific language`,
-            `ensures message clarity`
-          ]
+            `ensures message clarity`,
+          ],
         },
         topics: [
           `${agentStyle.toLowerCase()} interaction patterns`,
           `personal expression styles`,
           `communication techniques`,
           `engagement strategies`,
-          `response optimization`
+          `response optimization`,
         ],
         messageExamples: [
           {
-            user: "user",
+            user: 'user',
             content: {
-              text: "How are you today?"
-            }
+              text: 'How are you today?',
+            },
           },
           {
             user: name.toLowerCase(),
             content: {
-              text: `Feeling great and ready to engage in ${agentStyle.toLowerCase()} conversations!`
-            }
-          }
-        ]
+              text: `Feeling great and ready to engage in ${agentStyle.toLowerCase()} conversations!`,
+            },
+          },
+        ],
       };
 
       await authService.updateProfile(userId, profileUpdate);
@@ -121,7 +135,7 @@ const AgentCustomized: React.FC = () => {
       if (type === 'gender') {
         setGender(value as GENDER);
       } else if (type === 'style') {
-        setAgentStyle(value as EGG_STYLE);
+        setAgentStyle(value);
       }
     }
   };
@@ -211,7 +225,7 @@ const AgentCustomized: React.FC = () => {
               className="select-none rounded-xl bg-white w-[205px] translate-x-[25px] p-[2px] transition duration-100 ease-out border-3 border-solid border-[#E3E3E3]"
               onMouseUp={event => handleSelectionChange(event, 'style')}
             >
-              {Object.values(EGG_STYLE).map(style => (
+              {styles.map(style => (
                 <MenuItem as="div" data-value={style} key={style}>
                   <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                     {style}
