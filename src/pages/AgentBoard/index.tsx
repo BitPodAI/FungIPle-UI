@@ -57,7 +57,7 @@ const AgentBoard: React.FC = () => {
             <Switch
               checked={enabled}
               onChange={setEnabled}
-              className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-blue-600"
+              className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-[#39CE78]"
             >
               <span className="size-4 rounded-full bg-white transition group-data-[checked]:translate-x-4" />
             </Switch>
