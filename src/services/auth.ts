@@ -124,6 +124,25 @@ export const authService = {
   },
 
   /**
+   * 获取watch text数据
+   * @returns watch text报告
+   */
+  async getWatchText(): Promise<ApiResponse<{ report: string }>> {
+    try {
+      const response = await fetch(API_CONFIG.API_BASE_URL + `/watch`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Get watch text error:', error);
+      throw error;
+    }
+  },
+
+  /**
    * 用户登出
    * 清除用户状态和本地存储
    */
