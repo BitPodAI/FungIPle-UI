@@ -15,7 +15,7 @@ const AgentCustomized: React.FC = () => {
   const [agentStyle, setAgentStyle] = useState<EGG_STYLE>(EGG_STYLE.EMOTIONAL);
 
   const handleNext = () => {
-    navigate('/egg-config');
+    navigate('/plugin/chat');
   };
 
   const handleSelectionChange = (event: React.MouseEvent<HTMLDivElement>, type: 'gender' | 'style') => {

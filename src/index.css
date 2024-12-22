@@ -40,11 +40,11 @@ body {
 
 /* 清理 a 原生样式 */
 a {
-  @apply text-blue-500;
+  @apply text-blue-500 decoration-none;
 }
 
 a:hover {
-  @apply text-blue-600;
+  @apply text-blue-600 decoration-none;
 }
 
 /* 清理 button 原生样式 */

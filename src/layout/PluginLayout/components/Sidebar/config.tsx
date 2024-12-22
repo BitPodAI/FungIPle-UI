@@ -9,26 +9,27 @@ import GiftIcon from '@/assets/icons/gift.svg';
 import DeviceIcon from '@/assets/icons/device.svg';
 import HelpIcon from '@/assets/icons/help.svg';
 import SettingIcon from '@/assets/icons/setting.svg';
+import { ReactSVG } from 'react-svg';
 
 const mainNavs = [
   {
     title: MAIN_NAVS.CHAT,
-    icon: <img src={ChatIcon} alt="chat" />,
+    icon: <ReactSVG src={ChatIcon} className="color-inherit" />,
     path: '/plugin/chat',
   },
   {
     title: MAIN_NAVS.AGENT,
-    icon: <img src={AgentIcon} alt="agent" />,
+    icon: <ReactSVG src={AgentIcon} className="color-inherit" />,
     path: '/plugin/agent',
   },
   {
     title: MAIN_NAVS.WATCH_LIST,
-    icon: <img src={WatchListIcon} alt="watch-list" />,
+    icon: <ReactSVG src={WatchListIcon} className="color-inherit" />,
     path: '/plugin/watch-list',
   },
   {
     title: MAIN_NAVS.DISCOVER,
-    icon: <img src={DiscoverIcon} alt="discover" />,
+    icon: <ReactSVG src={DiscoverIcon} className="color-inherit" />,
     path: '/plugin/discover',
   },
 ];
@@ -36,12 +37,12 @@ const mainNavs = [
 const extendNavs = [
   {
     title: EXTEND_NAVS.MEMO,
-    icon: <img src={MemoIcon} alt="memo" />,
+    icon: <ReactSVG src={MemoIcon} className="color-inherit" />,
     path: '/plugin/memo',
   },
   {
     title: EXTEND_NAVS.MORE,
-    icon: <img src={MoreIcon} alt="more" />,
+    icon: <ReactSVG src={MoreIcon} className="color-inherit" />,
     path: '/plugin/more',
   },
 ];
@@ -49,22 +50,22 @@ const extendNavs = [
 const otherNavs = [
   {
     title: OTHER_NAVS.GIFT,
-    icon: <img src={GiftIcon} alt="gift" />,
+    icon: <ReactSVG src={GiftIcon} className="color-inherit" />,
     path: '/plugin/gift',
   },
   {
     title: OTHER_NAVS.DEVICE,
-    icon: <img src={DeviceIcon} alt="device" />,
+    icon: <ReactSVG src={DeviceIcon} className="color-inherit" />,
     path: '/plugin/device',
   },
   {
     title: OTHER_NAVS.HELP,
-    icon: <img src={HelpIcon} alt="help" />,
+    icon: <ReactSVG src={HelpIcon} className="color-inherit" />,
     path: '/plugin/help',
   },
   {
     title: OTHER_NAVS.SETTING,
-    icon: <img src={SettingIcon} alt="setting" />,
+    icon: <ReactSVG src={SettingIcon} className="color-inherit" />,
     path: '/plugin/setting',
   },
 ];
