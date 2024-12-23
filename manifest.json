@@ -1,95 +1,31 @@
 {
   "manifest_version": 3,
-  "name": "PodAI",
-  "version": "0.1",
-  "description": "Quick access to your Agent.",
-  "icons": {
-    "16": "assets/logo.png",
-    "48": "assets/logo.png",
-    "128": "assets/logo.png"
-  },
-  "commands": {
-    "open_side_panel": {
-      "suggested_key": {
-        "default": "Ctrl+Shift+Left",
-        "mac": "Command+Shift+Left"
-      },
-      "description": "Open side panel"
-    }
-  },
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "storage",
-    "sidePanel",
-    "contextMenus",
-    "declarativeNetRequest",
-    "system.cpu",
-    "system.memory",
-    "commands"
-  ],
+  "name": "FungIPle",
+  "version": "0.0.1",
+  "description": "A Chrome extension built with ai16z for web3 friendly entrance",
   "background": {
-    "service_worker": "scripts/Background/background.js",
+    "service_worker": "background.js",
     "type": "module"
   },
-  "host_permissions": [
+  "permissions": [
+    "activeTab", "scripting",
+    "storage", "sidePanel", "idle"
   ],
-  "side_panel": {
-    "default_path": "panel.html",
-    "openPanelOnActionClick": true
-  },
+  "host_permissions": ["http://web3ai.cloud/*", "https://web3ai.cloud/*"],
   "action": {
-    "default_title": "Click to open panel"
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "public/icon16.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "index.html",
+    "openPanelOnActionClick": true
   },
   "web_accessible_resources": [
     {
-      "resources": ["panel.html", "assets/bg.png", "assets/frog.png"],
+      "resources": ["public/*", "assets/*"],
       "matches": ["<all_urls>"]
-    }
-  ],
-  "content_scripts": [
-    {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "scripts/PanelUI/control.js",
-        "scripts/WebUI/content.js",
-        "scripts/WebUI/selection.js"
-      ],
-      "run_at": "document_end",
-      "type": "module"
-    },
-    {
-      "matches": [
-        "https://www.google.com/*"
-      ],
-      "js": [
-        "lib/marked.min.js",
-        "lib/prism.js"
-      ],
-      "run_at": "document_end",
-      "css": [
-        "css/output.css",
-        "css/prism.css",
-        "css/light.css"
-      ],
-      "type": "module"
-    },
-    {
-      "matches": [
-        "https://mail.google.com/*"
-      ],
-      "js": [
-        "lib/marked.min.js"
-      ],
-      "run_at": "document_end",
-      "css": [
-        "css/output.css",
-        "css/prism.css",
-        "css/light.css"
-      ],
-      "type": "module"
     }
   ]
 }
