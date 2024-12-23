@@ -8,6 +8,8 @@ export interface Message {
   text: string;
   user: 'user' | 'agent';
   action: 'NONE' | 'CONTINUE' | 'LECTURE';
+  title?: string;
+  updatedAt?: string;
   inReplyTo?: string;
   lectureReward?: string;
   lectureTxHash?: string;

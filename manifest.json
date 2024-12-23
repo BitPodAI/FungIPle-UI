@@ -7,8 +7,11 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["storage", "action", "sidePanel", "idle", "http://localhost:5173", "http://localhost:3000"],
-  "host_permissions": ["http://localhost:3000/*"],
+  "permissions": [
+    "activeTab", "scripting",
+    "storage", "sidePanel", "idle"
+  ],
+  "host_permissions": ["http://web3ai.cloud/*", "https://web3ai.cloud/*"],
   "action": {
     "default_popup": "index.html",
     "default_icon": {

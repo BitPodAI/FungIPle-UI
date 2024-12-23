@@ -1,4 +1,4 @@
-import { User } from '../types/auth';
+import { UserProfile } from '../types/auth';
 
 export const TOKEN_KEY = 'coin_ai_token';
 export const USER_KEY = 'coin_ai_user';
@@ -14,11 +14,11 @@ export const storage = {
     return localStorage.getItem(TOKEN_KEY);
   },
 
-  setUser(user: User) {
+  setUser(user: UserProfile) {
     localStorage.setItem(USER_KEY, JSON.stringify(user));
   },
 
-  getUser(): User | null {
+  getUser(): UserProfile | null {
     const userStr = localStorage.getItem(USER_KEY);
     return userStr ? JSON.parse(userStr) : null;
   },

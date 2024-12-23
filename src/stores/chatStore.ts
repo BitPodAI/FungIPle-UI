@@ -18,7 +18,7 @@ export const useChatStore = create<ChatStore>(set => ({
     action: 'NONE',
   },
   currentMessageOfCuckoo: {
-    user: 'cuckoo',
+    user: 'agent',
     text: '',
     action: 'NONE',
   },
