@@ -4,6 +4,7 @@ import telegramIcon from '@/assets/icons/telegram.svg';
 import { Menu, MenuButton, MenuItem, MenuItems, Switch } from '@headlessui/react';
 import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import { useEffect, useState } from 'react';
+import { useUserStore } from '@/stores/useUserStore';
 
 const SocialItem = ({ icon, account }: { icon: React.ReactNode; account?: string }) => {
   return (
@@ -19,9 +20,10 @@ const SocialItem = ({ icon, account }: { icon: React.ReactNode; account?: string
 };
 
 const INTERVAL_OPTIONS = ['1h', '2h', '3h', '12h', '24h'];
-const IMIATE_OPTIONS = ['Eliza', 'Solor_CN', 'SeeDAO'];
+const IMIATE_OPTIONS = ['Eliza', 'Ansem', 'Trump', 'aeyakovenko'];
 
 const AgentBoard: React.FC = () => {
+  const [twid, setTwid] = useState('@FungIPle');
   const [enabled, setEnabled] = useState(false);
   const [interval, setInterval] = useState('1h');
   const [imitate, setImitate] = useState('Eliza');
@@ -39,6 +41,10 @@ const AgentBoard: React.FC = () => {
 
   useEffect(() => {
     setTokenUsed(100 + Math.floor(Math.random() * 200));
+    const userId = useUserStore.getState().getUserId();
+    if (userId) {
+      setTwid('@' + userId);
+    }
   }, []);
 
   return (
@@ -47,7 +53,7 @@ const AgentBoard: React.FC = () => {
 
       <div className="w-[calc(100%-40px)] mx-[20px]">
         <div className="w-full mt-[20px] frc-center gap-[16px]">
-          <SocialItem icon={<img src={xIcon} />} account="@Victor_Lee" />
+          <SocialItem icon={<img src={xIcon} />} account={twid} />
           <SocialItem icon={<img src={telegramIcon} />} />
         </div>
 
