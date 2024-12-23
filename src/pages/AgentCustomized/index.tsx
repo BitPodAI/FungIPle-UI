@@ -7,7 +7,7 @@ import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import BoyIcon from '@/assets/icons/boy.svg';
 import GirlIcon from '@/assets/icons/girl.svg';
 import { useState, useEffect } from 'react';
-import { GENDER } from '@/constant/egg';
+import { EGG_STYLE, GENDER } from '@/constant/egg';
 import { authService } from '@/services/auth';
 import { useUserStore } from '@/stores/useUserStore';
 
@@ -52,7 +52,6 @@ const AgentCustomized: React.FC = () => {
       // 构建profile更新对象
       const profileUpdate = {
         name,
-        username: "Test",
         gender,
         bio: [
           `I'm ${name}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
