@@ -40,7 +40,7 @@ const EggSelect: React.FC = () => {
           </EggWrap>
         ))}
       </div>
-      <Button color={BTNCOLOR.BLACK} className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[60px]" type="submit" onClick={handleNext}>
+      <Button color={BTNCOLOR.BLACK} className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[60px] text-white" type="submit" onClick={handleNext}>
         OK
       </Button>
     </div>

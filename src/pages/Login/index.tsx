@@ -166,20 +166,20 @@ const Login: React.FC = () => {
         )}
         <Button
           color={BTNCOLOR.ORANGE}
-          className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px]"
+          className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px] text-white"
           type="submit"
           disabled={loading}
         >
-          {loading ? 'LOGGING IN...' : 'LOGIN IN'}
+          {loading ? 'LOGGING IN...' : 'LOG IN'}
         </Button>
       </form>
       <div className="my-[20px]">or</div>
       <div> {connected ? (
-        <Button color={BTNCOLOR.PURPLE} className="w-auto min-w-[346px] px-[28px] h-[48px]" type="submit" onClick={disconnect}>
+        <Button color={BTNCOLOR.PURPLE} className="w-auto min-w-[346px] px-[28px] h-[48px] text-white" type="submit" onClick={disconnect}>
           CHANGE WALLET
         </Button>
         ) : (
-        <Button color={BTNCOLOR.PURPLE} className="w-auto min-w-[346px] px-[28px] h-[48px]" type="submit" onClick={handlePhantomLogin}>
+        <Button color={BTNCOLOR.PURPLE} className="w-auto min-w-[346px] px-[28px] h-[48px] text-white" type="submit" onClick={handlePhantomLogin}>
           PHANTOM WALLET
         </Button>
         )}

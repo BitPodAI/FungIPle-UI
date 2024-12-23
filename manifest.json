@@ -24,8 +24,20 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["public/*", "assets/*"],
+      "resources": ["public/*", "assets/*", "src/assets/images/temp/*"],
       "matches": ["<all_urls>"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "panel.js"
+      ],
+      "run_at": "document_end",
+      "type": "module"
     }
   ]
 }
