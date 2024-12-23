@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useCallback } from 'react';
 import { ChatMessage } from './ChatMessage';
-import { Message } from '~/types/chat';
+import { Message } from '@/types/chat';
 import { debounce } from 'lodash'; 
 import styles from './ChatHistory.module.css';
 
@@ -50,7 +50,7 @@ export const ChatHistory: React.FC<ChatHistoryProps> = ({ messages, loading = fa
   }
 
   return (
-    <div ref={containerRef} onScroll={handleScroll} className={`flex-1 overflow-y-auto p-4 space-y-4 ${className}`}>
+    <div ref={containerRef} onScroll={handleScroll} className={`flex-1 overflow-y-auto p-4 pt-0 space-y-4 ${className}`}>
       {/* 如果消息较多，可以添加"回到顶部"按钮 */}
       {messages.length > 10 && !autoScroll && (
         <button
@@ -74,7 +74,7 @@ export const ChatHistory: React.FC<ChatHistoryProps> = ({ messages, loading = fa
 
       {/* 消息列表 */}
       {messages.map((message, index) => (
-        <ChatMessage key={`${message.user}-${index}-${message.action}`} text={message.text} user={message.user} action={message.action} />
+        <ChatMessage key={`${message.user}-${index}-${message.action}`} text={message.text} user={message.user} title={message.title} updatedAt={message.updatedAt} action={message.action} />
       ))}
 
       {/* 加载状态指示器 */}

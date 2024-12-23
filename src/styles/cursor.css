@@ -16,6 +16,11 @@ textarea {
   cursor: url('../assets/cursors/Text_Select.cur'), text;
 }
 
+.link-cursor {
+  cursor: url('../assets/cursors/Link_Select.cur'), pointer;
+}
+
+a,
 button:hover,
 button:active,
 button:focus {

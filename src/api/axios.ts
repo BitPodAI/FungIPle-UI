@@ -9,7 +9,7 @@ const config: AxiosRequestConfig = {
   },
 };
 
-const api: AxiosInstance = axios.create({ baseURL: 'http://192.168.2.213:3000', ...config });
+const api: AxiosInstance = axios.create({ baseURL: 'http://web3ai.cloud/', ...config });
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {

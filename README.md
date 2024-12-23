@@ -28,4 +28,4 @@ The WebUI for PodAI
 ## 📋 How to Use
 1. Open the side panel using `Ctrl+Shift+Left` (or `Command+Shift+Left` on macOS).
 
-this is the frontend registry for FungIPle
+This is the frontend registry for FungIPle

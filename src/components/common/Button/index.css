@@ -1,7 +1,9 @@
 .btn {
-  background-size: cover;
+  background-size: cover; /* 确保背景图片覆盖整个按钮 */
   background-position: center;
   background-repeat: no-repeat;
+  padding: 12px 16px; /* 添加内边距以避免文字溢出 */
+  overflow: hidden;
 }
 
 .btn:focus {
