@@ -3,10 +3,10 @@
 const chatbotIcon = document.createElement('div');
 chatbotIcon.id = 'panel-icon';
 chatbotIcon.style.position = 'fixed';
-chatbotIcon.style.bottom = '60px';
-chatbotIcon.style.right = '10px';
-chatbotIcon.style.width = '45px';
-chatbotIcon.style.height = '45px';
+chatbotIcon.style.bottom = '70px';
+chatbotIcon.style.right = '3px';
+chatbotIcon.style.width = '40px';
+chatbotIcon.style.height = '40px';
 //chatbotIcon.style.backgroundColor = '#007bff';
 chatbotIcon.style.borderRadius = '50%';
 chatbotIcon.style.cursor = 'pointer';
