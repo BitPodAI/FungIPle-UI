@@ -119,6 +119,8 @@ const AgentCustomized: React.FC = () => {
       };
 
       await authService.updateProfile(userId, profileUpdate);
+      await authService.createAgent(userId);
+
       navigate('/plugin/chat');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update profile');
@@ -236,7 +238,12 @@ const AgentCustomized: React.FC = () => {
           </Menu>
         </div>
         {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
-        <Button color={BTNCOLOR.BLACK} className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[60px] text-white" type="submit" disabled={loading}>
+        <Button
+          color={BTNCOLOR.BLACK}
+          className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[60px] text-white"
+          type="submit"
+          disabled={loading}
+        >
           {loading ? 'Updating...' : 'Welcome!'}
         </Button>
       </form>
