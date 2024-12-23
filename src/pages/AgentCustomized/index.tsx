@@ -171,7 +171,7 @@ const AgentCustomized: React.FC = () => {
             <div className="w-[1px] h-[16px] bg-[#E3E3E3] mx-[12px]"></div>
           </div>
           <Menu>
-            <MenuButton className="flex justify-between flex-1 items-center h-[48px] px-0" disabled={loading}>
+            <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]" disabled={loading}>
               {gender === GENDER.BOY ? (
                 <div className="text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                   <img src={BoyIcon} alt="boy" className="w-[16px] h-[16px]" />
@@ -213,7 +213,7 @@ const AgentCustomized: React.FC = () => {
             <div className="w-[1px] h-[16px] bg-[#E3E3E3] mx-[12px]"></div>
           </div>
           <Menu>
-            <MenuButton className="flex justify-between flex-1 items-center h-[48px] px-0" disabled={loading}>
+            <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]" disabled={loading}>
               <div className="text-black flex-1 flex items-center gap-2 rounded-lg py-1.5 px-3 data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                 {agentStyle}
               </div>
