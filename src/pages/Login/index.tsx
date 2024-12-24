@@ -8,8 +8,15 @@ import passwordIcon from '@/assets/icons/lock.svg';
 import emailIcon from '@/assets/icons/email.svg';
 import { LoginForm } from '@/types/auth';
 import { authService } from '@/services/auth';
+import { useEffect } from "react";
+
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+//import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const Login: React.FC = () => {
+  const { connection } = useConnection();
+  const { publicKey, connected, disconnect, connect, wallet } = useWallet();
+
   const navigate = useNavigate();
   const [form, setForm] = useState<LoginForm>({
     username: '',
@@ -61,9 +68,54 @@ const Login: React.FC = () => {
     }
   };
 
-  const handlePhantomLogin = () => {
-    // TODO: Implement Phantom wallet login
-    console.log('Phantom wallet login not implemented yet');
+  useEffect(() => {
+    const updateConnection = async () => {
+      if (!connection || !publicKey) {
+        console.log("Wallet not connected or connection unavailable");
+        return;
+      }
+
+      try {
+        connection.onAccountChange(
+          publicKey,
+          updatedAccountInfo => {
+            console.log(updatedAccountInfo);
+            //setBalance(updatedAccountInfo.lamports / LAMPORTS_PER_SOL);
+          },
+          "confirmed",
+        );
+
+        const accountInfo = await connection.getAccountInfo(publicKey);
+
+        if (accountInfo) {
+          console.log(accountInfo);
+        } else {
+          throw new Error("Account info not found");
+        }
+      } catch (error) {
+        console.error("Failed to retrieve account info:", error);
+      }
+    };
+
+    updateConnection();
+  }, [connection, publicKey]);
+
+  useEffect(() => {
+    if (wallet && !connected) {
+      connect().catch(error => {
+        console.error("Connect Wallet on Effect Error: ", error);
+      });
+    }
+  }, [wallet, connected]);
+
+  const handlePhantomLogin = async() => {
+    try {
+      if (wallet && !connected) {
+        await connect();
+      }
+    } catch (error) {
+      console.error("Connect Wallet Error: ", error);
+    }
   };
 
   return (
@@ -114,24 +166,30 @@ const Login: React.FC = () => {
         )}
         <Button
           color={BTNCOLOR.ORANGE}
-          className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px]"
+          className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px] text-white"
           type="submit"
           disabled={loading}
         >
-          {loading ? 'LOGGING IN...' : 'LOGIN IN'}
+          {loading ? 'LOGGING IN...' : 'LOG IN'}
         </Button>
       </form>
       <div className="my-[20px]">or</div>
-      <Button
-        color={BTNCOLOR.PURPLE}
-        className="w-auto min-w-[346px] px-[28px] h-[48px]"
-        onClick={handlePhantomLogin}
-        disabled={loading}
-      >
-        PHANTOM WALLET
-      </Button>
+      <div> {connected ? (
+        <Button color={BTNCOLOR.PURPLE} className="w-auto min-w-[346px] px-[28px] h-[48px] text-white" type="submit" onClick={disconnect}>
+          CHANGE WALLET
+        </Button>
+        ) : (
+        <Button color={BTNCOLOR.PURPLE} className="w-auto min-w-[346px] px-[28px] h-[48px] text-white" type="submit" onClick={handlePhantomLogin}>
+          PHANTOM WALLET
+        </Button>
+        )}
+      </div>
     </div>
   );
 };
 
 export default Login;
+
+//<WalletModalProvider>
+//  <WalletMultiButton />
+//</WalletModalProvider>

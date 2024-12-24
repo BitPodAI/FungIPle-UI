@@ -1,12 +1,4 @@
-import {
-  LoginForm,
-  LoginResponse,
-  ApiResponse,
-  ProfileUpdateRequest,
-  ProfileUpdateResponse,
-  UserProfile,
-  ProfileQueryResponse,
-} from '../types/auth';
+import { LoginForm, LoginResponse, ApiResponse, ProfileUpdateResponse, UserProfile, ProfileQueryResponse } from '../types/auth';
 import { useUserStore } from '@/stores/useUserStore';
 import { API_CONFIG } from '@/config/api';
 
@@ -159,6 +151,55 @@ export const authService = {
       return await response.json();
     } catch (error) {
       console.error('Chat request error:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * 转账 SOL 或代币
+   * @param transferData 转账数据
+   * @returns 转账结果
+   */
+  async transferSol(transferData: {
+    fromTokenAccountPubkey: string;
+    toTokenAccountPubkey: string;
+    ownerPubkey: string;
+    tokenAmount: number;
+  }): Promise<ApiResponse<{ signature: string }>> {
+    try {
+      const response = await fetch(API_CONFIG.API_BASE_URL + '/transfer_sol', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(transferData),
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Transfer SOL error:', error);
+      throw error;
+    }
+  },
+
+  /**
+   * 创建代理
+   * @param userId 用户ID
+   * @returns 创建结果
+   */
+  async createAgent(userId: string): Promise<ApiResponse<{ agentId: string }>> {
+    try {
+      const response = await fetch(API_CONFIG.API_BASE_URL + '/create_agent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: userId,
+        }),
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Create agent error:', error);
       throw error;
     }
   },

@@ -1,18 +1,23 @@
 {
   "manifest_version": 3,
   "name": "FungIPle",
-  "version": "0.0.1",
-  "description": "A Chrome extension built with ai16z for web3 friendly entrance",
+  "version": "0.1.0",
+  "description": "Autonomous AI Agent, IP, Assets for Web3",
   "background": {
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": ["storage", "action", "sidePanel", "idle", "http://localhost:5173", "http://localhost:3000"],
-  "host_permissions": ["http://localhost:3000/*"],
+  "permissions": [
+    "activeTab", "scripting",
+    "storage", "sidePanel", "idle"
+  ],
+  "host_permissions": ["http://web3ai.cloud/*", "https://web3ai.cloud/*"],
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "public/icon16.png"
+      "16": "public/icon16.png",
+      "48": "public/icon16.png",
+      "128": "public/icon16.png"
     }
   },
   "side_panel": {
@@ -21,8 +26,20 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["public/*", "assets/*"],
+      "resources": ["public/*", "assets/*", "src/assets/images/temp/*"],
       "matches": ["<all_urls>"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "panel.js"
+      ],
+      "run_at": "document_end",
+      "type": "module"
     }
   ]
 }

@@ -3,7 +3,7 @@ import { Message } from '@/types/chat';
 import { ReactSVG } from 'react-svg';
 import tempGroupIcon from '@/assets/icons/temp-group-1.svg';
 
-export const ChatMessage: React.FC<Message> = ({ text, user }) => {
+export const ChatMessage: React.FC<Message> = ({ text, user, title, updatedAt }) => {
   const isUser = user === 'user';
 
   return (
@@ -15,7 +15,14 @@ export const ChatMessage: React.FC<Message> = ({ text, user }) => {
             : 'bg-#F3F3F3 text-black rounded-tl-[24px] rounded-tr-[24px] rounded-bl-none rounded-br-[24px]'
         }`}
       >
-        <p className="text-[12px] inknut-antiqua">{text}</p>
+        {updatedAt && (
+          <p className="w-full text-[14px] inknut-antiqua" style={{ textAlign: 'left', fontWeight: 'bold' }}>{updatedAt}</p>
+        )}
+        {title && (
+          <p className="w-full text-[14px] inknut-antiqua" style={{ textAlign: 'left', fontWeight: 'bold' }}>{title}</p>
+        )}
+        {title ? <p className="text-[12px] inknut-antiqua" style={{ whiteSpace: 'pre' }}>{text}</p>
+          : <p className="text-[12px] inknut-antiqua">{text}</p>}
         {!isUser && (
           <div className="w-full flex items-center justify-end">
             <ReactSVG src={tempGroupIcon} />
