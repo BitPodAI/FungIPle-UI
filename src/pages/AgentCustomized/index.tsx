@@ -19,7 +19,7 @@ const AgentCustomized: React.FC = () => {
   const [gender, setGender] = useState<GENDER>(GENDER.GIRL);
   const [agentStyle, setAgentStyle] = useState<string>('');
   const [styles, setStyles] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
