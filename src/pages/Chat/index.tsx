@@ -22,7 +22,7 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <div className="page press-start-2p max-w-[490px] justify-between bg-[#eef8f0]">
+    <div className="page press-start-2p justify-between bg-[#eef8f0] max-w-[490px]">
       <AgentStage isHidden={isChatFullScreen} />
       <ChatPanel isFullScreen={isChatFullScreen} toggleFullScreen={toggleFullScreen} />
       <GiftModal isOpen={giftModalVisible} onConfirm={handleConfirmGiftModal} onClose={closeGiftModal} />

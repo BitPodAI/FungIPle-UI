@@ -48,7 +48,7 @@ const AgentBoard: React.FC = () => {
   }, []);
 
   return (
-    <div className="page press-start-2p">
+    <div className="page press-start-2p max-w-[490px]">
       <AgentHeader />
 
       <div className="w-[calc(100%-40px)] mx-[20px]">

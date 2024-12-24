@@ -23,6 +23,7 @@ export default defineConfig({
         target: 'https://web3ai.cloud/api/',
         // target: "http://18.205.246.62:3000",
         //target: 'http://192.168.2.213:3000',
+        // target: 'http://192.168.2.213:3000',
         // target: 'http://localhost:3000',
         secure: false,
         ws: true,

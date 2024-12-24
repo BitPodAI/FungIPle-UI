@@ -6,6 +6,11 @@ import { Message } from '@/types/chat';
 import { chatApi } from '@/api/chat'
 import { ReactSVG } from 'react-svg';
 import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
+import PixBorder from '@/components/common/PixBorder';
+import topImg from '@/assets/images/border-bg/top.png';
+import bottomImg from '@/assets/images/border-bg/bottom.png';
+import leftImg from '@/assets/images/border-bg/left.png';
+import rightImg from '@/assets/images/border-bg/right.png';
 
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
   var [messages, setMessages] = useState<Message[]>([
@@ -52,9 +57,12 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
         </div>
         <ChatHistory messages={messages} />
       </div>
-      <div className="textarea-border border-box flex items-center justify-between m-2 p-2">
+      <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent">
         <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
-      </div>
+      </PixBorder>
+      {/* <div className="textarea-border border-box flex items-center justify-between m-2 p-2">
+        <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
+      </div> */}
     </div>
   );
 };
