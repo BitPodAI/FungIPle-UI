@@ -4,6 +4,7 @@ import { ChatInput } from '../../../Chat/components/ChatInput';
 //import { ChatHistory } from '../../../Chat/components/ChatList/ChatHistory';
 import { Message } from '@/types/chat';
 import { watchApi } from '@/api/watch'
+import WatchPng from '@/assets/images/temp/watchlist.png';
 
 const WatchPanel: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -28,7 +29,7 @@ const WatchPanel: React.FC = () => {
   return (
     <div className={`bg-white z-10 w-full h-full flex flex-col justify-between transition-all duration-300`}>
       <div className="flex-1 overflow-y-auto pt-[48px] pb-[16px] border border-gray-300 relative">
-        <img src="src/assets/images/temp/watchlist.png" style={{ margin: '3px', width: '80%', height: '100%' }}/>
+        <img src={WatchPng} style={{ margin: '3px', width: '80%', height: '100%' }}/>
       </div>
       <div className="textarea-border border-box flex items-center justify-between m-2 p-2">
         <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
