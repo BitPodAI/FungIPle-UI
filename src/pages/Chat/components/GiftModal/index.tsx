@@ -34,7 +34,7 @@ const GiftModal: React.FC<GiftModalProps> = ({ isOpen, onConfirm, onClose }) => 
           {isLoading && <Loading size={124} className="absolute top-[-26px] left-[-10px] z-1" />}
         </div>
         <ShortButton onClick={handleOpenBox} className="text-black text-center">
-          'OPEN!'
+          OPEN!
         </ShortButton>
       </div>
     </PixModal>
