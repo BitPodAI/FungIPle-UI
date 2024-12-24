@@ -13,6 +13,6 @@ export const API_CONFIG = {
 
   // 完整的API基础路径
   get API_BASE_URL() {
-    return `${this.BASE_URL}${this.API_PREFIX}`;
+    return `${this.BASE_URL}/${this.API_PREFIX}`;
   },
 } as const;
