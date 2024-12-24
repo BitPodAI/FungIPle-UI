@@ -9,15 +9,6 @@ export enum EGG_COLOR {
   DARKBLUE = 'darkblue',
 }
 
-export enum EGG_STYLE {
-  EMOTIONAL = 'Emotional',
-  CUTE = 'Cute',
-  Caring = 'Caring',
-  Humorous = 'Humorous',
-  Playful = 'Playful',
-  Logical = 'Logical',
-}
-
 export enum GENDER {
   BOY = 'Boy',
   GIRL = 'Girl',

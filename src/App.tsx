@@ -2,6 +2,7 @@ import React from 'react';
 import { HashRouter as Router } from 'react-router-dom';
 import AppRoutes from './router';
 import { useWindowResize } from './hooks/useWindowResize';
+import { LoadingProvider } from './context/LoadingContext';
 import './App.css';
 
 const App: React.FC = () => {
@@ -13,9 +14,11 @@ const App: React.FC = () => {
   }, [width]);
 
   return (
-    <Router>
-      <AppRoutes />
-    </Router>
+    <LoadingProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </LoadingProvider>
   );
 };
 

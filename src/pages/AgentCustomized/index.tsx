@@ -7,27 +7,32 @@ import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import BoyIcon from '@/assets/icons/boy.svg';
 import GirlIcon from '@/assets/icons/girl.svg';
 import { useState, useEffect } from 'react';
-import { EGG_STYLE, GENDER } from '@/constant/egg';
+import { GENDER } from '@/constant/egg';
 import { authService } from '@/services/auth';
 import { useUserStore } from '@/stores/useUserStore';
+import { useLoading } from '../../context/LoadingContext';
 
 const AgentCustomized: React.FC = () => {
+  const { showLoading, hideLoading } = useLoading();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [gender, setGender] = useState<GENDER>(GENDER.GIRL);
   const [agentStyle, setAgentStyle] = useState<string>('');
   const [styles, setStyles] = useState<string[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchStyles = async () => {
+      showLoading('Loading...');
       try {
         const { data } = await authService.getConfig();
         setStyles(data?.styles || []);
         setAgentStyle(data?.styles[0] || '');
       } catch (error) {
         console.error('Failed to fetch styles:', error);
+      } finally {
+        hideLoading();
       }
     };
     fetchStyles();
