@@ -16,7 +16,7 @@ export const ChatMessage: React.FC<Message> = ({ text, user, title, updatedAt })
         }`}
       >
         {updatedAt && (
-          <p className="w-full text-[14px] inknut-antiqua" style={{ textAlign: 'left', fontWeight: 'bold' }}>{updatedAt}</p>
+          <p className="w-full text-[12px] inknut-antiqua" style={{ textAlign: 'left' }}>{updatedAt}</p>
         )}
         {title && (
           <p className="w-full text-[14px] inknut-antiqua" style={{ textAlign: 'left', fontWeight: 'bold' }}>{title}</p>
