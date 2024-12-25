@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import './index.css';
 import { ChatInput } from '../../../Chat/components/ChatInput';
-//import { ChatHistory } from '../../../Chat/components/ChatList/ChatHistory';
+import { ChatHistory } from '../../../Chat/components/ChatList/ChatHistory';
 import { Message } from '@/types/chat';
 import { watchApi } from '@/api/watch'
-import WatchPng from '@/assets/images/temp/watchlist.png';
+import { useEffect } from "react";
+//import WatchPng from '@/assets/images/temp/watchlist.png';
 
 const WatchPanel: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
@@ -39,7 +40,7 @@ He is also involved with @extropic_ai, pushing the boundaries of artificial inte
     }
   ]);
   const [inputValue, setInputValue] = useState('');
-  const GEN_TOKEN_REPORT_DELAY = 1000 * 60 * 10; // 10 mins
+  //const GEN_TOKEN_REPORT_DELAY = 1000 * 60 * 10; // 10 mins
 
   const handleSendMessage = async (message: string) => {
     let resp = await watchApi.getWatch();
@@ -53,11 +54,13 @@ He is also involved with @extropic_ai, pushing the boundaries of artificial inte
     console.log("genReportLoop loop");
     await handleSendMessage("");
 
-    setTimeout(() => {
-        getWatchTextLoop(); //next iteration
-    }, GEN_TOKEN_REPORT_DELAY);
+    //setTimeout(() => {
+        //getWatchTextLoop(); //next iteration
+    //}, GEN_TOKEN_REPORT_DELAY);
   };
-  await getWatchTextLoop();
+  useEffect(() => {
+    getWatchTextLoop();
+  }, []);
 
   return (
     <div className={`bg-white z-10 w-full h-full flex flex-col justify-between transition-all duration-300`}>
