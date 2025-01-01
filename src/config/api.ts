@@ -1,7 +1,6 @@
 /**
- * API配置
- */
-
+ * API配置
+ */
 
 //const AGENT_ID = import.meta.env.VITE_API_AGENTID;
 const AGENT_ID = '91edd400-9c4a-0eb5-80ce-9d32973f2c49';
@@ -15,7 +14,7 @@ const BASE_URL_PRD = import.meta.env.VITE_BASE_URL_PRD;
 export const API_CONFIG = {
   // 基础URL
 
-  BASE_URL: isDev ? 'http://localhost:3000/' : 'https://web3ai.cloud/api/',
+  BASE_URL: isDev ? 'http://localhost:3000/api' : 'https://web3ai.cloud/api',
 
   // API路径前缀
   API_PREFIX: '91edd400-9c4a-0eb5-80ce-9d32973f2c49',

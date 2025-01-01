@@ -73,7 +73,7 @@ export interface LoginResponse {
   };
 }
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data?: T;
