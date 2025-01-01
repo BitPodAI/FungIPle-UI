@@ -7,17 +7,12 @@
     "service_worker": "background.js",
     "type": "module"
   },
-  "permissions": [
-    "activeTab", "scripting",
-    "storage", "sidePanel", "idle"
-  ],
+  "permissions": ["activeTab", "scripting", "storage", "sidePanel", "idle"],
   "host_permissions": ["http://web3ai.cloud/*", "https://web3ai.cloud/*"],
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "16": "public/icon16.png",
-      "48": "public/icon48.png",
-      "128": "public/icon128.png"
+      "48": "public/icon48.png"
     }
   },
   "side_panel": {
@@ -32,12 +27,8 @@
   ],
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
-      "js": [
-        "panel.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["panel.js"],
       "run_at": "document_end",
       "type": "module"
     }

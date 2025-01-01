@@ -45,6 +45,12 @@ export interface LoginForm {
   email: string;
 }
 
+export interface AgentConfig {
+  styles: string[];
+  kols: string[];
+  quote: string;
+}
+
 export interface ProfileUpdateRequest {
   agentId: string;
   profile: UserProfile;

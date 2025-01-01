@@ -3,8 +3,8 @@ import './index.css';
 import { ChatInput } from '../../../Chat/components/ChatInput';
 import { ChatHistory } from '../../../Chat/components/ChatList/ChatHistory';
 import { Message } from '@/types/chat';
-import { watchApi } from '@/api/watch'
-import { useEffect } from "react";
+import { watchApi } from '@/services/watch';
+import { useEffect } from 'react';
 //import WatchPng from '@/assets/images/temp/watchlist.png';
 
 const WatchPanel: React.FC = () => {
@@ -17,8 +17,8 @@ const WatchPanel: React.FC = () => {
       action: 'NONE',
     },*/
     {
-      title: "Sol Co-founder toly @aeyakovenko followed @Perena__",
-      updatedAt: "2024-12-20",
+      title: 'Sol Co-founder toly @aeyakovenko followed @Perena__',
+      updatedAt: '2024-12-20',
       text: `Perena is a decentralized stablecoin infrastructure. Invested by institution xxx. Other well-known followers include: Sol domain founder @aomdotsol, Monke DAO founder @TheOnlyNom. 
 
 According to the disclosed information, the project has not yet issued coins, but it launched an airdrop promotion plan with Binance on November 15, indicating that there is a certain background and it needs to be paid attention to.`,
@@ -26,8 +26,8 @@ According to the disclosed information, the project has not yet issued coins, bu
       action: 'NONE',
     },
     {
-      title: "Ai16z Founder shawn @shawmakesmagic reply @BasedBeffJezos some hours ago",
-      updatedAt: "2024-12-20",
+      title: 'Ai16z Founder shawn @shawmakesmagic reply @BasedBeffJezos some hours ago',
+      updatedAt: '2024-12-20',
       text: `@BasedBeffJezos is a dynamic thought leader and founder of e/acc, focused on:
 
 Thermodynamics: Exploring energy systems and sustainability.
@@ -37,13 +37,13 @@ Memetic Warfare: Utilizing memes for cultural influence.
 He is also involved with @extropic_ai, pushing the boundaries of artificial intelligence, Innovating in...`,
       user: 'agent',
       action: 'NONE',
-    }
+    },
   ]);
   const [inputValue, setInputValue] = useState('');
   //const GEN_TOKEN_REPORT_DELAY = 1000 * 60 * 10; // 10 mins
 
   const handleSendMessage = async (message: string) => {
-    let resp = await watchApi.getWatch();
+    const resp = await watchApi.getWatch();
     setMessages([...messages, { text: resp.text, user: 'agent', title: resp.title, updatedAt: resp.updatedAt, action: 'NONE' }]);
     if (message.trim()) {
       setInputValue('');
@@ -51,11 +51,11 @@ He is also involved with @extropic_ai, pushing the boundaries of artificial inte
   };
 
   const getWatchTextLoop = async () => {
-    console.log("genReportLoop loop");
-    await handleSendMessage("");
+    console.log('genReportLoop loop');
+    await handleSendMessage('');
 
     //setTimeout(() => {
-        //getWatchTextLoop(); //next iteration
+    //getWatchTextLoop(); //next iteration
     //}, GEN_TOKEN_REPORT_DELAY);
   };
   useEffect(() => {
