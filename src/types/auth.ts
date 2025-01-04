@@ -45,6 +45,12 @@ export interface LoginForm {
   email: string;
 }
 
+export interface AgentConfig {
+  styles: string[];
+  kols: string[];
+  quote: string;
+}
+
 export interface ProfileUpdateRequest {
   agentId: string;
   profile: UserProfile;
@@ -73,7 +79,7 @@ export interface LoginResponse {
   };
 }
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T> {
   success: boolean;
   message: string;
   data?: T;

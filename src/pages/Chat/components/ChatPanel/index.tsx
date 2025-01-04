@@ -3,7 +3,7 @@ import './index.css';
 import { ChatInput } from '../ChatInput';
 import { ChatHistory } from '../ChatList/ChatHistory';
 import { Message } from '@/types/chat';
-import { chatApi } from '@/api/chat'
+import { chatApi } from '@/services/chat';
 import { ReactSVG } from 'react-svg';
 import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
 import PixBorder from '@/components/common/PixBorder';
@@ -13,7 +13,7 @@ import leftImg from '@/assets/images/border-bg/left.png';
 import rightImg from '@/assets/images/border-bg/right.png';
 
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
-  var [messages, setMessages] = useState<Message[]>([
+  const [messages, setMessages] = useState<Message[]>([
     {
       text: 'Hey, Blommy! Can u tell me how to find 100x Crypto Gems?',
       user: 'user',
@@ -28,13 +28,13 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
       action: 'NONE',
     },
   ]);
-  var [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
   const handleSendMessage = async (message: string) => {
     if (message.trim()) {
       setMessages([...messages, { text: message, user: 'user', action: 'NONE' }]);
       setInputValue('');
-      let resp = await chatApi.createChat(message);
+      const resp = await chatApi.createChat(message);
       if (resp) {
         setMessages([...messages, { text: message, user: 'user', action: 'NONE' }, resp]);
       }

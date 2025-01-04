@@ -9,7 +9,10 @@ const config: AxiosRequestConfig = {
   },
 };
 
-const api: AxiosInstance = axios.create({ baseURL: 'http://web3ai.cloud/', ...config });
+const AGENT_ID = import.meta.env.VITE_BASE_AGENT_ID;
+const baseURL = `${import.meta.env.VITE_API_BASE_URL}/${AGENT_ID}`;
+
+const api: AxiosInstance = axios.create({ baseURL, ...config });
 
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {

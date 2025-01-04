@@ -1,12 +1,13 @@
 import './index.css';
-import agentIcon from '@/assets/images/agent/hw.gif';
+import { AGENT_IMAGES_1 } from '@/config/image';
 import stageIcon from '@/assets/images/agent/stage.png';
 import giftBoxIcon from '@/assets/icons/gift-box.svg';
 import heartIcon from '@/assets/icons/heart.svg';
 import battleIcon from '@/assets/icons/bottle.svg';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { usePixModal } from '@/hooks/usePixModal.hook';
 import AgentHeader from '@/components/agent/AgentHeader';
+import { useAgentInfo } from '@/hooks/useAgentInfo';
 
 const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   const { openGiftModal } = usePixModal();
@@ -33,6 +34,13 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
     openGiftModal();
   };
 
+  const { level } = useAgentInfo();
+
+  const agentIcon = useMemo(() => {
+    // todo: 根据userProfile的某个字段来获取素材/agent类型
+    return AGENT_IMAGES_1[level];
+  }, [level]);
+
   return (
     <div className={`relative transition-all duration-300 w-full ${isHidden ? 'h-0 opacity-0' : 'h-[30%] opacity-100'}`}>
       <div className={`absolute top-0 left-0 w-full flex flex-col justify-between ${isHidden ? 'h-0' : 'h-full'}`}>
@@ -43,11 +51,7 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
               <p className="w-[180px] text-[12px] inknut-antiqua">{currentTip}</p>
             </div>
           </div>
-          <img
-            src={agentIcon}
-            alt="agent"
-            className="w-[120px] h-[120px] object-contain transform scale-x-[-1] absolute z-2 bottom-0 right-110px"
-          />
+          <img src={agentIcon} alt="agent" className="w-[120px] h-[120px] object-contain transform absolute z-2 bottom-0 right-110px" />
           <img
             src={stageIcon}
             alt="stage"

@@ -1,6 +1,5 @@
 import api from './axios';
 import { Chat, Message } from '../types/chat';
-import { API_CONFIG } from '@/config/api';
 
 export const chatApi = {
   // chat with cuckoo, send message to cuckoo and get response
@@ -10,31 +9,15 @@ export const chatApi = {
   },
 
   createChat: async (initialMessage: string): Promise<Message> => {
-    try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + `/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: initialMessage,
-        }),
-      });
-
-      let result = await response.json();
-      let json = JSON.parse(result.data.response);
-      return {
-        text: json.text,
-        user: 'agent',
-        action: 'NONE'
-      };
-    } catch (error) {
-      console.error('Error on chat:', error);
-    }
+    const result = await api.post(`/chat`, {
+      text: initialMessage,
+    });
+    const response = result.data.data?.response;
+    const json = JSON.parse(response);
     return {
-      text: "Error occured on the chat response.",
+      text: json.text,
       user: 'agent',
-      action: 'NONE'
+      action: 'NONE',
     };
   },
 
