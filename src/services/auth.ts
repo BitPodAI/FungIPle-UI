@@ -165,24 +165,20 @@ export const authService = {
 
   twitterOAuth: {
     async getAuthUrl() {
-      const response = await fetch(API_CONFIG.API_BASE_URL + '/twitter_oauth_init');
-      let result = await response.json();
+      const response = await api.get('/twitter_oauth_init');
+      let result = await response.data;
       return result.data;
     },
 
     async handleCallback(code: string) {
-      const tokenResponse = await fetch(API_CONFIG.API_BASE_URL + '/twitter_oauth_callback?code=' + code, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
+      const tokenResponse = await api.get('/twitter_oauth_callback?code=' + code);
+      let result = await tokenResponse.data;
 
-      if (!tokenResponse.ok) {
+      if (!result.ok) {
         throw new Error('Failed to exchange code for token');
       }
 
-      return tokenResponse.json();
+      return result;
     },
 
     createAuthWindow(url: string) {
@@ -201,12 +197,12 @@ export const authService = {
           const allowedOrigins = [
             'https://web3ai.cloud',
             'http://localhost:3000'
-        ];
+          ];
         
-        if (!allowedOrigins.includes(event.origin)) {
+          if (!allowedOrigins.includes(event.origin)) {
             console.warn('Received message from unauthorized origin:', event.origin);
             return;
-        }
+          }
 
           if (event.data.type === 'TWITTER_AUTH_SUCCESS') {
             const { code, state: returnedState } = event.data;

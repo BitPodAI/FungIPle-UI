@@ -7,15 +7,11 @@ import { watchApi } from '@/services/watch';
 import { useEffect } from 'react';
 //import WatchPng from '@/assets/images/temp/watchlist.png';
 
+const LOCALSTORAGE_ITEM_WATCHLIST = "_fungiple_watchlist_";
+
 const WatchPanel: React.FC = () => {
-  const [messages, setMessages] = useState<Message[]>([
-    /*{
-      title: "Watchlist Information",
-      updatedAt: "2024-12-20",
-      text: `Finding your faver in this page.`,
-      user: 'agent',
-      action: 'NONE',
-    },*/
+  const [messages, setMessages] = useState<Message[]>( () => {
+    const initData = [
     {
       title: 'Sol Co-founder toly @aeyakovenko followed @Perena__',
       updatedAt: '2024-12-20',
@@ -37,14 +33,25 @@ Memetic Warfare: Utilizing memes for cultural influence.
 He is also involved with @extropic_ai, pushing the boundaries of artificial intelligence, Innovating in...`,
       user: 'agent',
       action: 'NONE',
-    },
-  ]);
+    }
+    ];
+
+    let savedMsgs = localStorage.getItem(LOCALSTORAGE_ITEM_WATCHLIST);
+    return savedMsgs ? JSON.parse(savedMsgs) : initData;
+  });
+
   const [inputValue, setInputValue] = useState('');
   //const GEN_TOKEN_REPORT_DELAY = 1000 * 60 * 10; // 10 mins
 
+  const addMessage = (newMsg: Message) => {
+    setMessages([...messages, newMsg]);
+    const msgsToSave = messages.length > 20 ? messages.slice(-20) : messages;
+    localStorage.setItem(LOCALSTORAGE_ITEM_WATCHLIST, JSON.stringify(msgsToSave));
+  };
+
   const handleSendMessage = async (message: string) => {
-    const resp = await watchApi.getWatch();
-    setMessages([...messages, { text: resp.text, user: 'agent', title: resp.title, updatedAt: resp.updatedAt, action: 'NONE' }]);
+    let resp = await watchApi.getWatch();
+    addMessage({ text: resp.text, user: 'agent', title: resp.title, updatedAt: resp.updatedAt, action: 'NONE' });
     if (message.trim()) {
       setInputValue('');
     }
@@ -58,6 +65,7 @@ He is also involved with @extropic_ai, pushing the boundaries of artificial inte
     //getWatchTextLoop(); //next iteration
     //}, GEN_TOKEN_REPORT_DELAY);
   };
+
   useEffect(() => {
     getWatchTextLoop();
   }, []);
