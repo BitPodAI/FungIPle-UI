@@ -7,7 +7,7 @@ import { watchApi } from '@/services/watch';
 import { useEffect } from 'react';
 //import WatchPng from '@/assets/images/temp/watchlist.png';
 
-const LOCALSTORAGE_ITEM_WATCHLIST = "_fungiple_watchlist_";
+const LOCALSTORAGE_ITEM_WATCHLIST = "_web3agent_watchlist_";
 
 const WatchPanel: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>( () => {
