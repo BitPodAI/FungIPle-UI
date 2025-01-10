@@ -1,25 +1,61 @@
-import { Message } from '../types/chat';
+//import { Message } from '../types/chat';
 import api from './axios';
 
-export const watchApi = {
-  getWatch: async (): Promise<Message> => {
-    try {
-      const result = await api.get(`/watch`);
-      const json = JSON.parse(result.data.data.report);
-      return {
-        text: json.text,
-        title: json.title,
-        updatedAt: json.updateAt,
-        user: 'agent',
-        action: 'NONE',
-      };
-    } catch (error) {
-      console.error('Error on watch:', error);
+interface WatchResponse {
+  items: {
+    token: string;
+    title: string;
+    text: string;
+    updatedAt: string;
+    user: 'agent';
+    action: 'NONE';
+  }[];
+  cursor: string;
+  hasMore: boolean;
+}
+
+class WatchApi {
+  private cursor: string = '';
+  private hasMore: boolean = true;
+
+  // reset
+  reset() {
+    this.cursor = '';
+    this.hasMore = true;
+  }
+
+  // Check more
+  hasMoreData(): boolean {
+    return this.hasMore;
+  }
+
+  // Get from server
+  async getWatchList(): Promise<WatchResponse['items']> {
+    if (!this.hasMore) {
+      return [];
     }
-    return {
-      text: 'Error in watch list generation',
-      user: 'agent',
-      action: 'NONE',
-    };
-  },
-};
+
+    try {
+      const response = await api.post(`/watch`, {
+        cursor: this.cursor
+      });
+      const data: WatchResponse = response.data.data.watchlist;
+
+      // Update
+      this.cursor = data.cursor;
+      this.hasMore = data.hasMore;
+
+      // set for each item
+      return data.items.map(item => ({
+        ...item,
+        user: 'agent' as const,
+        action: 'NONE' as const
+      }));
+    } catch (error) {
+      console.error('Error fetching watch list:', error);
+      return [];
+    }
+  }
+}
+
+export const watchApi = new WatchApi();
