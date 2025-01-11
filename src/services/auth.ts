@@ -166,13 +166,13 @@ export const authService = {
   twitterOAuth: {
     async getAuthUrl() {
       const response = await api.get('/twitter_oauth_init');
-      let result = await response.data;
+      const result = response.data;
       return result.data;
     },
 
     async handleCallback(code: string) {
       const tokenResponse = await api.get('/twitter_oauth_callback?code=' + code);
-      let result = await tokenResponse.data;
+      const result = tokenResponse.data;
 
       if (!result.ok) {
         throw new Error('Failed to exchange code for token');
@@ -182,11 +182,7 @@ export const authService = {
     },
 
     createAuthWindow(url: string) {
-      return window.open(
-        url,
-        'twitter-auth',
-        'width=600,height=600,status=yes,scrollbars=yes'
-      );
+      return window.open(url, 'twitter-auth', 'width=600,height=600,status=yes,scrollbars=yes');
     },
 
     listenForAuthMessage() {
@@ -194,11 +190,8 @@ export const authService = {
         const handler = async (event: MessageEvent) => {
           // Message origin
           //if (event.origin !== window.location.origin) return;
-          const allowedOrigins = [
-            'https://web3ai.cloud',
-            'http://localhost:3000'
-          ];
-        
+          const allowedOrigins = ['https://web3ai.cloud', 'http://localhost:3000'];
+
           if (!allowedOrigins.includes(event.origin)) {
             console.warn('Received message from unauthorized origin:', event.origin);
             return;
@@ -206,7 +199,7 @@ export const authService = {
 
           if (event.data.type === 'TWITTER_AUTH_SUCCESS') {
             const { code, state: returnedState } = event.data;
-            
+
             // 验证 state 以防止 CSRF 攻击
             const savedState = sessionStorage.getItem('twitter_oauth_state');
             if (savedState !== returnedState) {
@@ -230,6 +223,6 @@ export const authService = {
 
         window.addEventListener('message', handler);
       });
-    }
-  }
+    },
+  },
 };
