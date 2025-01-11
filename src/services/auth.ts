@@ -88,32 +88,15 @@ export const authService = {
   },
 
   /**
-   * 获取watch text数据
-   * @returns watch text报告
+   * Search the twitter profiles by word of username
+   * @returns Array of profiles
    */
-  async getWatchText(): Promise<ApiResponse<{ report: string }>> {
+  async searchTwitterProfiles(username: string, count: number): Promise<any> {
     try {
-      const response = await api.get<ApiResponse<{ report: string }>>(`/watch`);
-      return response.data;
+      const response = await api.post(`/twitter_profile_search`, {username, count});
+      return response;
     } catch (error) {
-      console.error('Get watch text error:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * 发送聊天请求
-   * @param text 用户输入文本
-   * @returns 生成的聊天响应
-   */
-  async handleChat(text: string): Promise<ApiResponse<{ response: string }>> {
-    try {
-      const response = await api.post<ApiResponse<{ response: string }>>(`/chat`, {
-        text,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Chat request error:', error);
+      console.error('Search tw user error:', error);
       throw error;
     }
   },
