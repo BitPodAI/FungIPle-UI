@@ -1,6 +1,14 @@
-import { LoginForm, LoginResponse, ApiResponse, ProfileUpdateResponse, UserProfile, ProfileQueryResponse } from '../types/auth';
+import {
+  LoginForm,
+  LoginResponse,
+  ApiResponse,
+  ProfileUpdateResponse,
+  UserProfile,
+  ProfileQueryResponse,
+  AgentConfig,
+} from '../types/auth';
 import { useUserStore } from '@/stores/useUserStore';
-import { API_CONFIG } from '@/config/api';
+import api from '@/services/axios';
 
 export const authService = {
   /**
@@ -11,30 +19,17 @@ export const authService = {
    */
   async login(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + '/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = await api.post<LoginResponse>('/login', credentials);
 
-      const data: LoginResponse = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || '登录失败');
+      if (!response?.data.success) {
+        throw new Error(response.data.message || '登录失败');
       }
 
-      if (!data.success) {
-        throw new Error(data.message || '登录失败');
+      if (response.data.data) {
+        useUserStore.getState().login(response.data.data.profile, response.data.data.twitterProfile);
       }
 
-      if (data.data) {
-        // 更新全局状态
-        useUserStore.getState().login(data.data.profile, data.data.twitterProfile);
-      }
-
-      return data;
+      return response.data;
     } catch (err) {
       throw err instanceof Error ? err : new Error('登录失败');
     }
@@ -49,17 +44,11 @@ export const authService = {
    */
   async updateProfile(userId: string, profile: UserProfile): Promise<ProfileUpdateResponse> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + `/profile_upd`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: userId,
-          profile,
-        }),
+      const response = await api.post<ProfileUpdateResponse>(`/profile_upd`, {
+        username: userId,
+        profile,
       });
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error('Profile update error:', error);
       throw error;
@@ -74,16 +63,10 @@ export const authService = {
    */
   async getProfile(userId: string): Promise<ProfileQueryResponse> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + `/profile`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: userId,
-        }),
+      const response = await api.post<ProfileQueryResponse>(`/profile`, {
+        username: userId,
       });
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error('Profile query error:', error);
       throw error;
@@ -94,21 +77,10 @@ export const authService = {
    * 获取所有配置数据
    * @returns 包含styles、kols和quote的配置数据
    */
-  async getConfig(): Promise<
-    ApiResponse<{
-      styles: string[];
-      kols: string[];
-      quote: string;
-    }>
-  > {
+  async getConfig(): Promise<ApiResponse<AgentConfig>> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + '/config', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return await response.json();
+      const response = await api.get<ApiResponse<AgentConfig>>('/config');
+      return response.data;
     } catch (error) {
       console.error('Get config error:', error);
       throw error;
@@ -121,13 +93,8 @@ export const authService = {
    */
   async getWatchText(): Promise<ApiResponse<{ report: string }>> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + `/watch`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return await response.json();
+      const response = await api.get<ApiResponse<{ report: string }>>(`/watch`);
+      return response.data;
     } catch (error) {
       console.error('Get watch text error:', error);
       throw error;
@@ -141,14 +108,10 @@ export const authService = {
    */
   async handleChat(text: string): Promise<ApiResponse<{ response: string }>> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + `/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text }),
+      const response = await api.post<ApiResponse<{ response: string }>>(`/chat`, {
+        text,
       });
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error('Chat request error:', error);
       throw error;
@@ -167,14 +130,8 @@ export const authService = {
     tokenAmount: number;
   }): Promise<ApiResponse<{ signature: string }>> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + '/transfer_sol', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(transferData),
-      });
-      return await response.json();
+      const response = await api.post<ApiResponse<{ signature: string }>>('/transfer_sol', transferData);
+      return response.data;
     } catch (error) {
       console.error('Transfer SOL error:', error);
       throw error;
@@ -188,16 +145,10 @@ export const authService = {
    */
   async createAgent(userId: string): Promise<ApiResponse<{ agentId: string }>> {
     try {
-      const response = await fetch(API_CONFIG.API_BASE_URL + '/create_agent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: userId,
-        }),
+      const response = await api.post<ApiResponse<{ agentId: string }>>('/create_agent', {
+        username: userId,
       });
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error('Create agent error:', error);
       throw error;
@@ -211,4 +162,74 @@ export const authService = {
   logout() {
     useUserStore.getState().logout();
   },
+
+  twitterOAuth: {
+    async getAuthUrl() {
+      const response = await api.get('/twitter_oauth_init');
+      let result = await response.data;
+      return result.data;
+    },
+
+    async handleCallback(code: string) {
+      const tokenResponse = await api.get('/twitter_oauth_callback?code=' + code);
+      let result = await tokenResponse.data;
+
+      if (!result.ok) {
+        throw new Error('Failed to exchange code for token');
+      }
+
+      return result;
+    },
+
+    createAuthWindow(url: string) {
+      return window.open(
+        url,
+        'twitter-auth',
+        'width=600,height=600,status=yes,scrollbars=yes'
+      );
+    },
+
+    listenForAuthMessage() {
+      return new Promise((resolve, reject) => {
+        const handler = async (event: MessageEvent) => {
+          // Message origin
+          //if (event.origin !== window.location.origin) return;
+          const allowedOrigins = [
+            'https://web3ai.cloud',
+            'http://localhost:3000'
+          ];
+        
+          if (!allowedOrigins.includes(event.origin)) {
+            console.warn('Received message from unauthorized origin:', event.origin);
+            return;
+          }
+
+          if (event.data.type === 'TWITTER_AUTH_SUCCESS') {
+            const { code, state: returnedState } = event.data;
+            
+            // 验证 state 以防止 CSRF 攻击
+            const savedState = sessionStorage.getItem('twitter_oauth_state');
+            if (savedState !== returnedState) {
+              reject(new Error('Invalid state parameter'));
+              return;
+            }
+
+            try {
+              const result = await this.handleCallback(code);
+              resolve(result);
+            } catch (error) {
+              reject(error);
+            }
+          } else if (event.data.type === 'TWITTER_AUTH_ERROR') {
+            reject(new Error(event.data.error));
+          }
+
+          // 清理事件监听器
+          window.removeEventListener('message', handler);
+        };
+
+        window.addEventListener('message', handler);
+      });
+    }
+  }
 };

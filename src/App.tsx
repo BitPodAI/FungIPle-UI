@@ -4,6 +4,7 @@ import AppRoutes from './router';
 import { useWindowResize } from './hooks/useWindowResize';
 import { LoadingProvider } from './context/LoadingContext';
 import './App.css';
+import './mock'; // 引入 mock 服务
 
 const App: React.FC = () => {
   const { width } = useWindowResize(500); // 使用200ms的节流时间
