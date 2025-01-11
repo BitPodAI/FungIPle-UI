@@ -26,7 +26,7 @@ const AppRoutes: React.FC = () => {
           <Route id="egg-select" path="/egg-select" element={<EggSelect />} />
           <Route id="egg-config" path="/egg-config" element={<AgentCustomized />} />
           <Route id="plugin" path="/plugin" element={<PluginLayout />}>
-            <Route path="" element={<Navigate to="chat" />} />
+            <Route path="" element={<Navigate to="plugin" />} />
             <Route id="chat" path="chat" element={<Chat />} />
             <Route id="agent" path="agent" element={<AgentBoard />} />
             <Route id="watch-list" path="watch-list" element={<WatchList />} />
