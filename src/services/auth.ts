@@ -86,21 +86,6 @@ export const authService = {
       throw error;
     }
   },
-
-  /**
-   * Search the twitter profiles by word of username
-   * @returns Array of profiles
-   */
-  async searchTwitterProfiles(username: string, count: number): Promise<any> {
-    try {
-      const response = await api.post(`/twitter_profile_search`, {username, count});
-      return response;
-    } catch (error) {
-      console.error('Search tw user error:', error);
-      throw error;
-    }
-  },
-
   /**
    * 转账 SOL 或代币
    * @param transferData 转账数据

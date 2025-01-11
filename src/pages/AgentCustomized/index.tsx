@@ -9,7 +9,7 @@ import GirlIcon from '@/assets/icons/girl.svg';
 import { useState, useEffect } from 'react';
 import { GENDER } from '@/constant/egg';
 import { authService } from '@/services/auth';
-import { useUserStore } from '@/stores/useUserStore';
+// import { useUserStore } from '@/stores/useUserStore';
 import { useLoading } from '../../context/LoadingContext';
 
 const AgentCustomized: React.FC = () => {
