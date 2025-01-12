@@ -1,6 +1,6 @@
 import IconWrap from '@/components/common/IconWrap';
 import { Link } from 'react-router-dom';
-import { mainNavs, extendNavs, otherNavs } from './config';
+import { mainNavs, extendNavs } from './config';
 import { useState } from 'react';
 import { MAIN_NAVS, EXTEND_NAVS, OTHER_NAVS } from '@/constant/navs';
 
@@ -48,7 +48,7 @@ const Sidebar = () => {
           ))}
         </ul>
       </div>
-      <div className="fcc-center">
+      {/* <div className="fcc-center">
         <ul className="fcc-center gap-[16px]">
           {otherNavs.map(nav => (
             <li key={nav.title}>
@@ -67,7 +67,7 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

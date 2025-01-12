@@ -4,7 +4,11 @@ import lifeBarIcon from '@/assets/icons/life-bar.svg';
 import './index.css';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 
-const AgentHeader = () => {
+type AgentHeaderProps = {
+  isShowConnect?: boolean;
+};
+
+const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const { level, experience, nextLevelExp } = useAgentInfo();
 
   return (
@@ -33,7 +37,12 @@ const AgentHeader = () => {
           </span>
         </div>
       </div>
-      <img src={walletIcon} alt="wallet" className="w-[25px] h-[25px] object-contain link-cursor" />
+      {isShowConnect && (
+        <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2">
+          <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
+          <span className="capitalize text-black text-10px">connect</span>
+        </div>
+      )}
     </div>
   );
 };

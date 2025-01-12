@@ -4,7 +4,7 @@ import AgentIcon from '@/assets/icons/agent.svg';
 import WatchListIcon from '@/assets/icons/watch-list.svg';
 import DiscoverIcon from '@/assets/icons/discover.svg';
 import MemoIcon from '@/assets/icons/memo.svg';
-import MoreIcon from '@/assets/icons/more.svg';
+// import MoreIcon from '@/assets/icons/more.svg';
 import GiftIcon from '@/assets/icons/gift.svg';
 import DeviceIcon from '@/assets/icons/device.svg';
 import HelpIcon from '@/assets/icons/help.svg';
@@ -40,11 +40,11 @@ const extendNavs = [
     icon: <ReactSVG src={MemoIcon} className="color-inherit" />,
     path: '/plugin/memo',
   },
-  {
-    title: EXTEND_NAVS.MORE,
-    icon: <ReactSVG src={MoreIcon} className="color-inherit" />,
-    path: '/plugin/more',
-  },
+  // {
+  //   title: EXTEND_NAVS.MORE,
+  //   icon: <ReactSVG src={MoreIcon} className="color-inherit" />,
+  //   path: '/plugin/more',
+  // },
 ];
 
 const otherNavs = [

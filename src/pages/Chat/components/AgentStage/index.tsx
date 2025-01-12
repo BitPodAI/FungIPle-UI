@@ -44,7 +44,7 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   return (
     <div className={`relative transition-all duration-300 w-full ${isHidden ? 'h-0 opacity-0' : 'h-[30%] opacity-100'}`}>
       <div className={`absolute top-0 left-0 w-full flex flex-col justify-between ${isHidden ? 'h-0' : 'h-full'}`}>
-        <AgentHeader />
+        <AgentHeader isShowConnect={false} />
         <div className="relative w-full">
           <div className="absolute z-1 bottom-[50px] right-200px frc-center">
             <div className="dialog-wrap">
