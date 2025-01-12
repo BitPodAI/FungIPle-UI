@@ -6,7 +6,7 @@ import manifest from './manifest.json';
 import UnoCSS from 'unocss/vite';
 
 export default defineConfig({
-  base: './', // 确保资源路径为相对路径
+  base: './',
   resolve: {
     alias: {
       '@/': `${path.resolve(__dirname, 'src')}/`,
@@ -26,7 +26,7 @@ export default defineConfig({
         secure: false,
         ws: true,
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/dev/, ''), // 将/api重写为空
+        rewrite: path => path.replace(/^\/dev/, ''),
       },
       '/api': {
         target: 'https://web3agent.site/api',
@@ -35,17 +35,16 @@ export default defineConfig({
         secure: false,
         ws: true,
         changeOrigin: true,
-        rewrite: path => path.replace(/^\/api/, ''), // 将/api重写为空
+        rewrite: path => path.replace(/^\/api/, ''),
       },
     },
   },
-  // 构建
   build: {
     // target: 'es2015',
     minify: 'terser',
-    sourcemap: process.env.VITE_APP_ENV === 'develement', // 是否产出sourcemap.json
-    outDir: 'build', // 产出目录
-    // polyfillModulePreload: true, // 预加载polyfillModule
+    sourcemap: process.env.VITE_APP_ENV === 'develement',
+    outDir: 'build',
+    // polyfillModulePreload: true,
     commonjsOptions: {
       transformMixedEsModules: true,
     },

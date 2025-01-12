@@ -22,7 +22,6 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
 
   const [currentTip, setCurrentTip] = useState(tip);
 
-  // 每10秒换一个tip
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentTip(tips[Math.floor(Math.random() * tips.length)]);
@@ -37,7 +36,6 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   const { level } = useAgentInfo();
 
   const agentIcon = useMemo(() => {
-    // todo: 根据userProfile的某个字段来获取素材/agent类型
     return AGENT_IMAGES_1[level];
   }, [level]);
 

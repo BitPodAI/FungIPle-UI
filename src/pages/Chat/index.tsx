@@ -15,7 +15,6 @@ const Chat: React.FC = () => {
     setIsChatFullScreen(!isChatFullScreen);
   };
 
-  // todo: 如果礼物弹窗关闭，则紧跟着打开token弹窗，这个逻辑后面要改
   const handleConfirmGiftModal = () => {
     closeGiftModal();
     openTokenModal();

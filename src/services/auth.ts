@@ -11,18 +11,12 @@ import { useUserStore } from '@/stores/useUserStore';
 import api from '@/services/axios';
 
 export const authService = {
-  /**
-   * 用户登录
-   * @param credentials 登录凭证（用户名、密码、邮箱）
-   * @returns 登录响应数据
-   * @throws 登录失败时抛出错误
-   */
   async login(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
     try {
       const response = await api.post<LoginResponse>('/login', credentials);
 
       if (!response?.data.success) {
-        throw new Error(response.data.message || '登录失败');
+        throw new Error(response.data.message || 'login failed');
       }
 
       if (response.data.data) {
@@ -31,17 +25,10 @@ export const authService = {
 
       return response.data;
     } catch (err) {
-      throw err instanceof Error ? err : new Error('登录失败');
+      throw err instanceof Error ? err : new Error('login failed');
     }
   },
 
-  /**
-   * 更新用户档案
-   * @param userId 用户ID
-   * @param profile 要更新的档案字段
-   * @returns 更新后的用户档案
-   * @throws 更新失败时抛出错误
-   */
   async updateProfile(userId: string, profile: UserProfile): Promise<ProfileUpdateResponse> {
     try {
       const response = await api.post<ProfileUpdateResponse>(`/profile_upd`, {
@@ -55,12 +42,6 @@ export const authService = {
     }
   },
 
-  /**
-   * 获取用户档案
-   * @param userId 用户ID
-   * @returns 用户档案
-   * @throws 获取失败时抛出错误
-   */
   async getProfile(userId: string): Promise<ProfileQueryResponse> {
     try {
       const response = await api.post<ProfileQueryResponse>(`/profile`, {
@@ -73,10 +54,6 @@ export const authService = {
     }
   },
 
-  /**
-   * 获取所有配置数据
-   * @returns 包含styles、kols和quote的配置数据
-   */
   async getConfig(): Promise<ApiResponse<AgentConfig>> {
     try {
       const response = await api.get<ApiResponse<AgentConfig>>('/config');
@@ -86,11 +63,7 @@ export const authService = {
       throw error;
     }
   },
-  /**
-   * 转账 SOL 或代币
-   * @param transferData 转账数据
-   * @returns 转账结果
-   */
+
   async transferSol(transferData: {
     fromTokenAccountPubkey: string;
     toTokenAccountPubkey: string;
@@ -106,11 +79,6 @@ export const authService = {
     }
   },
 
-  /**
-   * 创建代理
-   * @param userId 用户ID
-   * @returns 创建结果
-   */
   async createAgent(userId: string): Promise<ApiResponse<{ agentId: string }>> {
     try {
       const response = await api.post<ApiResponse<{ agentId: string }>>('/create_agent', {
@@ -123,10 +91,6 @@ export const authService = {
     }
   },
 
-  /**
-   * 用户登出
-   * 清除用户状态和本地存储
-   */
   logout() {
     useUserStore.getState().logout();
   },
@@ -156,7 +120,6 @@ export const authService = {
     listenForAuthMessage() {
       return new Promise((resolve, reject) => {
         const handler = async (event: MessageEvent) => {
-          // Message origin
           //if (event.origin !== window.location.origin) return;
           const allowedOrigins = ['https://web3agent.site', 'http://localhost:3000'];
 
@@ -168,7 +131,6 @@ export const authService = {
           if (event.data.type === 'TWITTER_AUTH_SUCCESS') {
             const { code, state: returnedState } = event.data;
 
-            // 验证 state 以防止 CSRF 攻击
             const savedState = sessionStorage.getItem('twitter_oauth_state');
             if (savedState !== returnedState) {
               reject(new Error('Invalid state parameter'));
@@ -185,7 +147,6 @@ export const authService = {
             reject(new Error(event.data.error));
           }
 
-          // 清理事件监听器
           window.removeEventListener('message', handler);
         };
 

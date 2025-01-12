@@ -1,4 +1,3 @@
-// 蛋的样式，有八种颜色
 import './index.css';
 import { EGG_COLOR } from '@/constant/egg';
 import eggRed from '@/assets/images/eggs/egg-red.svg';

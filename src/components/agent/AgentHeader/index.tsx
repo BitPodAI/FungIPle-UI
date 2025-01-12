@@ -26,7 +26,6 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
             <span className="text-[12px]">Exp</span>
             <span className="relative flex items-center gap-1">
               <img src={lifeBarIcon} alt="life-bar" className="w-[120px] h-[16px] object-cover" />
-              {/* 进度条，绿色部分的长度代表百分比进度，底色是白色 */}
               <span className="bg-white h-[10px] w-[110px] absolute top-0 left-0 rounded-full ml-4px mr-2px my-2px">
                 <span
                   className="bg-[#39CE78] h-[10px] absolute top-0 left-0 rounded-full"

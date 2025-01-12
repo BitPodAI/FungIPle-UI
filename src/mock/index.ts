@@ -11,5 +11,4 @@ if (import.meta.env.MODE === 'development') {
   });
 }
 
-// 导出所有的mock数据
 export default mocks;
