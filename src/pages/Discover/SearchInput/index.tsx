@@ -8,7 +8,12 @@ interface SearchInputProps {
   placeholder?: string;
 }
 
-export const SearchInput: React.FC<SearchInputProps> = ({ onSearch, disabled = false, placeholder = '', className }) => {
+export const SearchInput: React.FC<SearchInputProps> = ({
+  onSearch,
+  disabled = false,
+  placeholder = 'input keyword and press enter',
+  className,
+}) => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLInputElement>(null);
@@ -28,7 +33,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({ onSearch, disabled = f
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit();
+      if (message.length >= 5) {
+        handleSubmit();
+      }
     }
   };
 
