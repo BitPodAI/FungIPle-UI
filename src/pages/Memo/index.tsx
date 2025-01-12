@@ -1,10 +1,14 @@
 import React from 'react';
-import MemoPng from '@/assets/images/temp/memo.png';
+import ChatBox from './components/ChatBox';
+import MemoList from './components/MemoLisst';
 
 const Memo: React.FC = () => {
-  return <div className="page press-start-2p max-w-[490px]">
-    <img src={MemoPng} style={{ margin: '10px', width: '80%', height: '100%' }}/>
-  </div>;
+  return (
+    <div className="page press-start-2p max-w-[490px]">
+      <ChatBox></ChatBox>
+      <MemoList />
+    </div>
+  );
 };
 
 export default Memo;
