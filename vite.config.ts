@@ -20,7 +20,7 @@ export default defineConfig({
     cors: true,
     proxy: {
       '/dev': {
-        target: 'https://web3ai.cloud/dev',
+        target: 'https://web3agent.site/dev',
         // target: "http://18.205.246.62:3000",
         // target: 'http://localhost:3000',
         secure: false,
@@ -29,7 +29,7 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/dev/, ''), // 将/api重写为空
       },
       '/api': {
-        target: 'https://web3ai.cloud/api',
+        target: 'https://web3agent.site/api',
         // target: "http://18.205.246.62:3000",
         // target: 'http://localhost:3000',
         secure: false,

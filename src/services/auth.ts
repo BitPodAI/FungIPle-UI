@@ -158,7 +158,7 @@ export const authService = {
         const handler = async (event: MessageEvent) => {
           // Message origin
           //if (event.origin !== window.location.origin) return;
-          const allowedOrigins = ['https://web3ai.cloud', 'http://localhost:3000'];
+          const allowedOrigins = ['https://web3agent.site', 'http://localhost:3000'];
 
           if (!allowedOrigins.includes(event.origin)) {
             console.warn('Received message from unauthorized origin:', event.origin);

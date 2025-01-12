@@ -8,7 +8,7 @@
     "type": "module"
   },
   "permissions": ["activeTab", "scripting", "storage", "sidePanel", "idle"],
-  "host_permissions": ["http://web3ai.cloud/*", "https://web3ai.cloud/*"],
+  "host_permissions": ["http://web3agent.site/*", "https://web3agent.site/*"],
   "action": {
     "default_popup": "index.html",
     "default_icon": {
