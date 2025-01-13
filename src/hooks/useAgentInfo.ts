@@ -28,10 +28,18 @@ export function useAgentInfo() {
     return userProfile?.points || 0;
   }, [userProfile]);
 
+  const agentname = useMemo(() => {
+    if(userProfile?.agentname) {
+      return userProfile?.agentname;
+    }
+    return "Blommy";
+  }, [userProfile]);
+
   return {
     level,
     experience,
     nextLevelExp,
+    agentname,
     points,
     refetch,
   };

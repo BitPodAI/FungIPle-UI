@@ -72,7 +72,7 @@ const Login: React.FC = () => {
     const twitterProfile = localStorage.getItem('twitterProfile');
     console.log("Guest info: " + userId + " " + userProfile?.toString().length + " " + twitterProfile?.toString().length);
 
-    if (userId && userProfile && twitterProfile) {
+    if (userId && userProfile) {
       navigate('/plugin/chat'); // already login
       return;
     }
@@ -83,7 +83,7 @@ const Login: React.FC = () => {
       const password = generateGuestPassword(username);
       const email = generateGuestEmail();
       const credentials = { username, password, email };
-      const response = await authService.login(credentials);
+      const response = await authService.guestLogin(credentials);
       console.log("guest auth, res: " + response);
       // Navigate to next page
       navigate('/egg-select');

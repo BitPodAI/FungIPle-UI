@@ -39,7 +39,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     // 持久化到本地存储
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
     localStorage.setItem('twitterProfile', JSON.stringify(twitterProfile));
-    localStorage.setItem('userId', userProfile.username);
+    localStorage.setItem('userId', userProfile?.userId);
   },
 
   logout: () => {
@@ -61,5 +61,5 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
 
   // 工具方法
-  getUserId: () => get().userProfile?.username || null,
+  getUserId: () => get().userProfile?.userId || null,
 }));

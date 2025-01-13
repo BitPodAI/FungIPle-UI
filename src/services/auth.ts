@@ -11,6 +11,24 @@ import { useUserStore } from '@/stores/useUserStore';
 import api from '@/services/axios';
 
 export const authService = {
+   /** Guest login */
+   async guestLogin(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
+    console.log("guestLogin");
+    try {
+      const response = await api.post<LoginResponse>('/guest_login', credentials);
+      if (!response?.data.success) {
+        throw new Error(response.data.message || 'Login Failed');
+      }
+
+      if (response.data.data) {
+        useUserStore.getState().login(response.data.data.profile, response.data.data.twitterProfile);
+      }
+      return response.data;
+    } catch (err) {
+      throw err instanceof Error ? err : new Error('Login Failed');
+    }
+  },
+
   /**
    * 用户登录
    * @param credentials 登录凭证（用户名、密码、邮箱）
@@ -48,6 +66,9 @@ export const authService = {
         username: userId,
         profile,
       });
+      if (response.data) {
+         useUserStore.getState().updateProfile(response.data.profile);
+      }
       return response.data;
     } catch (error) {
       console.error('Profile update error:', error);

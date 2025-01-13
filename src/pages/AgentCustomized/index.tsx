@@ -54,12 +54,14 @@ const AgentCustomized: React.FC = () => {
         throw new Error('User not logged in');
       }
 
+      var agentname = name;
       // 构建profile更新对象
       const profileUpdate = {
-        name,
+        userId,
+        agentname,
         gender,
         bio: [
-          `I'm ${name}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
+          `I'm ${agentname}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
           `Specializing in ${agentStyle.toLowerCase()} interactions and responses`,
           `Ready to engage with unique ${agentStyle.toLowerCase()} perspective`,
         ],

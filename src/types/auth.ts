@@ -10,6 +10,8 @@ export interface TwitterProfile {
 
 export interface UserProfile {
   username?: string;
+  userId?: string;
+  agentname?: string;
   email?: string;
   avatar?: string;
   bio?: string | string[];

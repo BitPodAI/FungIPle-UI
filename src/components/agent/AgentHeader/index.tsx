@@ -5,7 +5,7 @@ import './index.css';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 
 const AgentHeader = () => {
-  const { level, experience, nextLevelExp } = useAgentInfo();
+  const { level, experience, nextLevelExp, agentname } = useAgentInfo();
 
   return (
     <div className="w-[calc(100%-40px)] mx-[20px] mt-[20px] flex items-center justify-between">
@@ -15,7 +15,7 @@ const AgentHeader = () => {
         </div>
         <div className="ml-[16px] flex flex-col items-start justify-center gap-1">
           <span className="flex items-center gap-2">
-            <span className="text-[12px]">Blommy</span>
+            <span className="text-[12px]">{agentname}</span>
             <span className="text-[12px] text-[#39CE78]">Level {level}</span>
           </span>
           <span className="flex items-center gap-2">
