@@ -5,36 +5,95 @@ import {
   ProfileUpdateResponse,
   UserProfile,
   ProfileQueryResponse,
-  AgentConfig,
+  //AgentConfig,
 } from '../types/auth';
 import { useUserStore } from '@/stores/useUserStore';
 import api from '@/services/axios';
 
 export const authService = {
-  async login(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
+  /**
+   * Login by LoginForm
+   * @param credentials username/password/email
+   * @returns Login response
+   * @throws User exception
+   */
+  async loginV0(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
     try {
       const response = await api.post<LoginResponse>('/login', credentials);
 
       if (!response?.data.success) {
-        throw new Error(response.data.message || 'login failed');
+        throw new Error(response.data.message || 'Login Failed');
       }
 
       if (response.data.data) {
-        useUserStore.getState().login(response.data.data.profile, response.data.data.twitterProfile);
+        useUserStore.getState().login(response.data.data.profile);
       }
 
       return response.data;
     } catch (err) {
-      throw err instanceof Error ? err : new Error('login failed');
+      throw err instanceof Error ? err : new Error('Login Failed');
     }
   },
 
+  /**
+   * Login by LoginForm
+   * @param userId, userToken
+   * @returns Login response
+   * @throws User exception
+   */
+  async login(userId: string, token: string): Promise<ApiResponse<LoginResponse['data']>> {
+    try {
+      const response = await api.post<LoginResponse>('/login', {userId, token});
+
+      if (!response?.data.success) {
+        throw new Error(response.data.message || 'Login Failed');
+      }
+
+      if (response.data.data) {
+        useUserStore.getState().login(response.data.data.profile);
+      }
+
+      return response.data;
+    } catch (err) {
+      throw err instanceof Error ? err : new Error('Login Failed');
+    }
+  },
+
+  async guestLogin(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
+    console.log("guestLogin");
+    try {
+      const response = await api.post<LoginResponse>('/guest_login', credentials);
+
+      if (!response?.data.success) {
+        throw new Error(response.data.message || 'Login Failed');
+      }
+
+      if (response.data.data) {
+        useUserStore.getState().login(response.data.data.profile);
+      }
+
+      return response.data;
+    } catch (err) {
+      throw err instanceof Error ? err : new Error('Login Failed');
+    }
+  },
+
+  /**
+   * Update the user profile
+   * @param userId
+   * @param profile the user detail fields
+   * @returns Updated profile
+   * @throws Update Exception
+   */
   async updateProfile(userId: string, profile: UserProfile): Promise<ProfileUpdateResponse> {
     try {
       const response = await api.post<ProfileUpdateResponse>(`/profile_upd`, {
-        username: userId,
+        userId,
         profile,
       });
+      if (response.data) {
+         useUserStore.getState().updateProfile(response.data.profile);
+      }
       return response.data;
     } catch (error) {
       console.error('Profile update error:', error);
@@ -42,10 +101,16 @@ export const authService = {
     }
   },
 
+  /**
+   * Read the user profile
+   * @param userId UserID
+   * @returns UserProfile
+   * @throws Geting Exception
+   */
   async getProfile(userId: string): Promise<ProfileQueryResponse> {
     try {
       const response = await api.post<ProfileQueryResponse>(`/profile`, {
-        username: userId,
+        userId,
       });
       return response.data;
     } catch (error) {
@@ -54,16 +119,27 @@ export const authService = {
     }
   },
 
-  async getConfig(): Promise<ApiResponse<AgentConfig>> {
+  /**
+   * getAll config for a user
+   * @returns including styles, kols, quote and others
+   */
+  async getConfig(): Promise<any> {
     try {
-      const response = await api.get<ApiResponse<AgentConfig>>('/config');
+      const userId: string = useUserStore.getState().getUserId() || "";
+      const response = await api.get('/config', {params: {
+        userId,
+      }});
       return response.data;
     } catch (error) {
       console.error('Get config error:', error);
       throw error;
     }
   },
-
+  /**
+   * Transfer SOL or meme
+   * @param transferData The detail data
+   * @returns Transcation
+   */
   async transferSol(transferData: {
     fromTokenAccountPubkey: string;
     toTokenAccountPubkey: string;
@@ -79,10 +155,15 @@ export const authService = {
     }
   },
 
+  /**
+   * Create Agent
+   * @param userId UserID
+   * @returns The created agent
+   */
   async createAgent(userId: string): Promise<ApiResponse<{ agentId: string }>> {
     try {
       const response = await api.post<ApiResponse<{ agentId: string }>>('/create_agent', {
-        username: userId,
+        userId,
       });
       return response.data;
     } catch (error) {
@@ -91,8 +172,12 @@ export const authService = {
     }
   },
 
-  logout() {
-    useUserStore.getState().logout();
+  /**
+   * Logout
+   * Logout for the userId and clear data
+   */
+  logout(userId: string) {
+    useUserStore.getState().logout(userId);
   },
 
   twitterOAuth: {
@@ -120,6 +205,7 @@ export const authService = {
     listenForAuthMessage() {
       return new Promise((resolve, reject) => {
         const handler = async (event: MessageEvent) => {
+          // Message origin
           //if (event.origin !== window.location.origin) return;
           const allowedOrigins = ['https://web3agent.site', 'http://localhost:3000'];
 
@@ -131,6 +217,7 @@ export const authService = {
           if (event.data.type === 'TWITTER_AUTH_SUCCESS') {
             const { code, state: returnedState } = event.data;
 
+            // Verify state to avoid CSRF
             const savedState = sessionStorage.getItem('twitter_oauth_state');
             if (savedState !== returnedState) {
               reject(new Error('Invalid state parameter'));
@@ -147,6 +234,7 @@ export const authService = {
             reject(new Error(event.data.error));
           }
 
+          // Clear
           window.removeEventListener('message', handler);
         };
 

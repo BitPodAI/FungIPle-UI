@@ -6,7 +6,7 @@ export function useAgentInfo() {
   const { userProfile, setUserProfile } = useUserStore();
 
   const refetch = async () => {
-    const { profile } = await authService.getProfile(userProfile?.username || '');
+    const { profile } = await authService.getProfile(userProfile?.userId || '');
     if (profile) {
       setUserProfile(profile);
     }
@@ -28,10 +28,18 @@ export function useAgentInfo() {
     return userProfile?.points || 0;
   }, [userProfile]);
 
+  const agentname = useMemo(() => {
+    if(userProfile?.agentname) {
+      return userProfile?.agentname;
+    }
+    return "Blommy";
+  }, [userProfile]);
+
   return {
     level,
     experience,
     nextLevelExp,
+    agentname,
     points,
     refetch,
   };

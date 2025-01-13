@@ -3,21 +3,46 @@ export enum UserRole {
   ADMIN = 'admin',
 }
 
+export interface WatchProfile {
+  userId: string;
+  username: string;
+  name: string;
+  avatar: string;
+  biography: string;
+  isBlueVerified: boolean;
+}
+
 export interface TwitterProfile {
   followersCount: number;
   verified: boolean;
 }
 
+export interface WatchItem {
+  username: string;
+  tags: [];
+}
+
 export interface UserProfile {
-  username?: string;
-  email?: string;
-  avatar?: string;
+  userId: string;
+  gmail?: string;
+  agentname: string;
   bio?: string | string[];
   walletAddress?: string;
   level: number;
   experience: number;
   nextLevelExp: number;
   points: number;
+  tweetProfile?: {
+      username: string;
+      email: string;
+      avatar?: string;
+      code: string;
+      codeVerifier: string;
+      accessToken: string;
+      refreshToken: string;
+      expiresIn: number;
+  };
+  twitterWatchList?: WatchItem[];
   tweetFrequency: {
     dailyLimit: number;
     currentCount: number;
