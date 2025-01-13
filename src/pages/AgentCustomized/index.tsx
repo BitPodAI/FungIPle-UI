@@ -9,7 +9,7 @@ import GirlIcon from '@/assets/icons/girl.svg';
 import { useState, useEffect } from 'react';
 import { GENDER } from '@/constant/egg';
 import { authService } from '@/services/auth';
-// import { useUserStore } from '@/stores/useUserStore';
+import { useUserStore } from '@/stores/useUserStore';
 import { useLoading } from '../../context/LoadingContext';
 
 const AgentCustomized: React.FC = () => {
@@ -49,83 +49,86 @@ const AgentCustomized: React.FC = () => {
     setError('');
 
     try {
+      const userId = useUserStore.getState().getUserId();
+      if (!userId) {
+        throw new Error('User not logged in');
+      }
+
+      var agentname = name;
+      // 构建profile更新对象
+      const profileUpdate = {
+        userId,
+        agentname,
+        gender,
+        bio: [
+          `I'm ${agentname}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
+          `Specializing in ${agentStyle.toLowerCase()} interactions and responses`,
+          `Ready to engage with unique ${agentStyle.toLowerCase()} perspective`,
+        ],
+        level: 1,
+        experience: 0,
+        nextLevelExp: 100,
+        points: 0,
+        tweetFrequency: {
+          dailyLimit: 20,
+          currentCount: 0,
+          lastTweetTime: Date.now(),
+        },
+        stats: {
+          totalTweets: 0,
+          successfulTweets: 0,
+          failedTweets: 0,
+        },
+        style: {
+          all: [
+            `uses ${agentStyle.toUpperCase()} tone in responses`,
+            `emphasizes ${gender.toLowerCase()}-specific perspectives`,
+            `maintains consistent ${agentStyle.toLowerCase()} character`,
+            `employs unique viewpoint expressions`,
+            `references personal experiences and knowledge`,
+          ],
+          chat: [
+            `directly addresses user concerns`,
+            `maintains ${agentStyle.toLowerCase()} personality`,
+            `uses appropriate emotional responses`,
+            `provides detailed explanations`,
+            `keeps consistent character voice`,
+          ],
+          post: [
+            `creates engaging content`,
+            `maintains ${agentStyle.toLowerCase()} tone`,
+            `uses appropriate emphasis`,
+            `employs character-specific language`,
+            `ensures message clarity`,
+          ],
+        },
+        topics: [
+          `${agentStyle.toLowerCase()} interaction patterns`,
+          `personal expression styles`,
+          `communication techniques`,
+          `engagement strategies`,
+          `response optimization`,
+        ],
+        messageExamples: [
+          {
+            user: 'user',
+            content: {
+              text: 'How are you today?',
+            },
+          },
+          {
+            user: name.toLowerCase(),
+            content: {
+              text: `Feeling great and ready to engage in ${agentStyle.toLowerCase()} conversations!`,
+            },
+          },
+        ],
+      };
+
+      await authService.updateProfile(userId, profileUpdate);
+      await authService.createAgent(userId);
+
       navigate('/plugin/chat');
-      // const userId = useUserStore.getState().getUserId();
-      // if (!userId) {
-      //   throw new Error('User not logged in');
-      // }
-
-
-      // const profileUpdate = {
-      //   name,
-      //   gender,
-      //   bio: [
-      //     `I'm ${name}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
-      //     `Specializing in ${agentStyle.toLowerCase()} interactions and responses`,
-      //     `Ready to engage with unique ${agentStyle.toLowerCase()} perspective`,
-      //   ],
-      //   level: 1,
-      //   experience: 0,
-      //   nextLevelExp: 100,
-      //   points: 0,
-      //   tweetFrequency: {
-      //     dailyLimit: 20,
-      //     currentCount: 0,
-      //     lastTweetTime: Date.now(),
-      //   },
-      //   stats: {
-      //     totalTweets: 0,
-      //     successfulTweets: 0,
-      //     failedTweets: 0,
-      //   },
-      //   style: {
-      //     all: [
-      //       `uses ${agentStyle.toUpperCase()} tone in responses`,
-      //       `emphasizes ${gender.toLowerCase()}-specific perspectives`,
-      //       `maintains consistent ${agentStyle.toLowerCase()} character`,
-      //       `employs unique viewpoint expressions`,
-      //       `references personal experiences and knowledge`,
-      //     ],
-      //     chat: [
-      //       `directly addresses user concerns`,
-      //       `maintains ${agentStyle.toLowerCase()} personality`,
-      //       `uses appropriate emotional responses`,
-      //       `provides detailed explanations`,
-      //       `keeps consistent character voice`,
-      //     ],
-      //     post: [
-      //       `creates engaging content`,
-      //       `maintains ${agentStyle.toLowerCase()} tone`,
-      //       `uses appropriate emphasis`,
-      //       `employs character-specific language`,
-      //       `ensures message clarity`,
-      //     ],
-      //   },
-      //   topics: [
-      //     `${agentStyle.toLowerCase()} interaction patterns`,
-      //     `personal expression styles`,
-      //     `communication techniques`,
-      //     `engagement strategies`,
-      //     `response optimization`,
-      //   ],
-      //   messageExamples: [
-      //     {
-      //       user: 'user',
-      //       content: {
-      //         text: 'How are you today?',
-      //       },
-      //     },
-      //     {
-      //       user: name.toLowerCase(),
-      //       content: {
-      //         text: `Feeling great and ready to engage in ${agentStyle.toLowerCase()} conversations!`,
-      //       },
-      //     },
-      //   ],
-      // };
-
-      // await authService.updateProfile(userId, profileUpdate);
-      // await authService.createAgent(userId);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to update profile');
     } finally {
