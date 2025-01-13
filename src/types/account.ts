@@ -8,6 +8,7 @@ export type XUserProfile = {
   mediaCount: number;
   isPrivate: boolean;
   isVerified: boolean;
+  isWatched: boolean;
   likesCount: number;
   listedCount: number;
   location: string;
