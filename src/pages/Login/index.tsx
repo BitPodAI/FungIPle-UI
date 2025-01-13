@@ -4,7 +4,7 @@ import Background from '@/components/common/Background';
 import Button from '@/components/common/Button';
 import { BTNCOLOR } from '@/constant/button';
 import { usePrivy } from '@privy-io/react-auth';
-import guestIcon from '@/assets/icons/agent.svg';
+//import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
 
 
@@ -14,9 +14,10 @@ export default function Login() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const handleTwitterAuth = async () => {
+  const handleAuth = async () => {
     login();
   };
+
   function simpleHash(input: string) {
     let hash = 0;
     if (input.length === 0) return hash;
@@ -68,6 +69,7 @@ export default function Login() {
     } catch (err) {
       console.error('Guest auth error:', err);
       setError(err instanceof Error ? err.message : 'Guest authentication failed');
+      console.log(error);
     } finally {
       setLoading(false);
     }
@@ -85,7 +87,7 @@ export default function Login() {
         <Button
           color={BTNCOLOR.PURPLE} // Twitter Color?
           className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px] text-white frc-center gap-[10px]"
-          onClick={handleTwitterAuth}
+          onClick={handleAuth}
         >
           Login
         </Button>

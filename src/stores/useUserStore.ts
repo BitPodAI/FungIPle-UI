@@ -10,12 +10,13 @@ interface UserState {
   // Operation
   setUserProfile: (profile: UserProfile | null) => void;
   setTwitterProfile: (profile: TwitterProfile | null) => void;
-  login: (userProfile: UserProfile, twitterProfile: TwitterProfile) => void;
+  login: (userProfile: UserProfile) => void;
   logout: (userId: string) => void;
   updateProfile: (profile: UserProfile) => void;
 
   // Getter
   getUserId: () => string | null;
+  getWatchlist: () => string[] | null;
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
@@ -29,16 +30,15 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   setTwitterProfile: profile => set({ twitterProfile: profile }),
 
-  login: (userProfile, twitterProfile) => {
+  login: (userProfile) => {
     set({
       userProfile,
-      twitterProfile,
       isAuthenticated: true,
     });
 
     // Local Storage
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
-    localStorage.setItem('twitterProfile', JSON.stringify(twitterProfile));
+    //localStorage.setItem('twitterProfile', JSON.stringify(twitterProfile));
     localStorage.setItem('userId', userProfile.userId);
   },
 
@@ -62,4 +62,6 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   // Getter
   getUserId: () => get().userProfile?.userId || null,
+  getWatchlist: () => get().userProfile?.twitterWatchList?.map(item => item.username) || [],
+
 }));

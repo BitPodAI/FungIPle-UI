@@ -42,7 +42,7 @@ export interface UserProfile {
       refreshToken: string;
       expiresIn: number;
   };
-  twitterWatchList: WatchItem[];
+  twitterWatchList?: WatchItem[];
   tweetFrequency: {
     dailyLimit: number;
     currentCount: number;

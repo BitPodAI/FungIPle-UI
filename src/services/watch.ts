@@ -1,5 +1,6 @@
 //import { Message } from '../types/chat';
 import api from './axios';
+import { useUserStore } from '@/stores/useUserStore';
 
 interface WatchResponse {
   items: {
@@ -57,6 +58,35 @@ class WatchApi {
     }
   }
 
+  // Get watch text by my watchlist
+  async getMyWatchList(): Promise<WatchResponse['items']> {
+    if (!this.hasMore) {
+      return [];
+    }
+    const watchlist = useUserStore.getState().getWatchlist();
+
+    try {
+      const response = await api.post(`/watch`, {
+        watchlist: watchlist,
+        cursor: this.cursor
+      });
+      const data: WatchResponse = response.data.data.watchlist;
+
+      // Update
+      this.cursor = data.cursor;
+      this.hasMore = data.hasMore;
+
+      // set for each item
+      return data.items.map(item => ({
+        ...item,
+        user: 'agent' as const,
+        action: 'NONE' as const
+      }));
+    } catch (error) {
+      console.error('Error fetching watch list:', error);
+      return [];
+    }
+  }
 
   /**
    * Search the twitter profiles by word of username

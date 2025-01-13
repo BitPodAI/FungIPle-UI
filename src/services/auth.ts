@@ -5,7 +5,7 @@ import {
   ProfileUpdateResponse,
   UserProfile,
   ProfileQueryResponse,
-  AgentConfig,
+  //AgentConfig,
 } from '../types/auth';
 import { useUserStore } from '@/stores/useUserStore';
 import api from '@/services/axios';
@@ -26,7 +26,7 @@ export const authService = {
       }
 
       if (response.data.data) {
-        useUserStore.getState().login(response.data.data.profile, response.data.data.twitterProfile);
+        useUserStore.getState().login(response.data.data.profile);
       }
 
       return response.data;
@@ -69,7 +69,7 @@ export const authService = {
       }
 
       if (response.data.data) {
-        useUserStore.getState().login(response.data.data.profile, response.data.data.twitterProfile);
+        useUserStore.getState().login(response.data.data.profile);
       }
 
       return response.data;
@@ -123,11 +123,12 @@ export const authService = {
    * getAll config for a user
    * @returns including styles, kols, quote and others
    */
-  async getConfig(userId: string): Promise<ApiResponse<AgentConfig>> {
+  async getConfig(): Promise<any> {
     try {
-      const response = await api.get<ApiResponse<AgentConfig>>('/config', {
+      const userId: string = useUserStore.getState().getUserId() || "";
+      const response = await api.get('/config', {params: {
         userId,
-      });
+      }});
       return response.data;
     } catch (error) {
       console.error('Get config error:', error);
