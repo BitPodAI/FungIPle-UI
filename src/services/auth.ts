@@ -6,6 +6,7 @@ import {
   UserProfile,
   ProfileQueryResponse,
   AgentConfig,
+  //AgentConfig,
 } from '../types/auth';
 import { useUserStore } from '@/stores/useUserStore';
 import api from '@/services/axios';
@@ -26,7 +27,7 @@ export const authService = {
       }
 
       if (response.data.data) {
-        useUserStore.getState().login(response.data.data.profile, response.data.data.twitterProfile);
+        useUserStore.getState().login(response.data.data.profile);
       }
 
       return response.data;
@@ -43,7 +44,7 @@ export const authService = {
    */
   async login(userId: string, token: string): Promise<ApiResponse<LoginResponse['data']>> {
     try {
-      const response = await api.post<LoginResponse>('/login', {userId, token});
+      const response = await api.post<LoginResponse>('/login', { userId, token });
 
       if (!response?.data.success) {
         throw new Error(response.data.message || 'Login Failed');
@@ -60,7 +61,7 @@ export const authService = {
   },
 
   async guestLogin(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
-    console.log("guestLogin");
+    console.log('guestLogin');
     try {
       const response = await api.post<LoginResponse>('/guest_login', credentials);
 
@@ -69,7 +70,7 @@ export const authService = {
       }
 
       if (response.data.data) {
-        useUserStore.getState().login(response.data.data.profile, response.data.data.twitterProfile);
+        useUserStore.getState().login(response.data.data.profile);
       }
 
       return response.data;
@@ -87,12 +88,12 @@ export const authService = {
    */
   async updateProfile(userId: string, profile: UserProfile): Promise<ProfileUpdateResponse> {
     try {
-      const response = await api.post<ProfileUpdateResponse>(`/profile_upd`, {
+      const response = await api.post(`/profile_upd`, {
         userId,
         profile,
       });
       if (response.data) {
-         useUserStore.getState().updateProfile(response.data.profile);
+        useUserStore.getState().updateProfile(response.data.profile);
       }
       return response.data;
     } catch (error) {
@@ -123,10 +124,13 @@ export const authService = {
    * getAll config for a user
    * @returns including styles, kols, quote and others
    */
-  async getConfig(userId: string): Promise<ApiResponse<AgentConfig>> {
+  async getConfig(): Promise<AgentConfig> {
     try {
-      const response = await api.get<ApiResponse<AgentConfig>>('/config', {
-        userId,
+      const userId: string = useUserStore.getState().getUserId() || '';
+      const response = await api.get('/config', {
+        params: {
+          userId,
+        },
       });
       return response.data;
     } catch (error) {

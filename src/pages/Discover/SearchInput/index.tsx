@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import magnifier from '@/assets/icons/magnifier.svg';
+import { ReactSVG } from 'react-svg';
 
 interface SearchInputProps {
   onSearch: (message: string) => Promise<void>;
@@ -47,7 +48,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           !message.trim() || isLoading || disabled ? 'cursor-not-allowed' : 'hover:text-blue-600'
         }`}
       >
-        <MagnifyingGlassIcon className="h-5 w-5 frc-center" />
+        <ReactSVG src={magnifier} className="h-5 w-5 frc-center" />
       </button>
       <input
         ref={textareaRef}
@@ -59,7 +60,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         onKeyUp={handleKeyUp}
         placeholder={placeholder}
         disabled={disabled || isLoading}
-        className="w-full text-black bg-white border-none outline-none resize-none"
+        className="w-full text-black bg-white border-none outline-none resize-none text-10px"
       />
     </div>
   );

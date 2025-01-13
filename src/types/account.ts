@@ -1,3 +1,5 @@
+import { Tag } from './auth';
+
 export type XUserProfile = {
   avatar: string;
   banner: string;
@@ -8,6 +10,7 @@ export type XUserProfile = {
   mediaCount: number;
   isPrivate: boolean;
   isVerified: boolean;
+  isWatched: boolean;
   likesCount: number;
   listedCount: number;
   location: string;
@@ -21,4 +24,5 @@ export type XUserProfile = {
   canDm: boolean;
   joined: Date; // You may want to parse the string to a Date object
   website: string;
+  tags: Tag[];
 };

@@ -35,7 +35,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 border-t border-gray-200 bg-white">
+    <form onSubmit={handleSubmit} className="flex-1 border-t border-gray-200">
       <div className="flex flex-col items-end space-x-2">
         <div className="flex-1 w-full h-full">
           <textarea

@@ -1,3 +1,9 @@
+export interface ResponseData<T> {
+  data: T;
+  message: string;
+  success: boolean;
+}
+
 export enum UserRole {
   USER = 'user',
   ADMIN = 'admin',
@@ -17,9 +23,13 @@ export interface TwitterProfile {
   verified: boolean;
 }
 
+export interface Tag {
+  id: string;
+}
+
 export interface WatchItem {
   username: string;
-  tags: [];
+  tags: Tag[];
 }
 
 export interface UserProfile {
@@ -33,16 +43,16 @@ export interface UserProfile {
   nextLevelExp: number;
   points: number;
   tweetProfile?: {
-      username: string;
-      email: string;
-      avatar?: string;
-      code: string;
-      codeVerifier: string;
-      accessToken: string;
-      refreshToken: string;
-      expiresIn: number;
+    username: string;
+    email: string;
+    avatar?: string;
+    code: string;
+    codeVerifier: string;
+    accessToken: string;
+    refreshToken: string;
+    expiresIn: number;
   };
-  twitterWatchList: WatchItem[];
+  twitterWatchList?: WatchItem[];
   tweetFrequency: {
     dailyLimit: number;
     currentCount: number;

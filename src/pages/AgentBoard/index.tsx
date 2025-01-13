@@ -32,7 +32,7 @@ const IMIATE_OPTIONS =
 ];
 
 const AgentBoard: React.FC = () => {
-  const [twid, setTwid] = useState('@FungIPle');
+  const [Xusername, setXusername] = useState('@FungIPle');
   const [enabled, setEnabled] = useState(true);
   const [interval, setInterval] = useState('24h');
   const [imitate, setImitate] = useState('elonmusk');
@@ -79,9 +79,9 @@ const AgentBoard: React.FC = () => {
 
   useEffect(() => {
     setTokenUsed(100 + Math.floor(Math.random() * 200));
-    const userId = useUserStore.getState().getUserId();
-    if (userId) {
-      setTwid('@' + userId);
+    const Xusername = useUserStore.getState().getXUsername();
+    if (Xusername) {
+      setXusername('@' + Xusername);
     }
   }, []);
 
@@ -91,7 +91,7 @@ const AgentBoard: React.FC = () => {
 
       <div className="w-[calc(100%-40px)] mx-[20px]">
         <div className="w-full mt-[20px] frc-center gap-[16px]">
-          <SocialItem icon={<img src={xIcon} />} account={twid} />
+          <SocialItem icon={<img src={xIcon} />} account={Xusername} />
           <SocialItem icon={<img src={telegramIcon} />} />
         </div>
 
