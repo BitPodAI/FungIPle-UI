@@ -6,7 +6,7 @@ export function useAgentInfo() {
   const { userProfile, setUserProfile } = useUserStore();
 
   const refetch = async () => {
-    const { profile } = await authService.getProfile(userProfile?.username || '');
+    const { profile } = await authService.getProfile(userProfile?.userId || '');
     if (profile) {
       setUserProfile(profile);
     }
