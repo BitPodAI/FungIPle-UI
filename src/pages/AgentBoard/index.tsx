@@ -5,13 +5,14 @@ import { Menu, MenuButton, MenuItem, MenuItems, Switch } from '@headlessui/react
 import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/useUserStore';
+import { authService } from '@/services/auth';
 
 const SocialItem = ({ icon, account }: { icon: React.ReactNode; account?: string }) => {
   return (
     <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]">
       {icon}
       {account ? (
-        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center inknut-antiqua">{account}</span>
+        <a href={"https://x.com/" + account} className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center inknut-antiqua">{account}</a>
       ) : (
         <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center inknut-antiqua">Go to bind</span>
       )}
@@ -20,22 +21,59 @@ const SocialItem = ({ icon, account }: { icon: React.ReactNode; account?: string
 };
 
 const INTERVAL_OPTIONS = ['1h', '2h', '3h', '12h', '24h'];
-const IMIATE_OPTIONS = ['Eliza', 'Ansem', 'Trump', 'aeyakovenko'];
+const IMIATE_OPTIONS =
+[
+"elonmusk",
+"cz_binance",
+"aeyakovenko",
+"jessepollak",
+"shawmakesmagic",
+"everythingempt0",
+];
 
 const AgentBoard: React.FC = () => {
   const [twid, setTwid] = useState('@FungIPle');
-  const [enabled, setEnabled] = useState(false);
-  const [interval, setInterval] = useState('1h');
-  const [imitate, setImitate] = useState('Eliza');
+  const [enabled, setEnabled] = useState(true);
+  const [interval, setInterval] = useState('24h');
+  const [imitate, setImitate] = useState('elonmusk');
   const [tokenUsed, setTokenUsed] = useState(0);
+
+  async function set_agent_cfg(enabled: boolean,interval: string,imitate : string) {
+    try {
+      const userId = useUserStore.getState().getUserId();
+      if (!userId) {
+        throw new Error('User not logged in');
+      }
+
+      const newCfg =  { enabled, interval, imitate};
+      const profileUpd = {
+        agentCfg: { enabled, interval, imitate},
+      }
+
+      const userProfile = localStorage.getItem('userProfile');
+      var oldP =  JSON.parse(userProfile);
+      const updatedProfile = { ...oldP, ...profileUpd };
+      await authService.updateProfile(userId, updatedProfile);
+    } catch (err) {
+      console.log(err instanceof Error ? err.message : 'Failed to update profile');
+    }
+  }
+
+  const handleToggle = () => {
+    set_agent_cfg(!enabled, interval, imitate);
+    setEnabled(!enabled);
+  };
+
 
   const handleSelectionChange = (event: React.MouseEvent<HTMLDivElement>, type: 'interval' | 'imitate') => {
     const target = event.target as HTMLElement;
     const value = target.innerText;
     if (type === 'interval') {
       setInterval(value);
+      set_agent_cfg(enabled, value, imitate);
     } else {
       setImitate(value);
+      set_agent_cfg(enabled, interval, value);
     }
   };
 
@@ -62,7 +100,7 @@ const AgentBoard: React.FC = () => {
             <span className="text-[14px]">X Takeover by Agent </span>
             <Switch
               checked={enabled}
-              onChange={setEnabled}
+              onChange={handleToggle}
               className="group inline-flex h-6 w-11 items-center rounded-full bg-gray-200 transition data-[checked]:bg-[#39CE78]"
             >
               <span className="size-4 rounded-full bg-white transition group-data-[checked]:translate-x-4" />
