@@ -21,7 +21,7 @@ const PixBorder: React.FC<PixBorderProps> = ({ width, height, top, bottom, left,
         style={{
           height: height ? 2 : 3,
           width: width ? `calc(100% - 24px + ${width * 2}px)` : `calc(100% - 24px)`,
-          left: width ? `${width * 2 - 12}px` : `-12px`,
+          left: width ? `${width * 2 - 12}px` : `12px`,
         }}
       />
       <img
@@ -31,7 +31,7 @@ const PixBorder: React.FC<PixBorderProps> = ({ width, height, top, bottom, left,
         style={{
           height: height ? 4 : 7,
           width: width ? `calc(100% - 24px + ${width * 2}px)` : `calc(100% - 24px)`,
-          left: width ? `${width * 2 - 12}px` : `-12px`,
+          left: width ? `${width * 2 - 12}px` : `12px`,
         }}
       />
       <img src={left} alt="left" className="absolute top-0 bottom-0 left-0 h-full w-[12px]" style={{ height, width }} />

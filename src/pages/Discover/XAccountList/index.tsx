@@ -8,14 +8,42 @@ import rightImg from '@/assets/images/border-bg/right.png';
 import { XUserProfile } from '@/types/account';
 import defaultAvatar from '@/assets/images/chat/avatar.png';
 import PixLoading from '@/components/common/PixLoading';
+import { authService } from '@/services/auth';
+import { useUserStore } from '@/stores/useUserStore';
+import { WatchItem } from '@/types/auth';
 
 interface XAccountListProps {
   xList: XUserProfile[];
   handleSearch: (keyword?: string) => Promise<void>;
   loading: boolean;
+  onRefresh?: () => Promise<void>;
 }
 
-const XAccountList: React.FC<XAccountListProps> = ({ loading, xList, handleSearch }) => {
+const XAccountList: React.FC<XAccountListProps> = ({ loading, xList, handleSearch, onRefresh }) => {
+  const { userProfile, setUserProfile } = useUserStore();
+  const handleClick = async (e: React.MouseEvent<HTMLDivElement>, account: XUserProfile) => {
+    e.stopPropagation();
+    if (userProfile) {
+      const originTwitterWatchList = userProfile.twitterWatchList || [];
+      let tempTwitterWatchList = [] as WatchItem[];
+      if (account.isWatched) {
+        tempTwitterWatchList = originTwitterWatchList?.filter(item => item.username !== account.username);
+      } else {
+        originTwitterWatchList.push({ username: account.username, tags: account.tags });
+        tempTwitterWatchList = [...originTwitterWatchList];
+      }
+      const params = {
+        ...userProfile,
+        twitterWatchList: tempTwitterWatchList,
+      };
+      await authService.updateProfile(userProfile?.userId, params);
+      setUserProfile(params);
+      await onRefresh?.();
+    } else {
+      console.log('userProfile', userProfile);
+    }
+  };
+
   return (
     <div className="w-100 border border-gray-300 mx-4">
       <PixBorder
@@ -60,7 +88,10 @@ const XAccountList: React.FC<XAccountListProps> = ({ loading, xList, handleSearc
               ))}
             </div> */}
           </div>
-          <div className="w-100px box-border text-center px-3 py-2 text-10px text-gray-500 border border-solid border-gray-400 rounded-2xl hover:border-2 inknut-antiqua">
+          <div
+            className="w-100px box-border text-center px-3 py-2 text-10px text-gray-500 border border-solid border-gray-400 rounded-2xl hover:border-2 inknut-antiqua"
+            onClick={e => handleClick(e, account)}
+          >
             {account.isWatched ? 'UnWatch' : 'Watch'}
           </div>
         </div>
@@ -69,4 +100,4 @@ const XAccountList: React.FC<XAccountListProps> = ({ loading, xList, handleSearc
   );
 };
 
-export default XAccountList;
+export default React.memo(XAccountList);

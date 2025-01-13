@@ -16,6 +16,7 @@ interface UserState {
 
   // Getter
   getUserId: () => string | null;
+  getXUsername: () => string | null;
   getWatchlist: () => string[] | null;
 }
 
@@ -30,7 +31,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   setTwitterProfile: profile => set({ twitterProfile: profile }),
 
-  login: (userProfile) => {
+  login: userProfile => {
     set({
       userProfile,
       isAuthenticated: true,
@@ -62,6 +63,6 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   // Getter
   getUserId: () => get().userProfile?.userId || null,
+  getXUsername: () => get().userProfile?.tweetProfile?.username || null,
   getWatchlist: () => get().userProfile?.twitterWatchList?.map(item => item.username) || [],
-
 }));

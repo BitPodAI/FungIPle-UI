@@ -5,6 +5,7 @@ import {
   ProfileUpdateResponse,
   UserProfile,
   ProfileQueryResponse,
+  AgentConfig,
   //AgentConfig,
 } from '../types/auth';
 import { useUserStore } from '@/stores/useUserStore';
@@ -43,7 +44,7 @@ export const authService = {
    */
   async login(userId: string, token: string): Promise<ApiResponse<LoginResponse['data']>> {
     try {
-      const response = await api.post<LoginResponse>('/login', {userId, token});
+      const response = await api.post<LoginResponse>('/login', { userId, token });
 
       if (!response?.data.success) {
         throw new Error(response.data.message || 'Login Failed');
@@ -60,7 +61,7 @@ export const authService = {
   },
 
   async guestLogin(credentials: LoginForm): Promise<ApiResponse<LoginResponse['data']>> {
-    console.log("guestLogin");
+    console.log('guestLogin');
     try {
       const response = await api.post<LoginResponse>('/guest_login', credentials);
 
@@ -87,12 +88,12 @@ export const authService = {
    */
   async updateProfile(userId: string, profile: UserProfile): Promise<ProfileUpdateResponse> {
     try {
-      const response = await api.post<ProfileUpdateResponse>(`/profile_upd`, {
+      const response = await api.post(`/profile_upd`, {
         userId,
         profile,
       });
       if (response.data) {
-         useUserStore.getState().updateProfile(response.data.profile);
+        useUserStore.getState().updateProfile(response.data.profile);
       }
       return response.data;
     } catch (error) {
@@ -123,12 +124,14 @@ export const authService = {
    * getAll config for a user
    * @returns including styles, kols, quote and others
    */
-  async getConfig(): Promise<any> {
+  async getConfig(): Promise<AgentConfig> {
     try {
-      const userId: string = useUserStore.getState().getUserId() || "";
-      const response = await api.get('/config', {params: {
-        userId,
-      }});
+      const userId: string = useUserStore.getState().getUserId() || '';
+      const response = await api.get('/config', {
+        params: {
+          userId,
+        },
+      });
       return response.data;
     } catch (error) {
       console.error('Get config error:', error);
