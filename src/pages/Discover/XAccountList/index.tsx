@@ -61,7 +61,7 @@ const XAccountList: React.FC<XAccountListProps> = ({ loading, xList, handleSearc
             </div> */}
           </div>
           <div className="w-100px box-border text-center px-3 py-2 text-10px text-gray-500 border border-solid border-gray-400 rounded-2xl hover:border-2 inknut-antiqua">
-            {account.isWatched ? 'Unfollow' : 'Follow'}
+            {account.isWatched ? 'UnWatch' : 'Watch'}
           </div>
         </div>
       ))}
