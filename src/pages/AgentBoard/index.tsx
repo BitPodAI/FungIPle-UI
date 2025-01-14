@@ -28,7 +28,7 @@ const IMIATE_OPTIONS =
 "aeyakovenko",
 "jessepollak",
 "shawmakesmagic",
-"everythingempt0",
+"everythingempt",
 ];
 
 const AgentBoard: React.FC = () => {

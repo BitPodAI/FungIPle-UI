@@ -29,7 +29,7 @@ const XAccountList: React.FC<XAccountListProps> = ({ loading, xList, handleSearc
       if (account.isWatched) {
         tempTwitterWatchList = originTwitterWatchList?.filter(item => item.username !== account.username);
       } else {
-        originTwitterWatchList.push({ username: account.username, tags: account.tags });
+        originTwitterWatchList.push({ username: account.username, name: account.name, tags: account.tags, avatar: account.avatar });
         tempTwitterWatchList = [...originTwitterWatchList];
       }
       const params = {

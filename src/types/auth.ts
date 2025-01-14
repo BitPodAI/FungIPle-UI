@@ -27,9 +27,11 @@ export interface Tag {
   id: string;
 }
 
-export interface WatchItem {
+interface WatchItem {
   username: string;
-  tags: Tag[];
+  avatar: string;
+  name: string;
+  tags: [];
 }
 
 export interface UserProfile {
