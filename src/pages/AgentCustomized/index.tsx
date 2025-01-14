@@ -26,7 +26,7 @@ const AgentCustomized: React.FC = () => {
     const fetchStyles = async () => {
       showLoading('Loading...');
       try {
-        const { data } = await authService.getConfig();
+        const data = await authService.getConfig();
         setStyles(data?.styles || []);
         setAgentStyle(data?.styles[0] || '');
       } catch (error) {

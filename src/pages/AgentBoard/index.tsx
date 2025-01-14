@@ -28,7 +28,7 @@ const IMIATE_OPTIONS =
 "aeyakovenko",
 "jessepollak",
 "shawmakesmagic",
-"everythingempt",
+"everythingempt0",
 ];
 
 const AgentBoard: React.FC = () => {
@@ -45,15 +45,16 @@ const AgentBoard: React.FC = () => {
         throw new Error('User not logged in');
       }
 
-      const newCfg =  { enabled, interval, imitate};
       const profileUpd = {
         agentCfg: { enabled, interval, imitate},
       }
 
       const userProfile = localStorage.getItem('userProfile');
-      var oldP =  JSON.parse(userProfile);
-      const updatedProfile = { ...oldP, ...profileUpd };
-      await authService.updateProfile(userId, updatedProfile);
+      if (userProfile) {
+        var oldP =  JSON.parse(userProfile);
+        const updatedProfile = { ...oldP, ...profileUpd };
+        await authService.updateProfile(userId, updatedProfile);
+      }
     } catch (err) {
       console.log(err instanceof Error ? err.message : 'Failed to update profile');
     }

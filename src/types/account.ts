@@ -1,4 +1,4 @@
-import { Tag } from './auth';
+//import { Tag } from './auth';
 
 export type XUserProfile = {
   avatar: string;
@@ -24,5 +24,5 @@ export type XUserProfile = {
   canDm: boolean;
   joined: Date; // You may want to parse the string to a Date object
   website: string;
-  tags: Tag[];
+  tags: string[];
 };
