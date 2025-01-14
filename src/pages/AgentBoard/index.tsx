@@ -12,7 +12,7 @@ const SocialItem = ({ icon, account }: { icon: React.ReactNode; account?: string
     <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]">
       {icon}
       {account ? (
-        <a href={"https://x.com/" + account} className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center inknut-antiqua">{account}</a>
+        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center inknut-antiqua">{account}</span>
       ) : (
         <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center inknut-antiqua">Go to bind</span>
       )}
