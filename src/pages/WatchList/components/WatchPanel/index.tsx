@@ -48,7 +48,7 @@ const WatchPanel: React.FC = () => {
 
   const handleWatchMessage = async (message: string) => {
     try {
-      const items = await watchApi.getWatchList();
+      const items = await watchApi.getMyWatchList();
       addMessages(items); // new msgs
 
       if (message.trim()) {
