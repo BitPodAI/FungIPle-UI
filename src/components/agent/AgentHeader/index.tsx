@@ -2,7 +2,9 @@ import avatarIcon from '@/assets/images/chat/avatar.png';
 import walletIcon from '@/assets/icons/wallet.svg';
 import lifeBarIcon from '@/assets/icons/life-bar.svg';
 import './index.css';
+import { useEffect } from "react";
 import { useAgentInfo } from '@/hooks/useAgentInfo';
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
 type AgentHeaderProps = {
   isShowConnect?: boolean;
@@ -10,6 +12,54 @@ type AgentHeaderProps = {
 
 const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const { level, experience, nextLevelExp, agentname } = useAgentInfo();
+  const { connection } = useConnection();
+  const { publicKey, connected, connect, wallet } = useWallet();
+
+  useEffect(() => {
+    const updateConnection = async () => {
+      if (!connection || !publicKey) {
+        console.log("Wallet not connected or connection unavailable");
+        return;
+      }
+      try {
+        connection.onAccountChange(
+          publicKey,
+          updatedAccountInfo => {
+            console.log(updatedAccountInfo);
+          },
+          "confirmed",
+        );
+        const accountInfo = await connection.getAccountInfo(publicKey);
+        if (accountInfo) {
+          console.log(accountInfo);
+        } else {
+          throw new Error("Account info not found");
+        }
+      } catch (error) {
+        console.error("Failed to retrieve account info:", error);
+      }
+    };
+    updateConnection();
+  }, [connection, publicKey]);
+
+  useEffect(() => {
+    if (wallet && !connected) {
+      connect().catch(error => {
+        console.error("Connect Wallet on Effect Error: ", error);
+      });
+    }
+  }, [wallet, connected]);
+
+  const handlePhantomLogin = async() => {
+    try {
+      //await select("Phantom");
+      if (wallet && !connected) {
+        await connect();
+      }
+    } catch (error) {
+      console.error("Connect Wallet Error: ", error);
+    }
+  };
 
   return (
     <div className="w-[calc(100%-40px)] mx-[20px] mt-[20px] flex items-center justify-between">
@@ -37,7 +87,8 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
         </div>
       </div>
       {isShowConnect && (
-        <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2">
+        <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2"
+          onClick={handlePhantomLogin}>
           <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
           <span className="capitalize text-black text-10px">connect</span>
         </div>
