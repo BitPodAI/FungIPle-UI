@@ -13,7 +13,6 @@ const useCopyToClipboard = () => {
       await navigator.clipboard.writeText(text);
       setCopiedText(text);
       setIsCopied(true);
-
       setTimeout(() => {
         setIsCopied(false);
       }, 3000);
