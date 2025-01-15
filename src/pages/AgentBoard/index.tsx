@@ -20,9 +20,9 @@ const SocialItem = ({ icon, account, onClick, onRevoke }: {
     <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]">
       {icon}
       {account ? (
-        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center inknut-antiqua" onClick={onRevoke}>{account}</span>
+        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center averia-serif-libre" onClick={onRevoke}>{account}</span>
       ) : (
-        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center inknut-antiqua" onClick={onClick}>Go to Link</span>
+        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center averia-serif-libre" onClick={onClick}>Go to Link</span>
       )}
     </div>
   );
@@ -267,7 +267,7 @@ const AgentBoard: React.FC = () => {
             <span className="text-[12px] mt-8">{tokenUsed} / 100000</span>
           </div>
           <div className="w-full flex items-center justify-end mt-4">
-            <button className="w-[140px] h-[48px] black-bg text-[14px] text-white inknut-antiqua">Buy Tokens</button>
+            <button className="w-[140px] h-[48px] black-bg text-[14px] text-white averia-serif-libre">Buy Tokens</button>
           </div>
         </div>
       </div>

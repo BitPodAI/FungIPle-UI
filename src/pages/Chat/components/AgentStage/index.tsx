@@ -46,7 +46,7 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
         <div className="relative w-full">
           <div className="absolute z-1 bottom-[50px] right-200px frc-center">
             <div className="dialog-wrap">
-              <p className="w-[180px] text-[12px] inknut-antiqua">{currentTip}</p>
+              <p className="w-[180px] text-[12px] averia-serif-libre">{currentTip}</p>
             </div>
           </div>
           <img src={agentIcon} alt="agent" className="w-[120px] h-[120px] object-contain transform absolute z-2 bottom-0 right-110px" />

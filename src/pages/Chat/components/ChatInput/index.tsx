@@ -9,7 +9,7 @@ interface ChatInputProps {
   placeholder?: string;
 }
 
-export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, placeholder = 'Cuckoo, I want to...' }) => {
+export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, placeholder = 'I want to...' }) => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -46,7 +46,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
             placeholder={placeholder}
             disabled={disabled || isLoading}
             rows={2}
-            className="box-border w-full h-20 px-2 py-1 resize-none rounded-lg bg-white text-black border border-gray-300 placeholder-gray-400 focus:outline-none"
+            className="box-border w-full h-20 px-2 py-1 resize-none rounded-lg bg-white text-black averia-serif-libre border border-gray-300 placeholder-gray-400 focus:outline-none"
           />
         </div>
         <div className="flex items-center justify-end">
