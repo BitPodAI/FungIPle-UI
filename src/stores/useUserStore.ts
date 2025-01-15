@@ -17,6 +17,7 @@ interface UserState {
   // Getter
   getUserId: () => string | null;
   getXUsername: () => string | null;
+  getXAccessToken: () => string | null;
   getWatchlist: () => string[] | null;
 }
 
@@ -64,5 +65,6 @@ export const useUserStore = create<UserState>((set, get) => ({
   // Getter
   getUserId: () => get().userProfile?.userId || null,
   getXUsername: () => get().userProfile?.tweetProfile?.username || null,
+  getXAccessToken: () => get().userProfile?.tweetProfile?.accessToken || null,
   getWatchlist: () => get().userProfile?.twitterWatchList?.map(item => item.username) || [],
 }));

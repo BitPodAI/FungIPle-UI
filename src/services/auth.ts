@@ -113,6 +113,9 @@ export const authService = {
       const response = await api.post<ProfileQueryResponse>(`/profile`, {
         userId,
       });
+      if (response?.data && response?.data?.profile) {
+        useUserStore.getState().updateProfile(response?.data?.profile);
+      }
       return response.data;
     } catch (error) {
       console.error('Profile query error:', error);
@@ -185,7 +188,15 @@ export const authService = {
 
   twitterOAuth: {
     async getAuthUrl() {
-      const response = await api.get('/twitter_oauth_init');
+      const userId = useUserStore.getState().getUserId();
+      const response = await api.get('/twitter_oauth_init?userId=' + userId);
+      const result = response.data;
+      return result.data;
+    },
+
+    async handleRevoke() {
+      const userId = useUserStore.getState().getUserId();
+      const response = await api.get('/twitter_oauth_revoke?userId=' + userId);
       const result = response.data;
       return result.data;
     },
