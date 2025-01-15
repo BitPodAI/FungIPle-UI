@@ -27,11 +27,11 @@ export interface Tag {
   id: string;
 }
 
-interface WatchItem {
+export interface WatchItem {
   username: string;
   avatar: string;
   name: string;
-  tags: [];
+  tags: string[];
 }
 
 export interface UserProfile {

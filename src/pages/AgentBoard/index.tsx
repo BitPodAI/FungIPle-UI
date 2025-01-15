@@ -7,14 +7,14 @@ import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/useUserStore';
 import { authService } from '@/services/auth';
 
-const SocialItem = ({ icon, account }: { icon: React.ReactNode; account?: string }) => {
+const SocialItem = ({ icon, account, onClick }: { icon: React.ReactNode; account?: string; onClick?: () => void; }) => {
   return (
-    <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]">
+    <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]" onClick={onClick}>
       {icon}
       {account ? (
         <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center inknut-antiqua">{account}</span>
       ) : (
-        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center inknut-antiqua">Go to bind</span>
+        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center inknut-antiqua">Auth and Link</span>
       )}
     </div>
   );
@@ -28,7 +28,7 @@ const IMIATE_OPTIONS =
 "aeyakovenko",
 "jessepollak",
 "shawmakesmagic",
-"everythingempt",
+"everythingempt0",
 ];
 
 const AgentBoard: React.FC = () => {
@@ -45,15 +45,16 @@ const AgentBoard: React.FC = () => {
         throw new Error('User not logged in');
       }
 
-      const newCfg =  { enabled, interval, imitate};
       const profileUpd = {
         agentCfg: { enabled, interval, imitate},
       }
 
       const userProfile = localStorage.getItem('userProfile');
-      var oldP =  JSON.parse(userProfile);
-      const updatedProfile = { ...oldP, ...profileUpd };
-      await authService.updateProfile(userId, updatedProfile);
+      if (userProfile) {
+        var oldP =  JSON.parse(userProfile);
+        const updatedProfile = { ...oldP, ...profileUpd };
+        await authService.updateProfile(userId, updatedProfile);
+      }
     } catch (err) {
       console.log(err instanceof Error ? err.message : 'Failed to update profile');
     }
@@ -77,6 +78,22 @@ const AgentBoard: React.FC = () => {
     }
   };
 
+  const handleTwitterAuth = async () => {
+    try {
+      // 1. Get URL
+      const { url, state } = await authService.twitterOAuth.getAuthUrl();
+      // 2. Store state
+      sessionStorage.setItem('twitter_oauth_state', state);
+      // 3. Open auth window
+      authService.twitterOAuth.createAuthWindow(url);
+      // 4. Wait for auth result
+      await authService.twitterOAuth.listenForAuthMessage();
+    } catch (err) {
+      console.error('Twitter auth error:', err);
+    } finally {
+    }
+  };
+
   useEffect(() => {
     setTokenUsed(100 + Math.floor(Math.random() * 200));
     const Xusername = useUserStore.getState().getXUsername();
@@ -91,7 +108,7 @@ const AgentBoard: React.FC = () => {
 
       <div className="w-[calc(100%-40px)] mx-[20px]">
         <div className="w-full mt-[20px] frc-center gap-[16px]">
-          <SocialItem icon={<img src={xIcon} />} account={Xusername} />
+          <SocialItem icon={<img src={xIcon} />} account={Xusername} onClick={handleTwitterAuth}/>
           <SocialItem icon={<img src={telegramIcon} />} />
         </div>
 
