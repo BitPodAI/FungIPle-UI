@@ -6,12 +6,18 @@ import MemoSVG from '@/assets/icons/memo.svg';
 import TranslateSVG from '@/assets/icons/translate.svg';
 import CopySVG from '@/assets/icons/copy.svg';
 import RefreshSVG from '@/assets/icons/refresh.svg';
+import HYTickSVG from '@/assets/icons/hy_tick.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
+import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 
 export const WatchItem: React.FC<Message> = ({ text, user, title, updatedAt }) => {
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
+  const { copy, isCopied } = useCopyToClipboard();
+  const handleCopy = async (text: string) => {
+    await copy(text);
+  };
 
   return (
     <div className={`flex justify-center mb-4 animate-fade-in`}>
@@ -44,7 +50,11 @@ export const WatchItem: React.FC<Message> = ({ text, user, title, updatedAt }) =
             <ReactSVG src={ShareSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
             <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500" />
             <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" />
-            <ReactSVG src={CopySVG} className="text-#C7C7C7 hover:text-gray-500" />
+            {!isCopied ? (
+              <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500" onClick={() => handleCopy(text)} />
+            ) : (
+              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
+            )}
             <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500" />
           </div>
         )}

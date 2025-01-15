@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import MemoItem from '../MemoItem';
 import TrashSVG from '@/assets/icons/trash.svg';
+import { ReactSVG } from 'react-svg';
 
 interface Memo {
   id: string;
@@ -52,21 +53,21 @@ const MemoList: React.FC = () => {
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-4">
-        <label className="flex items-center space-x-2">
+        <label className="flex items-center">
           <input
             className="w-5 h-5 mr-4 cursor-pointer"
             type="checkbox"
             checked={selectedIds.length === memos.length && memos.length > 0}
             onChange={e => handleSelectAll(e.target.checked)}
           />
-          <span>Select All</span>
+          <span className="text-sm averia-serif-libre">Select All</span>
         </label>
         <div
-          className="px-3 py-1 border-2 border-solid border-#CFCFCF rounded-xl text-black text-10px py-2 rounded disabled:opacity-50 frc-center gap-2"
+          className="px-4 py-1 border-2 border-solid border-#CFCFCF text-gray-400 hover:border-red-200 hover:text-red-200  rounded-xl text-xs py-2 rounded disabled:opacity-50 frc-center gap-2"
           onClick={handleDeleteSelected}
         >
-          <img src={TrashSVG} className="w-5 h-5" />
-          <span>Delete</span>
+          <ReactSVG src={TrashSVG} className="w-4 h-4" />
+          <span className="text-sm averia-serif-libre">Delete</span>
         </div>
       </div>
 
