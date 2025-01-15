@@ -103,6 +103,16 @@ class WatchApi {
       throw error;
     }
   }
+
+  async reTweeted(text: string, userId: string): Promise<string> {
+      try {
+        const response = await api.post(`/re_twitter`, { text, userId });
+        return response.data;
+      } catch (error) {
+        console.error('reTweeted error:', error);
+        throw error;
+      }
+  }
 }
 
 export const watchApi = new WatchApi();

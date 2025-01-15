@@ -6,12 +6,32 @@ import MemoSVG from '@/assets/icons/memo.svg';
 import TranslateSVG from '@/assets/icons/translate.svg';
 import CopySVG from '@/assets/icons/copy.svg';
 import RefreshSVG from '@/assets/icons/refresh.svg';
+import { watchApi } from '@/services/watch';
+import { useUserStore } from '@/stores/useUserStore';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const WatchItem: React.FC<Message> = ({ text, user, title, updatedAt }) => {
   const isUser = user === 'user';
+  const userId = useUserStore.getState().getUserId();
+  const notify = () => toast("Shared on X");
+
+  const handleShareClick = (text: string) => {
+    console.log(text);
+    notify();
+    watchApi.reTweeted(text, userId?userId:'');
+  };
 
   return (
     <div className={`flex justify-center mb-4 animate-fade-in`}>
+    <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        pauseOnHover={false}
+        theme="colored"
+      />
       <div
         className={`flex flex-col max-w-[80%] items-center px-6 py-2 ${
           isUser
@@ -38,7 +58,7 @@ export const WatchItem: React.FC<Message> = ({ text, user, title, updatedAt }) =
         )}
         {!isUser && (
           <div className="w-full flex items-center justify-end gap-4">
-            <ReactSVG src={ShareSVG} className="text-#C7C7C7 hover:text-gray-500" />
+            <ReactSVG src={ShareSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
             <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500" />
             <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" />
             <ReactSVG src={CopySVG} className="text-#C7C7C7 hover:text-gray-500" />
