@@ -60,7 +60,7 @@ const AgentBoard: React.FC = () => {
 
       const userProfile = localStorage.getItem('userProfile');
       if (userProfile) {
-        var oldP =  JSON.parse(userProfile);
+        const oldP =  JSON.parse(userProfile);
         const updatedProfile = { ...oldP, ...profileUpd };
         await authService.updateProfile(userId, updatedProfile);
       }
@@ -110,8 +110,7 @@ const AgentBoard: React.FC = () => {
       }
     } catch (err) {
       console.error('Twitter auth error:', err);
-    } finally {
-    }
+    } 
   };
 
   const beginRevoke = async () => {
