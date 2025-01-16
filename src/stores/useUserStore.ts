@@ -57,6 +57,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
 
   updateProfile: profile => {
+    if(!profile) return;
     set({ userProfile: profile });
     localStorage.setItem('userProfile', JSON.stringify(profile));
   },

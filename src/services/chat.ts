@@ -1,5 +1,6 @@
 import api from './axios';
 import { Chat, Message } from '../types/chat';
+import { useUserStore } from '@/stores/useUserStore';
 
 export const chatApi = {
   // chat with cuckoo, send message to cuckoo and get response
@@ -9,10 +10,15 @@ export const chatApi = {
   },
 
   createChat: async (initialMessage: string): Promise<Message> => {
+    const userId = useUserStore.getState().getUserId();
     const result = await api.post(`/chat`, {
       text: initialMessage,
+      userId: userId,
     });
     const response = result.data.data?.response;
+    const profile = result.data.data?.profile;
+    useUserStore.getState().updateProfile(profile);
+
     const json = JSON.parse(response);
     return {
       text: json.text,

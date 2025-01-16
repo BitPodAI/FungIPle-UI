@@ -33,7 +33,8 @@ const IMIATE_OPTIONS =
 
 const AgentBoard: React.FC = () => {
   const [Xusername, setXusername] = useState('@FungIPle');
-  const [enabled, setEnabled] = useState(true);
+  // todo: refresh from userprofile.
+  const [enabled, setEnabled] = useState(false);
   const [interval, setInterval] = useState('24h');
   const [imitate, setImitate] = useState('elonmusk');
   const [tokenUsed, setTokenUsed] = useState(0);
@@ -99,6 +100,12 @@ const AgentBoard: React.FC = () => {
     const Xusername = useUserStore.getState().getXUsername();
     if (Xusername) {
       setXusername('@' + Xusername);
+    }
+    if( useUserStore.getState().userProfile?.agentCfg) {
+      const { enabled, interval, imitate } = useUserStore.getState().userProfile.agentCfg;
+      setEnabled(enabled);
+      setInterval(interval);
+      setImitate(imitate);
     }
   }, []);
 
