@@ -66,14 +66,18 @@ class WatchApi {
       return [];
     }
     const watchlist = useUserStore.getState().getWatchlist();
+    const uID = useUserStore.getState().getUserId();
 
     try {
       const response = await api.post(`/watch`, {
         watchlist: watchlist,
         cursor: this.cursor,
+        userId: uID,
       });
       const data: WatchResponse = response.data.data.watchlist;
-
+      const profile = response.data.data.profile;
+      // console.log('profile:', JSON.stringify(profile));
+      useUserStore.getState().updateProfile(profile);
       // Update
       this.cursor = data.cursor;
       this.hasMore = data.hasMore;

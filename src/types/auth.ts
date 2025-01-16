@@ -60,6 +60,11 @@ export interface UserProfile {
     currentCount: number;
     lastTweetTime?: number;
   };
+  agentCfg?: {
+    enabled: boolean;
+    interval: string;
+    imitate: string;
+ };
   stats: {
     totalTweets: number;
     successfulTweets: number;

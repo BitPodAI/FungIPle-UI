@@ -163,6 +163,12 @@ const AgentBoard: React.FC = () => {
     else {
       setXusername('');
     }
+    if(useUserStore.getState().userProfile?.agentCfg) {
+      const { enabled, interval, imitate } = useUserStore.getState().userProfile.agentCfg;
+      setEnabled(enabled);
+      setInterval(interval);
+      setImitate(imitate);
+    }
   }, [Xusername]);
 
   return (
