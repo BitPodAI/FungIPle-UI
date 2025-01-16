@@ -126,6 +126,13 @@ input[type='checkbox']:hover {
   border-color: #2cc83e;
 }
 
+textarea {
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #000000;

@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
-import { ArrowPathIcon } from '@heroicons/react/24/solid';
 import sendIcon from '@/assets/icons/send.svg';
-import voiceIcon from '@/assets/icons/voice.svg';
+// import voiceIcon from '@/assets/icons/voice.svg';
 import { ReactSVG } from 'react-svg';
+import loadingIcon from '@/assets/icons/loading.svg';
 interface ChatInputProps {
   onSend: (message: string) => Promise<void>;
   disabled?: boolean;
@@ -21,13 +21,15 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
     setIsLoading(true);
     try {
       await onSend(message.trim());
-      setMessage('');
+    } catch (error) {
+      console.error('Error sending message:', error);
     } finally {
+      setMessage('');
       setIsLoading(false);
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
@@ -42,7 +44,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
             ref={textareaRef}
             value={message}
             onChange={e => setMessage(e.target.value)}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleKeyUp}
             placeholder={placeholder}
             disabled={disabled || isLoading}
             rows={2}
@@ -50,6 +52,15 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
           />
         </div>
         <div className="flex items-center justify-end">
+          {/* <button
+            type="submit"
+            disabled={!message.trim() || isLoading || disabled}
+            className={`frc-center font-medium text-[#B6B6B6] ${
+              !message.trim() || isLoading || disabled ? 'cursor-not-allowed' : 'hover:text-blue-600'
+            }`}
+          >
+            {isLoading ? <ArrowPathIcon className="h-5 w-5" /> : <ReactSVG src={voiceIcon} className="h-5 w-5 frc-center" />}
+          </button> */}
           <button
             type="submit"
             disabled={!message.trim() || isLoading || disabled}
@@ -57,16 +68,13 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
               !message.trim() || isLoading || disabled ? 'cursor-not-allowed' : 'hover:text-blue-600'
             }`}
           >
-            {isLoading ? <ArrowPathIcon className="animate-spin h-5 w-5" /> : <ReactSVG src={voiceIcon} className="h-5 w-5 frc-center" />}
-          </button>
-          <button
-            type="submit"
-            disabled={!message.trim() || isLoading || disabled}
-            className={`frc-center font-medium text-[#B6B6B6] ${
-              !message.trim() || isLoading || disabled ? 'cursor-not-allowed' : 'hover:text-blue-600'
-            }`}
-          >
-            {isLoading ? <ArrowPathIcon className="animate-spin h-5 w-5" /> : <ReactSVG src={sendIcon} className="h-5 w-5 frc-center" />}
+            {isLoading ? (
+              <div className="relative w-5 h-5 frc-center rotate">
+                <img src={loadingIcon} alt="loading" className="w-5 h-5" />
+              </div>
+            ) : (
+              <ReactSVG src={sendIcon} className="h-5 w-5 frc-center" />
+            )}
           </button>
         </div>
       </div>

@@ -13,16 +13,15 @@ import leftImg from '@/assets/images/border-bg/left.png';
 import rightImg from '@/assets/images/border-bg/right.png';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 
-
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
   const { agentname } = useAgentInfo();
-  var mname = "Blommy";
-  if(agentname) {
+  let mname = 'Blommy';
+  if (agentname) {
     mname = agentname;
   }
   const [messages, setMessages] = useState<Message[]>([
     {
-      text: 'Hey, '+ mname +'! Can u tell me how to find 100x Crypto Gems?',
+      text: 'Hey, ' + mname + '! Can u tell me how to find 100x Crypto Gems?',
       user: 'user',
       action: 'NONE',
     },
