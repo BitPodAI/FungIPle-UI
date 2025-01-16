@@ -6,38 +6,38 @@ import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/useUserStore';
 import { authService } from '@/services/auth';
-import Modal from 'react-modal';
-import './index.css';
+import PixModal from '@/components/common/PixModal';
+import ShortButton from '../Chat/components/ShortButton';
 
-Modal.setAppElement('#root');
-
-const SocialItem = ({ icon, account, onClick, onRevoke }: {
+const SocialItem = ({
+  icon,
+  account,
+  onClick,
+  onRevoke,
+}: {
   icon: React.ReactNode;
   account?: string;
   onClick?: () => void;
-  onRevoke?: () => void; }) => {
+  onRevoke?: () => void;
+}) => {
   return (
     <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]">
       {icon}
       {account ? (
-        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center averia-serif-libre" onClick={onRevoke}>{account}</span>
+        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center averia-serif-libre" onClick={onRevoke}>
+          {account}
+        </span>
       ) : (
-        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center averia-serif-libre" onClick={onClick}>Go to Link</span>
+        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center averia-serif-libre" onClick={onClick}>
+          Go to Link
+        </span>
       )}
     </div>
   );
 };
 
 const INTERVAL_OPTIONS = ['1h', '2h', '3h', '12h', '24h'];
-const IMIATE_OPTIONS =
-[
-"elonmusk",
-"cz_binance",
-"aeyakovenko",
-"jessepollak",
-"shawmakesmagic",
-"everythingempt0",
-];
+const IMIATE_OPTIONS = ['elonmusk', 'cz_binance', 'aeyakovenko', 'jessepollak', 'shawmakesmagic', 'everythingempt0'];
 
 const AgentBoard: React.FC = () => {
   const [Xusername, setXusername] = useState('');
@@ -47,7 +47,7 @@ const AgentBoard: React.FC = () => {
   //const [tokenUsed, setTokenUsed] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  async function set_agent_cfg(enabled: boolean,interval: string,imitate : string) {
+  async function set_agent_cfg(enabled: boolean, interval: string, imitate: string) {
     try {
       const userId = useUserStore.getState().getUserId();
       if (!userId) {
@@ -55,12 +55,12 @@ const AgentBoard: React.FC = () => {
       }
 
       const profileUpd = {
-        agentCfg: { enabled, interval, imitate},
-      }
+        agentCfg: { enabled, interval, imitate },
+      };
 
       const userProfile = localStorage.getItem('userProfile');
       if (userProfile) {
-        const oldP =  JSON.parse(userProfile);
+        const oldP = JSON.parse(userProfile);
         const updatedProfile = { ...oldP, ...profileUpd };
         await authService.updateProfile(userId, updatedProfile);
       }
@@ -73,7 +73,6 @@ const AgentBoard: React.FC = () => {
     set_agent_cfg(!enabled, interval, imitate);
     setEnabled(!enabled);
   };
-
 
   const handleSelectionChange = (event: React.MouseEvent<HTMLDivElement>, type: 'interval' | 'imitate') => {
     const target = event.target as HTMLElement;
@@ -104,24 +103,25 @@ const AgentBoard: React.FC = () => {
       const twUsername = useUserStore.getState().getXUsername();
       if (twUsername) {
         setXusername(twUsername);
-      }
-      else {
-        setXusername("");
+      } else {
+        setXusername('');
       }
     } catch (err) {
       console.error('Twitter auth error:', err);
-    } 
+    }
   };
 
-  const beginRevoke = async () => {
+  const beginRevoke = () => {
     setIsModalOpen(true);
   };
 
-  const closeModal = () => {
+  const closeModal = (e?: React.MouseEvent) => {
+    e?.preventDefault();
     setIsModalOpen(false);
   };
 
-  const handleTwitterAuthRevoke = async () => {
+  const handleTwitterAuthRevoke = async (e: React.MouseEvent) => {
+    e.preventDefault();
     try {
       await authService.twitterOAuth.handleRevoke();
       const userId = useUserStore.getState().getUserId();
@@ -131,9 +131,8 @@ const AgentBoard: React.FC = () => {
       const twUsername = useUserStore.getState().getXUsername();
       if (twUsername) {
         setXusername(twUsername);
-      }
-      else {
-        setXusername("");
+      } else {
+        setXusername('');
       }
       closeModal();
     } catch (err) {
@@ -159,12 +158,12 @@ const AgentBoard: React.FC = () => {
     const accessToken = useUserStore.getState().getXAccessToken();
     if (twUsername && accessToken) {
       setXusername('@' + twUsername);
-    }
-    else {
+    } else {
       setXusername('');
     }
-    if(useUserStore.getState().userProfile?.agentCfg) {
-      const { enabled, interval, imitate } = useUserStore.getState().userProfile.agentCfg;
+    const agentConfig = useUserStore.getState().userProfile?.agentCfg;
+    if (agentConfig) {
+      const { enabled, interval, imitate } = agentConfig;
       setEnabled(enabled);
       setInterval(interval);
       setImitate(imitate);
@@ -175,21 +174,29 @@ const AgentBoard: React.FC = () => {
     <div className="page press-start-2p max-w-[490px]">
       <AgentHeader />
 
-      <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
-        contentLabel="Revoke Twitter Auth"
-        className="modal-content"
-        overlayClassName="modal-overlay"
-      >
-        <h2>Confirm to Revoke the Twitter Authorization?</h2>
-        <button onClick={handleTwitterAuthRevoke}>Yes</button>
-        <button onClick={closeModal}>No</button>
-      </Modal>
+      <PixModal isOpen={isModalOpen} onClose={closeModal}>
+        <div className="flex flex-col gap-4 max-w-[400px] averia-serif-libre">
+          <h2 className="text-center my-0">Revoke Twitter Authorization</h2>
+          <h3 className="text-center my-10">Confirm to Revoke the Twitter Authorization?</h3>
+          <div className="flex justify-center gap-4">
+            <ShortButton
+              onClick={(e: React.MouseEvent) => {
+                handleTwitterAuthRevoke(e);
+              }}
+              className="text-black text-center"
+            >
+              Yes
+            </ShortButton>
+            <ShortButton onClick={closeModal} className="text-black text-center">
+              No
+            </ShortButton>
+          </div>
+        </div>
+      </PixModal>
 
       <div className="w-[calc(100%-40px)] mx-[20px]">
         <div className="w-full mt-[20px] frc-center gap-[16px]">
-          <SocialItem icon={<img src={xIcon} />} account={Xusername} onClick={handleTwitterAuth} onRevoke={beginRevoke}/>
+          <SocialItem icon={<img src={xIcon} />} account={Xusername} onClick={handleTwitterAuth} onRevoke={beginRevoke} />
           <SocialItem icon={<img src={telegramIcon} />} />
         </div>
 
@@ -261,7 +268,6 @@ const AgentBoard: React.FC = () => {
             </div>
           </div>
         </form>
-
       </div>
     </div>
   );

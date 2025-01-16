@@ -54,7 +54,7 @@ const AgentCustomized: React.FC = () => {
         throw new Error('User not logged in');
       }
 
-      var agentname = name;
+      const agentname = name;
       // 构建profile更新对象
       const profileUpdate = {
         userId,
