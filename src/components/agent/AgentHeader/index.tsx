@@ -1,4 +1,4 @@
-import avatarIcon from '@/assets/images/chat/avatar.png';
+import avatarIcon from '@/assets/images/chat/Monkey-4.png';
 import walletIcon from '@/assets/icons/wallet.svg';
 import lifeBarIcon from '@/assets/icons/life-bar.svg';
 import './index.css';
