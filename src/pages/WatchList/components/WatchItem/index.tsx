@@ -7,6 +7,7 @@ import TranslateSVG from '@/assets/icons/translate.svg';
 import CopySVG from '@/assets/icons/copy.svg';
 import RefreshSVG from '@/assets/icons/refresh.svg';
 import HYTickSVG from '@/assets/icons/hy_tick.svg';
+//import CloseSVG from '@/assets/icons/close.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
@@ -28,10 +29,12 @@ export const WatchItem: React.FC<Message> = ({ text, user, title, updatedAt }) =
             : 'bg-#F3F3F3 text-black rounded-tl-[24px] rounded-tr-[24px] rounded-bl-none rounded-br-[24px]'
         }`}
       >
-        {updatedAt && (
+        {updatedAt && (  
+        <div className="w-full flex items-center justify-end gap-4">
           <p className="w-full text-[12px] averia-serif-libre text-gray-600" style={{ textAlign: 'left' }}>
             {updatedAt}
           </p>
+        </div>
         )}
         {title && (
           <p className="w-full text-[14px] averia-serif-libre" style={{ textAlign: 'left', fontWeight: 'bold' }}>

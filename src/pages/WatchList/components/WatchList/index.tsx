@@ -17,7 +17,7 @@ export const WatchList: React.FC<WatchListProps> = ({ messages, loading = false,
 
   const scrollToBottom = useCallback(() => {
     if (autoScroll && messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      messagesEndRef.current.scrollIntoView({ behavior: 'auto' });
     }
   }, [autoScroll]);
 
