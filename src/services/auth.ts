@@ -244,12 +244,13 @@ export const authService = {
             } catch (error) {
               reject(error);
             }
+            // Clear
+            window.removeEventListener('message', handler);
           } else if (event.data.type === 'TWITTER_AUTH_ERROR') {
             reject(new Error(event.data.error));
+            // Clear
+            window.removeEventListener('message', handler);
           }
-
-          // Clear
-          window.removeEventListener('message', handler);
         };
 
         window.addEventListener('message', handler);

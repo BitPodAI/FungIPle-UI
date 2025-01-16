@@ -42,7 +42,7 @@ const IMIATE_OPTIONS =
 const AgentBoard: React.FC = () => {
   const [Xusername, setXusername] = useState('');
   const [enabled, setEnabled] = useState(true);
-  const [interval, setInterval] = useState('24h');
+  const [interval, setInterval] = useState('2h');
   const [imitate, setImitate] = useState('elonmusk');
   const [tokenUsed, setTokenUsed] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -172,11 +172,11 @@ const AgentBoard: React.FC = () => {
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
-        contentLabel="Revoke Twitter OAuth"
+        contentLabel="Revoke Twitter Auth"
         className="modal-content"
         overlayClassName="modal-overlay"
       >
-        <h2>Confirm to Revoke Twitter OAuth?</h2>
+        <h2>Confirm to Revoke the Twitter Authorization?</h2>
         <button onClick={handleTwitterAuthRevoke}>Yes</button>
         <button onClick={closeModal}>No</button>
       </Modal>
