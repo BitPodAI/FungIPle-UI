@@ -6,6 +6,7 @@ import { LoadingProvider } from './context/LoadingContext';
 import './App.css';
 import './mock';
 import { useUserStore } from './stores/useUserStore';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
   const { width } = useWindowResize(500);
@@ -24,6 +25,14 @@ const App: React.FC = () => {
 
   return (
     <LoadingProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        pauseOnHover={false}
+        theme="colored"
+      />
       <Router>
         <AppRoutes />
       </Router>

@@ -6,15 +6,23 @@ import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/useUserStore';
 import { authService } from '@/services/auth';
+import Modal from 'react-modal';
+import './index.css';
 
-const SocialItem = ({ icon, account, onClick }: { icon: React.ReactNode; account?: string; onClick?: () => void; }) => {
+Modal.setAppElement('#root');
+
+const SocialItem = ({ icon, account, onClick, onRevoke }: {
+  icon: React.ReactNode;
+  account?: string;
+  onClick?: () => void;
+  onRevoke?: () => void; }) => {
   return (
-    <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]" onClick={onClick}>
+    <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]">
       {icon}
       {account ? (
-        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center inknut-antiqua">{account}</span>
+        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center averia-serif-libre" onClick={onRevoke}>{account}</span>
       ) : (
-        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center inknut-antiqua">Auth and Link</span>
+        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center averia-serif-libre" onClick={onClick}>Go to Link</span>
       )}
     </div>
   );
@@ -32,12 +40,12 @@ const IMIATE_OPTIONS =
 ];
 
 const AgentBoard: React.FC = () => {
-  const [Xusername, setXusername] = useState('@FungIPle');
-  // todo: refresh from userprofile.
-  const [enabled, setEnabled] = useState(false);
-  const [interval, setInterval] = useState('24h');
+  const [Xusername, setXusername] = useState('');
+  const [enabled, setEnabled] = useState(true);
+  const [interval, setInterval] = useState('2h');
   const [imitate, setImitate] = useState('elonmusk');
-  const [tokenUsed, setTokenUsed] = useState(0);
+  //const [tokenUsed, setTokenUsed] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   async function set_agent_cfg(enabled: boolean,interval: string,imitate : string) {
     try {
@@ -52,7 +60,7 @@ const AgentBoard: React.FC = () => {
 
       const userProfile = localStorage.getItem('userProfile');
       if (userProfile) {
-        var oldP =  JSON.parse(userProfile);
+        const oldP =  JSON.parse(userProfile);
         const updatedProfile = { ...oldP, ...profileUpd };
         await authService.updateProfile(userId, updatedProfile);
       }
@@ -89,33 +97,99 @@ const AgentBoard: React.FC = () => {
       authService.twitterOAuth.createAuthWindow(url);
       // 4. Wait for auth result
       await authService.twitterOAuth.listenForAuthMessage();
+      const userId = useUserStore.getState().getUserId();
+      if (userId) {
+        await authService.getProfile(userId);
+      }
+      const twUsername = useUserStore.getState().getXUsername();
+      if (twUsername) {
+        setXusername(twUsername);
+      }
+      else {
+        setXusername("");
+      }
     } catch (err) {
       console.error('Twitter auth error:', err);
-    } finally {
+    } 
+  };
+
+  const beginRevoke = async () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleTwitterAuthRevoke = async () => {
+    try {
+      await authService.twitterOAuth.handleRevoke();
+      const userId = useUserStore.getState().getUserId();
+      if (userId) {
+        await authService.getProfile(userId);
+      }
+      const twUsername = useUserStore.getState().getXUsername();
+      if (twUsername) {
+        setXusername(twUsername);
+      }
+      else {
+        setXusername("");
+      }
+      closeModal();
+    } catch (err) {
+      console.error('Twitter revoke error:', err);
     }
   };
 
   useEffect(() => {
-    setTokenUsed(100 + Math.floor(Math.random() * 200));
-    const Xusername = useUserStore.getState().getXUsername();
-    if (Xusername) {
-      setXusername('@' + Xusername);
+    const fetchUserProfile = async () => {
+      try {
+        const userId = useUserStore.getState().getUserId();
+        if (userId) {
+          await authService.getProfile(userId);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+    fetchUserProfile();
+
+    //setTokenUsed(100 + Math.floor(Math.random() * 200));
+    const twUsername = useUserStore.getState().getXUsername();
+    const accessToken = useUserStore.getState().getXAccessToken();
+    if (twUsername && accessToken) {
+      setXusername('@' + twUsername);
     }
-    if( useUserStore.getState().userProfile?.agentCfg) {
+    else {
+      setXusername('');
+    }
+    if(useUserStore.getState().userProfile?.agentCfg) {
       const { enabled, interval, imitate } = useUserStore.getState().userProfile.agentCfg;
       setEnabled(enabled);
       setInterval(interval);
       setImitate(imitate);
     }
-  }, []);
+  }, [Xusername]);
 
   return (
     <div className="page press-start-2p max-w-[490px]">
       <AgentHeader />
 
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel="Revoke Twitter Auth"
+        className="modal-content"
+        overlayClassName="modal-overlay"
+      >
+        <h2>Confirm to Revoke the Twitter Authorization?</h2>
+        <button onClick={handleTwitterAuthRevoke}>Yes</button>
+        <button onClick={closeModal}>No</button>
+      </Modal>
+
       <div className="w-[calc(100%-40px)] mx-[20px]">
         <div className="w-full mt-[20px] frc-center gap-[16px]">
-          <SocialItem icon={<img src={xIcon} />} account={Xusername} onClick={handleTwitterAuth}/>
+          <SocialItem icon={<img src={xIcon} />} account={Xusername} onClick={handleTwitterAuth} onRevoke={beginRevoke}/>
           <SocialItem icon={<img src={telegramIcon} />} />
         </div>
 
@@ -188,20 +262,6 @@ const AgentBoard: React.FC = () => {
           </div>
         </form>
 
-        <div className="w-full mt-[20px] box-border border-3 border-solid border-[#E3E3E3] rounded-[24px] p-[16px]">
-          <div className="text-[14px] mb-[16px]">APL configuration</div>
-          <div className="w-full flex flex-col items-start justify-start">
-            <span className="relative w-full flex items-center gap-1">
-              <span className="absolute top-0 left-0 bg-[#F3F3F3] h-[16px] w-full rounded-full my-2px">
-                <span className="bg-[#39CE78] h-[16px] absolute top-0 left-0 rounded-full" style={{ width: tokenUsed }}></span>
-              </span>
-            </span>
-            <span className="text-[12px] mt-8">{tokenUsed} / 100000</span>
-          </div>
-          <div className="w-full flex items-center justify-end mt-4">
-            <button className="w-[140px] h-[48px] black-bg text-[14px] text-white inknut-antiqua">Buy Tokens</button>
-          </div>
-        </div>
       </div>
     </div>
   );

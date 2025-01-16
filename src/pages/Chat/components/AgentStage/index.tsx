@@ -12,10 +12,24 @@ import { useAgentInfo } from '@/hooks/useAgentInfo';
 const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   const { openGiftModal } = usePixModal();
   const tips = [
-    'I am a smart agent, I can help you solve problems and answer questions.',
-    'I am a smart agent, I can help you solve problems and answer questions.',
-    'I am a smart agent, I can help you solve problems and answer questions.',
-    'I am a smart agent, I can help you solve problems and answer questions.',
+    "Always remember invest in the feature, not just the present!",
+    "The world doesn’t pay you for what you know; it pays you for what you do.",
+    "Wise spending is part of wise investing. And it’s never too late to start.",
+    "Investing puts money to work. The only reason to save money is to invest it.",
+    "If you’re saving, you’re succeeding.",
+    "The first rule of compounding: Never interrupt it unnecessarily.",
+    "Never depend on a single income. Make an investment to create a second source.",
+    "When you invest, you are buying a day that you don’t have to work.",
+    "Live within your income and save so you can invest. Learn what you need to learn.",
+    "‘Experience’ is what you got when you didn’t get what you wanted.",
+    "Invest in yourself. Your career is the engine of your wealth.",
+    "Rapidly changing industries are the enemy of the investor.",
+    "When you’re in a major market downturn, the beta eats the alpha.",
+    "You can’t predict, [but] you can prepare.",
+    "If investing wasn’t hard, everyone would be rich.",
+    "Never stop investing. Never stop improving. Never stop doing something new.",
+    "A great business at a fair price is superior to a fair business at a great price.",
+    //'I am a smart agent, I can help you solve problems and answer questions.',
   ];
 
   const tip = tips[Math.floor(Math.random() * tips.length)];
@@ -46,7 +60,7 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
         <div className="relative w-full">
           <div className="absolute z-1 bottom-[50px] right-200px frc-center">
             <div className="dialog-wrap">
-              <p className="w-[180px] text-[12px] inknut-antiqua">{currentTip}</p>
+              <p className="w-[180px] text-[12px] averia-serif-libre">{currentTip}</p>
             </div>
           </div>
           <img src={agentIcon} alt="agent" className="w-[120px] h-[120px] object-contain transform absolute z-2 bottom-0 right-110px" />

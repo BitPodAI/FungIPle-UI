@@ -10,6 +10,12 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Averia Serif Libre';
+  src: url('@/assets/fonts/AveriaSerifLibre-Regular-7.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 :root {
   --window-width: 100vw;
@@ -99,7 +105,8 @@ input[type='checkbox'] {
 input[type='checkbox']:checked {
   background-color: #2cc83e;
   border-color: #2cc83e;
-  background-image: url("../src/assets/icons/tick.svg");
+  color: #f0f3f4;
+  background-image: url('../src/assets/icons/tick.svg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: 12px 12px;

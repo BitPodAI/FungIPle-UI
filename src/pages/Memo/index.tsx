@@ -17,8 +17,8 @@ const Memo: React.FC = () => {
       <div className="w-full text-left">
         <h3 className="ml-20px p-0 mb-0">Memo</h3>
       </div>
-      <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent w-[calc(100%-80px)]">
-        <ChatInput placeholder={'write something...'} onSend={createMemo} />
+      <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent box-border w-[calc(100%-40px)]">
+        <ChatInput placeholder={'Note something...'} onSend={createMemo} />
       </PixBorder>
       <MemoList />
     </div>

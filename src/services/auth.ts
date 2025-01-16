@@ -113,6 +113,9 @@ export const authService = {
       const response = await api.post<ProfileQueryResponse>(`/profile`, {
         userId,
       });
+      if (response?.data && response?.data?.profile) {
+        useUserStore.getState().updateProfile(response?.data?.profile);
+      }
       return response.data;
     } catch (error) {
       console.error('Profile query error:', error);
@@ -132,7 +135,7 @@ export const authService = {
           userId,
         },
       });
-      return response.data;
+      return response.data.data;
     } catch (error) {
       console.error('Get config error:', error);
       throw error;
@@ -185,7 +188,15 @@ export const authService = {
 
   twitterOAuth: {
     async getAuthUrl() {
-      const response = await api.get('/twitter_oauth_init');
+      const userId = useUserStore.getState().getUserId();
+      const response = await api.get('/twitter_oauth_init?userId=' + userId);
+      const result = response.data;
+      return result.data;
+    },
+
+    async handleRevoke() {
+      const userId = useUserStore.getState().getUserId();
+      const response = await api.get('/twitter_oauth_revoke?userId=' + userId);
       const result = response.data;
       return result.data;
     },
@@ -233,12 +244,13 @@ export const authService = {
             } catch (error) {
               reject(error);
             }
+            // Clear
+            window.removeEventListener('message', handler);
           } else if (event.data.type === 'TWITTER_AUTH_ERROR') {
             reject(new Error(event.data.error));
+            // Clear
+            window.removeEventListener('message', handler);
           }
-
-          // Clear
-          window.removeEventListener('message', handler);
         };
 
         window.addEventListener('message', handler);
