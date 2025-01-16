@@ -25,7 +25,7 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
     'Invest in yourself. Your career is the engine of your wealth.',
     'Rapidly changing industries are the enemy of the investor.',
     'When you’re in a major market downturn, the beta eats the alpha.',
-    'You can’t predict, [but] you can prepare.',
+    'You can’t predict, but you can prepare.',
     'If investing wasn’t hard, everyone would be rich.',
     'Never stop investing. Never stop improving. Never stop doing something new.',
     'A great business at a fair price is superior to a fair business at a great price.',
