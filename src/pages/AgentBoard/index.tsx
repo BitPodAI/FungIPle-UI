@@ -44,7 +44,7 @@ const AgentBoard: React.FC = () => {
   const [enabled, setEnabled] = useState(true);
   const [interval, setInterval] = useState('2h');
   const [imitate, setImitate] = useState('elonmusk');
-  const [tokenUsed, setTokenUsed] = useState(0);
+  //const [tokenUsed, setTokenUsed] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   async function set_agent_cfg(enabled: boolean,interval: string,imitate : string) {
@@ -154,7 +154,7 @@ const AgentBoard: React.FC = () => {
     };
     fetchUserProfile();
 
-    setTokenUsed(100 + Math.floor(Math.random() * 200));
+    //setTokenUsed(100 + Math.floor(Math.random() * 200));
     const twUsername = useUserStore.getState().getXUsername();
     const accessToken = useUserStore.getState().getXAccessToken();
     if (twUsername && accessToken) {
@@ -256,20 +256,6 @@ const AgentBoard: React.FC = () => {
           </div>
         </form>
 
-        <div className="w-full mt-[20px] box-border border-3 border-solid border-[#E3E3E3] rounded-[24px] p-[16px]">
-          <div className="text-[14px] mb-[16px]">API configuration</div>
-          <div className="w-full flex flex-col items-start justify-start">
-            <span className="relative w-full flex items-center gap-1">
-              <span className="absolute top-0 left-0 bg-[#F3F3F3] h-[16px] w-full rounded-full my-2px">
-                <span className="bg-[#39CE78] h-[16px] absolute top-0 left-0 rounded-full" style={{ width: tokenUsed }}></span>
-              </span>
-            </span>
-            <span className="text-[12px] mt-8">{tokenUsed} / 100000</span>
-          </div>
-          <div className="w-full flex items-center justify-end mt-4">
-            <button className="w-[140px] h-[48px] black-bg text-[14px] text-white averia-serif-libre">Buy Tokens</button>
-          </div>
-        </div>
       </div>
     </div>
   );
