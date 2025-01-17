@@ -3,11 +3,19 @@ import { toast } from 'react-toastify';
 
 const useTranslate = () => {
   const notify = () => toast('Translating');
-  function isAllUpperCase(str) {
+  function isAllUpperCase(str: string) {
     const regex = /^[A-Z]+$/;
     return regex.test(str);
 }
   const handleTranslateClick = async (text: string): Promise<string>  => {
+    let prefix = "handleTranslatetext-";
+    let key = prefix +  text.slice(0, 100);
+    let value = sessionStorage.getItem(key);
+    if (value) {
+      console.log("already translate, cache: ", value);
+      return value;
+    }
+
     console.log("handleTranslateClick req: ", text);
     notify();
     if (!text || text.trim() === '') {
@@ -30,7 +38,10 @@ const useTranslate = () => {
         let res = await watchApi.translateText(text);
         finalText = res;
       }
-      console.log("handleTranslateClick res: ", finalText);
+      console.log("handleTranslate, and cache. finalText: ", finalText);
+      sessionStorage.setItem(key, finalText);
+      let key2 = prefix +  finalText.slice(0, 100);
+      sessionStorage.setItem(key2, text);
       return finalText;
     } catch (error) {
       console.error('Translation failed:', error);
