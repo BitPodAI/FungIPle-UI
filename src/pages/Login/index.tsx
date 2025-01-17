@@ -9,7 +9,7 @@ import { authService } from '@/services/auth';
 
 
 export default function Login() {
-  const { login, logout, user } = usePrivy();
+  const { login, user } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -21,8 +21,6 @@ export default function Login() {
     }
     else {
       console.log(user);
-      await logout();
-      console.log(user);
       setError("Already logged in.");
     }
   };
@@ -31,11 +29,9 @@ export default function Login() {
     const login = async () => {
       try {
         if (user && user.google) {
-          const username = user.google.name || "guest";
-          const password = generateGuestPassword(username);
-          const email = user.google.email || "gmail";
-          const credentials = { username, password, email };
-          await authService.guestLogin(credentials);
+          const userId = user.id || "guest";
+          const gmail = user.google.email || "gmail";
+          await authService.login(userId, gmail);
           navigate('/egg-select');
         }
       } catch (error) {
@@ -50,10 +46,11 @@ export default function Login() {
       return;
     }
 
+    // Firstly login by privy
     if (user && (user.google || user.twitter)) {
       login();
     }
-  }, [user]);
+  });
 
   function simpleHash(input: string) {
     let hash = 0;

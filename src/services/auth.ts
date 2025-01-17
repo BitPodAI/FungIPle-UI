@@ -42,9 +42,9 @@ export const authService = {
    * @returns Login response
    * @throws User exception
    */
-  async login(userId: string, token: string): Promise<ApiResponse<LoginResponse['data']>> {
+  async login(userId: string, gmail: string): Promise<ApiResponse<LoginResponse['data']>> {
     try {
-      const response = await api.post<LoginResponse>('/login', { userId, token });
+      const response = await api.post<LoginResponse>('/login', { userId, gmail });
 
       if (!response?.data.success) {
         throw new Error(response.data.message || 'Login Failed');
