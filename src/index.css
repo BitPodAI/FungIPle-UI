@@ -5,12 +5,6 @@
   font-style: normal;
 }
 @font-face {
-  font-family: 'Inknut Antiqua';
-  src: url('@/assets/fonts/InknutAntiqua-Regular.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
   font-family: 'Averia Serif Libre';
   src: url('@/assets/fonts/AveriaSerifLibre-Regular-7.ttf') format('truetype');
   font-weight: normal;
