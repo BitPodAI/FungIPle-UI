@@ -4,7 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import 'virtual:uno.css'
 
-import { WalletProvider } from '@solana/wallet-adapter-react';
+/*import { WalletProvider } from '@solana/wallet-adapter-react';
 import { ConnectionProvider } from '@solana/wallet-adapter-react';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
@@ -25,14 +25,10 @@ const wallets = [
   //new CrossmintSolanaWalletAdapter({
   //  environment: networkToCrossmintEnvironment(network)
   //}),
-];
+];*/
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <App />
-      </WalletProvider>
-    </ConnectionProvider>
+    <App />
   </StrictMode>,
 )

@@ -2,14 +2,17 @@ import avatarIcon from '@/assets/images/chat/Monkey-4.png';
 import walletIcon from '@/assets/icons/wallet.svg';
 import lifeBarIcon from '@/assets/icons/life-bar.svg';
 import './index.css';
-//import { useEffect } from "react";
+import { useEffect } from "react";
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 import { usePrivy } from '@privy-io/react-auth';
+import { useWallets } from '@privy-io/react-auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PixModal from '@/components/common/PixModal';
 import ShortButton from '../../../pages/Chat/components/ShortButton';
 //import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { authService } from '@/services/auth';
+import { useUserStore } from '@/stores/useUserStore';
 
 type AgentHeaderProps = {
   isShowConnect?: boolean;
@@ -18,8 +21,11 @@ type AgentHeaderProps = {
 const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const { level, experience, nextLevelExp, agentname } = useAgentInfo();
   const { user, linkWallet } = usePrivy();
+  const { wallets } = useWallets();
+  const [walletAddress, setWalletAddress] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const { userProfile, setUserProfile } = useUserStore();
   /*const { connection } = useConnection();
   const { publicKey, connected, connect, wallet } = useWallet();
 
@@ -82,6 +88,45 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
     }
   };
 
+  /*const handleWalletChange = async() => {
+    try {
+      if (user) {
+        await logout();
+      }
+      else {
+        // Popup tips
+        setIsModalOpen(true);
+      }
+    } catch (error) {
+      console.error("Connect Wallet Error: ", error);
+    }
+  };*/
+
+  useEffect(() => {
+    const updateWalletAddress = async (address: string) => {
+      try {
+        if (userProfile) {
+          userProfile.walletAddress = address;
+          setUserProfile(userProfile);
+          await authService.updateProfile(userProfile.userId, userProfile);
+        }
+      } catch (error) {
+        console.error("Failed to update wallet address:", error);
+      }
+    };
+
+    if (user && user.wallet) {
+      let address = user.wallet.address;
+      setWalletAddress(address);
+      updateWalletAddress(address);
+    }
+    if (wallets && wallets[0]) {
+      let address = wallets[0].address;
+      setWalletAddress(address);
+      updateWalletAddress(address);
+    }
+  }, [user, wallets]);
+
   const closeModal = (e?: React.MouseEvent) => {
     e?.preventDefault();
     setIsModalOpen(false);
@@ -137,7 +182,8 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
         <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2"
           onClick={handleWalletConnect}>
           <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
-          <span className="capitalize text-black text-xs">connect</span>
+          {walletAddress ? <span className="capitalize text-black text-xs ellipsis">{walletAddress}</span>
+          : <span className="capitalize text-black text-xs">connect</span>}
         </div>
       )}
     </div>
