@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Message } from '@/types/chat';
 import { ReactSVG } from 'react-svg';
 import ShareSVG from '@/assets/icons/share.svg';
@@ -9,13 +9,29 @@ import RefreshSVG from '@/assets/icons/refresh.svg';
 import HYTickSVG from '@/assets/icons/hy_tick.svg';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 import useShare from '@/hooks/useShare';
+import useTranslate from '@/hooks/useTranslate';
+import useRespeak from '@/hooks/useRespeak';
 
-export const ChatMessage: React.FC<Message> = ({ text, user, title, updatedAt }) => {
+export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
+  const [text, setText] = useState(initialText);
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
+  const { handleTranslateClick } = useTranslate();
+  const { handleRespeakClick } = useRespeak();
+
   const { copy, isCopied } = useCopyToClipboard();
   const handleCopy = async (text: string) => {
     await copy(text);
+  };
+
+  const handleTranslate = async (text: string) => {
+    const translatedText = await handleTranslateClick(text);
+    setText(translatedText);
+  };
+
+  const handleRespeak = async (text: string) => {
+    const respeakText = await handleRespeakClick(text);
+    setText(respeakText);
   };
 
   return (
@@ -56,7 +72,7 @@ export const ChatMessage: React.FC<Message> = ({ text, user, title, updatedAt })
               }}
             />
             <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500" />
-            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" />
+            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleTranslate(text)}/>
             {!isCopied ? (
               <ReactSVG
                 src={CopySVG}
@@ -70,7 +86,7 @@ export const ChatMessage: React.FC<Message> = ({ text, user, title, updatedAt })
             ) : (
               <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
             )}
-            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500" />
+            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleRespeak(text)}/>
           </div>
         )}
       </div>

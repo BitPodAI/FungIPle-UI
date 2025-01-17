@@ -1,6 +1,7 @@
 import api from './axios';
 import { Chat, Message } from '../types/chat';
 import { useUserStore } from '@/stores/useUserStore';
+import useRespeak from '@/hooks/useRespeak';
 
 export const chatApi = {
   // chat with cuckoo, send message to cuckoo and get response
@@ -20,6 +21,8 @@ export const chatApi = {
     useUserStore.getState().updateProfile(profile);
 
     const json = JSON.parse(response);
+    const { cacheChatPromtp } = useRespeak();
+    cacheChatPromtp(initialMessage, json.text);
     return {
       text: json.text,
       user: 'agent',
