@@ -9,13 +9,29 @@ import { authService } from '@/services/auth';
 
 
 export default function Login() {
-  const { login } = usePrivy();
+  const { login, user } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
-    login();
+    if (!user) {
+      let res = await login();
+      console.log(res);
+    }
+    else {
+      console.log(user);
+      setError("Already logged in.");
+      const userId = localStorage.getItem('userId');
+      const userProfile = localStorage.getItem('userProfile');
+      if (userId && userProfile) {
+        navigate('/plugin/chat'); // already login
+        return;
+      }
+      else {
+        navigate('/egg-select');
+      }
+    }
   };
 
   function simpleHash(input: string) {

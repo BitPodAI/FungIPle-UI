@@ -1,8 +1,12 @@
 import { PrivyProvider } from '@privy-io/react-auth';
+
+const VITE_PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID;
+
+
 export default function AppPriviyProvider({ children }: { children: React.ReactNode }) {
   return (
     <PrivyProvider
-      appId="cm5tjogei0227z9w3d620xacw"
+      appId={VITE_PRIVY_APP_ID}
       config={{
         appearance: {
           accentColor: '#000000',
