@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, ReactNode } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 const Login = lazy(() => import('../pages/Login/index'));
@@ -16,6 +16,27 @@ const Device = lazy(() => import('../pages/Device'));
 const Help = lazy(() => import('../pages/Help'));
 const Setting = lazy(() => import('../pages/Setting'));
 
+const isAuthenticated = () => {
+  const userId = localStorage.getItem('userId');
+  const userProfile = localStorage.getItem('userProfile');
+  if (userId && userProfile) {
+    return true;
+  }
+  return false;
+};
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" />;
+  }
+
+  return <>{children}</>;
+};
+
 const AppRoutes: React.FC = () => {
   return (
     <div className="w-full h-screen light">
@@ -28,7 +49,7 @@ const AppRoutes: React.FC = () => {
           <Route id="plugin" path="/plugin" element={<PluginLayout />}>
             <Route path="" element={<Navigate to="/plugin/chat" />} />
             <Route id="chat" path="chat" element={<Chat />} />
-            <Route id="agent" path="agent" element={<AgentBoard />} />
+            <Route id="agent" path="agent" element={<ProtectedRoute><AgentBoard /></ProtectedRoute>} />
             <Route id="watch-list" path="watch-list" element={<WatchList />} />
             <Route id="discover" path="discover" element={<Discover />} />
             <Route id="memo" path="memo" element={<Memo />} />

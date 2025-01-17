@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Background from '@/components/common/Background';
 import Button from '@/components/common/Button';
@@ -9,7 +9,7 @@ import { authService } from '@/services/auth';
 
 
 export default function Login() {
-  const { login, user } = usePrivy();
+  const { login, logout, user } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -21,18 +21,39 @@ export default function Login() {
     }
     else {
       console.log(user);
+      await logout();
+      console.log(user);
       setError("Already logged in.");
-      const userId = localStorage.getItem('userId');
-      const userProfile = localStorage.getItem('userProfile');
-      if (userId && userProfile) {
-        navigate('/plugin/chat'); // already login
-        return;
-      }
-      else {
-        navigate('/egg-select');
-      }
     }
   };
+
+  useEffect(() => {
+    const login = async () => {
+      try {
+        if (user && user.google) {
+          const username = user.google.name || "guest";
+          const password = generateGuestPassword(username);
+          const email = user.google.email || "gmail";
+          const credentials = { username, password, email };
+          await authService.guestLogin(credentials);
+          navigate('/egg-select');
+        }
+      } catch (error) {
+        console.error("Failed to update wallet address:", error);
+      }
+    };
+
+    const userId = localStorage.getItem('userId');
+    const userProfile = localStorage.getItem('userProfile');
+    if (userId && userProfile) {
+      navigate('/plugin/chat'); // already login
+      return;
+    }
+
+    if (user && (user.google || user.twitter)) {
+      login();
+    }
+  }, [user]);
 
   function simpleHash(input: string) {
     let hash = 0;
@@ -90,6 +111,7 @@ export default function Login() {
       setLoading(false);
     }
   };
+
   return (
     <div className="page press-start-2p">
       <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
