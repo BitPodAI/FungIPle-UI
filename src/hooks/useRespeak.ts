@@ -25,7 +25,7 @@ const useRespeak = () => {
     try {
       let res = await chatApi.createChat(valueIsPrompt);
       console.log("Regenerating, res: ", res.text);
-      sessionStorage.deleteItem(textIsKey);
+      sessionStorage.removeItem(textIsKey);
       return res.text;
     } catch (error) {
       console.error('Translation failed:', error);
