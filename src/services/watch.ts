@@ -117,6 +117,18 @@ class WatchApi {
         throw error;
       }
   }
+
+  async translateText(text: string): Promise<string> {
+    try {
+      //console.log('translateText: 000 ', text);
+      const response = await api.post(`/translate_text`, { text });
+      //console.log('translateText: 111 ', response.data.data.result);
+      return response.data.data.result;
+    } catch (error) {
+      console.error('reTweeted error:', error);
+      throw error;
+    }
+  }
 }
 
 export const watchApi = new WatchApi();

@@ -11,10 +11,12 @@ import HYTickSVG from '@/assets/icons/hy_tick.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
+import useTranslate from '@/hooks/useTranslate';
 
 export const WatchItem: React.FC<Message> = ({ text, user, title, updatedAt }) => {
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
+  const { handleTranslateClick } = useTranslate();
   const { copy, isCopied } = useCopyToClipboard();
   const handleCopy = async (text: string) => {
     await copy(text);
@@ -52,7 +54,7 @@ export const WatchItem: React.FC<Message> = ({ text, user, title, updatedAt }) =
           <div className="w-full flex items-center justify-end gap-4">
             <ReactSVG src={ShareSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
             <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500" />
-            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" />
+            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleTranslateClick(text)}/>
             {!isCopied ? (
               <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500" onClick={() => handleCopy(text)} />
             ) : (
