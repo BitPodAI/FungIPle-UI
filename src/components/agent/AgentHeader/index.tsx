@@ -1,4 +1,4 @@
-import avatarIcon from '@/assets/images/chat/Monkey-4.png';
+import avatarIcon from '@/assets/images/chat/avatar.png';
 import walletIcon from '@/assets/icons/wallet.svg';
 import lifeBarIcon from '@/assets/icons/life-bar.svg';
 import './index.css';
@@ -116,12 +116,12 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
     };
 
     if (user && user.wallet) {
-      let address = user.wallet.address;
+      const address = user.wallet.address;
       setWalletAddress(address);
       updateWalletAddress(address);
     }
     if (wallets && wallets[0]) {
-      let address = wallets[0].address;
+      const address = wallets[0].address;
       setWalletAddress(address);
       updateWalletAddress(address);
     }

@@ -81,9 +81,9 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
             </div>
           </div>
           {statusIcon?.length > 0 ? (
-            <img src={statusIcon} alt="status" className="w-[120px] h-[120px] object-contain absolute z-2 bottom-0 right-110px" />
+            <img src={statusIcon} alt="status" className="w-[120px] h-[120px] object-contain absolute z-2 bottom-3 right-110px" />
           ) : (
-            <img src={agentIcon} alt="agent" className="w-[120px] h-[120px] object-contain transform absolute z-2 bottom-0 right-110px" />
+            <img src={agentIcon} alt="agent" className="w-[120px] h-[120px] object-contain transform absolute z-2 bottom-3 right-110px" />
           )}
           <img
             src={stageIcon}
@@ -99,18 +99,17 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
           <img
             src={heartIcon}
             alt="heart"
-            className="w-[16px] h-[16px] object-contain absolute z-2 bottom-[126px] right-[130px] hover:scale-120"
+            className="w-[16px] h-[16px] object-contain absolute z-2 bottom-[136px] right-[130px] hover:scale-120"
             onClick={handleHeartMode}
           />
           <img
             src={battleIcon}
             alt="battle"
-            className="w-[16px] h-[16px] object-contain absolute z-2 bottom-[100px] right-[130px] hover:scale-120"
+            className="w-[16px] h-[16px] object-contain absolute z-2 bottom-[110px] right-[130px] hover:scale-120"
             onClick={handleBattleMode}
           />
         </div>
 
-        {/* 背景 */}
         <div className="agent-stage-bg"></div>
       </div>
     </div>
