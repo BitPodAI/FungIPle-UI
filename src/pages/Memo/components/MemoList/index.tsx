@@ -2,14 +2,8 @@ import React, { useState } from 'react';
 import MemoItem from '../MemoItem';
 import TrashSVG from '@/assets/icons/trash.svg';
 import { ReactSVG } from 'react-svg';
+import { Memo } from "@types/memo";
 
-interface Memo {
-  id: string;
-  title: string;
-  content: string;
-  date: string;
-  imageUrl?: string;
-}
 
 const MemoList: React.FC = () => {
   const [memos, setMemos] = useState<Memo[]>([
