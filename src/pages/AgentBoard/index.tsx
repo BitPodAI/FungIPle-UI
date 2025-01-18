@@ -217,7 +217,7 @@ const AgentBoard: React.FC = () => {
             <span className="text-[14px]">Post interval</span>
             <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
               <Menu>
-                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]">
+                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF] averia-serif-libre">
                   <span className="text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                     {interval}
                   </span>
@@ -244,7 +244,7 @@ const AgentBoard: React.FC = () => {
             <span className="text-[14px] averia-serif-libre">Imitate @</span>
             <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
               <Menu>
-                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]">
+                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF] averia-serif-libre">
                   <span className="text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                     {imitate}
                   </span>

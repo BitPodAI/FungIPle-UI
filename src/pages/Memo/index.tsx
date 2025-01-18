@@ -14,7 +14,7 @@ const Memo: React.FC = () => {
 
   return (
     <div className="page press-start-2p max-w-[490px]">
-      <div className="w-full text-left">
+      <div className="w-full text-left averia-serif-libre">
         <h3 className="ml-20px p-0 mb-0">Memo</h3>
       </div>
       <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent box-border w-[calc(100%-40px)]">
