@@ -109,6 +109,77 @@ export default function Login() {
     }
   };
 
+  function simpleHash(input: string) {
+    let hash = 0;
+    if (input.length === 0) return hash;
+
+    for (let i = 0; i < input.length; i++) {
+        let char = input.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash |= 0;
+    }
+
+    return hash.toString();
+  }
+
+  function generateGuestName() {
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * 10000);
+    return "Guest-" + timestamp + randomNum;
+  }
+
+  function generateGuestPassword(name: string) {
+    return simpleHash(name).toString();
+  }
+
+  
+  function generateGuestEmail() {
+    return "Guest@placeholder.com";
+  }
+  
+  const handleGuestAuth = async () => {
+    const userId = localStorage.getItem('userId');
+    const userProfile = localStorage.getItem('userProfile');
+    const twitterProfile = localStorage.getItem('twitterProfile');
+    console.log("Guest info: " + userId + " " + userProfile?.toString().length + " " + twitterProfile?.toString().length);
+
+    if (userId && userProfile && twitterProfile) {
+      navigate('/plugin/chat'); // already login
+      return;
+    }
+    setLoading(true);
+    try {
+      // Guest
+      const username = generateGuestName();
+      const password = generateGuestPassword(username);
+      const email = generateGuestEmail();
+      const credentials = { username, password, email };
+      const response = await authService.login(credentials);
+      console.log("guest auth, res: " + response);
+      // Navigate to next page
+      navigate('/egg-select');
+    } catch (err) {
+      console.error('Guest auth error:', err);
+      setError(err instanceof Error ? err.message : 'Guest authentication failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+    const handleGoogleAuth = async () => {
+      setLoading(true);
+      try {
+        // Navigate to next page
+        navigate('/egg-select');
+      } catch (err) {
+        console.error('Google auth error:', err);
+        setError(err instanceof Error ? err.message : 'Google auth failed');
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+
   return (
     <div className="page press-start-2p">
       <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
@@ -118,6 +189,7 @@ export default function Login() {
         <h1 className="press-start-2p text-xl">CREATE YOUR OWN</h1>
         <h1 className="press-start-2p text-xl">SOCIAL AGENT</h1>
       </div>
+
       <div className="fcc-center gap-[20px] box-border mx-[50px]">
         <Button
           color={BTNCOLOR.PURPLE} // Twitter Color?
