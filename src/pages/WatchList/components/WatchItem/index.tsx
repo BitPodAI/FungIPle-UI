@@ -5,7 +5,6 @@ import ShareSVG from '@/assets/icons/share.svg';
 import MemoSVG from '@/assets/icons/memo.svg';
 import TranslateSVG from '@/assets/icons/translate.svg';
 import CopySVG from '@/assets/icons/copy.svg';
-import RefreshSVG from '@/assets/icons/refresh.svg';
 import HYTickSVG from '@/assets/icons/hy_tick.svg';
 //import CloseSVG from '@/assets/icons/close.svg';
 import 'react-toastify/dist/ReactToastify.css';
@@ -29,6 +28,66 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
     setText(translatedText);
   };
 
+  const formatTimeDifference = (timestampString: string) => {
+    if (/[^0-9]/.test(timestampString)) {
+      return timestampString; // not numberic
+    }
+  
+    // Get the current time's timestamp
+    const now = Date.now();
+  
+    let timestamp;
+    
+    try {
+      // Try to convert the provided timestamp string to a number
+      timestamp = parseInt(timestampString, 10);
+      // If parseInt fails and returns NaN, we should catch that
+      if (isNaN(timestamp)) {
+        return timestampString;
+        //throw new Error('Invalid timestamp');
+      }
+    } catch (error) {
+      // If there's an error (e.g., invalid timestamp), return the original string
+      return timestampString;
+    }
+  
+    // Calculate the time difference in milliseconds
+    const timeDifference = now - timestamp;
+  
+    // Get the difference in seconds
+    const seconds = Math.floor(timeDifference / 1000);
+    
+    // Determine the appropriate unit for the time difference
+    if (seconds < 60) {
+      // Less than 1 minute
+      return `About ${seconds} seconds ago`;
+    } else if (seconds < 3600) {
+      // Less than 1 hour
+      const minutes = Math.floor(seconds / 60);
+      return `About ${minutes} mins ago`;
+    } else if (seconds < 86400) {
+      // Less than 24 hours
+      const hours = Math.floor(seconds / 3600);
+      return `About ${hours} hours ago`;
+    } else {
+      // More than 24 hours, format date and time
+      const date = new Date(timestamp);
+      const options: Intl.DateTimeFormatOptions = { 
+        year: 'numeric', 
+        month: 'numeric', 
+        day: 'numeric', 
+        hour: 'numeric', 
+        minute: 'numeric', 
+        second: 'numeric', 
+        hour12: false 
+      };
+    
+      // Format the date in "YYYY-MM-DD HH:mm:ss"
+      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\/\d+/g, '-'); 
+      return formattedDate;
+    }
+  };
+
   return (
     <div className={`flex justify-center mb-4 animate-fade-in`}>
       <div
@@ -41,7 +100,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
         {updatedAt && (  
         <div className="w-full flex items-center justify-end gap-4">
           <p className="w-full text-[12px] averia-serif-libre text-gray-600" style={{ textAlign: 'left' }}>
-            {updatedAt}
+            {formatTimeDifference(updatedAt)}
           </p>
         </div>
         )}
@@ -67,7 +126,6 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
             ) : (
               <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
             )}
-            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500" />
           </div>
         )}
       </div>
