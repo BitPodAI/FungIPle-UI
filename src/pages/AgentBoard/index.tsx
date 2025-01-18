@@ -231,7 +231,7 @@ const AgentBoard: React.FC = () => {
                 >
                   {INTERVAL_OPTIONS.map(option => (
                     <MenuItem key={option} as="div">
-                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3] averia-serif-libre">
                         {option}
                       </div>
                     </MenuItem>
@@ -258,7 +258,7 @@ const AgentBoard: React.FC = () => {
                 >
                   {IMIATE_OPTIONS.map(option => (
                     <MenuItem key={option} as="div">
-                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3] averia-serif-libre">
                         {option}
                       </div>
                     </MenuItem>
