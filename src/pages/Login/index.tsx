@@ -6,10 +6,11 @@ import { BTNCOLOR } from '@/constant/button';
 import { usePrivy } from '@privy-io/react-auth';
 //import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
+import { storage } from '@/utils/storage';
 
 
 export default function Login() {
-  const { login, user } = usePrivy();
+  const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,10 @@ export default function Login() {
     const login = async () => {
       try {
         if (user && user.google) {
+          const token = await getAccessToken();
+          if (token) {
+            storage.setToken(token);
+          }
           const userId = user.id || "guest";
           const gmail = user.google.email || "gmail";
           await authService.login(userId, gmail);
@@ -108,77 +113,6 @@ export default function Login() {
       setLoading(false);
     }
   };
-
-  function simpleHash(input: string) {
-    let hash = 0;
-    if (input.length === 0) return hash;
-
-    for (let i = 0; i < input.length; i++) {
-        let char = input.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash |= 0;
-    }
-
-    return hash.toString();
-  }
-
-  function generateGuestName() {
-    const timestamp = Date.now();
-    const randomNum = Math.floor(Math.random() * 10000);
-    return "Guest-" + timestamp + randomNum;
-  }
-
-  function generateGuestPassword(name: string) {
-    return simpleHash(name).toString();
-  }
-
-  
-  function generateGuestEmail() {
-    return "Guest@placeholder.com";
-  }
-  
-  const handleGuestAuth = async () => {
-    const userId = localStorage.getItem('userId');
-    const userProfile = localStorage.getItem('userProfile');
-    const twitterProfile = localStorage.getItem('twitterProfile');
-    console.log("Guest info: " + userId + " " + userProfile?.toString().length + " " + twitterProfile?.toString().length);
-
-    if (userId && userProfile && twitterProfile) {
-      navigate('/plugin/chat'); // already login
-      return;
-    }
-    setLoading(true);
-    try {
-      // Guest
-      const username = generateGuestName();
-      const password = generateGuestPassword(username);
-      const email = generateGuestEmail();
-      const credentials = { username, password, email };
-      const response = await authService.login(credentials);
-      console.log("guest auth, res: " + response);
-      // Navigate to next page
-      navigate('/egg-select');
-    } catch (err) {
-      console.error('Guest auth error:', err);
-      setError(err instanceof Error ? err.message : 'Guest authentication failed');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-    const handleGoogleAuth = async () => {
-      setLoading(true);
-      try {
-        // Navigate to next page
-        navigate('/egg-select');
-      } catch (err) {
-        console.error('Google auth error:', err);
-        setError(err instanceof Error ? err.message : 'Google auth failed');
-      } finally {
-        setLoading(false);
-      }
-    };
-  
 
   return (
     <div className="page press-start-2p">
