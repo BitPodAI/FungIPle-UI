@@ -201,7 +201,7 @@ const AgentBoard: React.FC = () => {
         </div>
 
         <div className="w-full mt-[20px]">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between averia-serif-libre">
             <span className="text-[14px]">X Takeover by Agent </span>
             <Switch
               checked={enabled}
@@ -212,7 +212,7 @@ const AgentBoard: React.FC = () => {
             </Switch>
           </div>
         </div>
-        <form className="mt-[20px] bg-[#F3F3F3] rounded-[24px] p-[24px]">
+        <form className="mt-[20px] bg-[#F3F3F3] rounded-[24px] p-[24px] averia-serif-libre">
           <div className="mb-[20px] w-full flex flex-col items-start justify-start gap-[16px] averia-serif-libre">
             <span className="text-[14px]">Post interval</span>
             <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
@@ -240,8 +240,8 @@ const AgentBoard: React.FC = () => {
               </Menu>
             </div>
           </div>
-          <div className="w-full flex flex-col items-start justify-start gap-[16px]">
-            <span className="text-[14px]">Imitate @</span>
+          <div className="w-full flex flex-col items-start justify-start gap-[16px] averia-serif-libre">
+            <span className="text-[14px] averia-serif-libre">Imitate @</span>
             <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
               <Menu>
                 <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]">
