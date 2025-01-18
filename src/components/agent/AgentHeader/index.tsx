@@ -179,7 +179,7 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
         </div>
       </div>
       {isShowConnect && (
-        <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2"
+        <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre"
           onClick={handleWalletConnect}>
           <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
           {walletAddress ? <span className="capitalize text-black text-xs ellipsis">{walletAddress}</span>

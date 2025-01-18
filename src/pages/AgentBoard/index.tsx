@@ -213,7 +213,7 @@ const AgentBoard: React.FC = () => {
           </div>
         </div>
         <form className="mt-[20px] bg-[#F3F3F3] rounded-[24px] p-[24px]">
-          <div className="mb-[20px] w-full flex flex-col items-start justify-start gap-[16px]">
+          <div className="mb-[20px] w-full flex flex-col items-start justify-start gap-[16px] averia-serif-libre">
             <span className="text-[14px]">Post interval</span>
             <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
               <Menu>

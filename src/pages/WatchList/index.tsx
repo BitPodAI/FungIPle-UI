@@ -15,7 +15,7 @@ const WatchList: React.FC = () => {
 
   return (
     <div className="page press-start-2p max-w-[490px]">
-      <div className="press-start-2p flex flex-row flex-start gap-1 w-full m-6">
+      <div className="press-start-2p flex flex-row flex-start gap-1 w-full m-6 averia-serif-libre">
         <ReactSVG src={BackIcon} className="color-inherit" style={{ marginLeft: '20px', marginRight: '20px' }} />
         Watch List
         <ReactSVG src={AddIcon} className="color-inherit" style={{ marginLeft: '20px', marginRight: '20px' }} onClick={handleAddWatch} />

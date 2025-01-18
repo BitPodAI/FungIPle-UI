@@ -20,7 +20,7 @@ const Discover: React.FC = () => {
   return (
     <div className="page press-start-2p max-w-[490px]">
       <div className="press-start-2p flex flex-row flex-start gap-1 w-full m-6" style={{ textAlign: 'left' }}>
-        <ReactSVG src={BackIcon} className="color-inherit" style={{ marginLeft: '20px', marginRight: '20px' }} onClick={handleBack} />
+        <ReactSVG src={BackIcon} className="color-inherit averia-serif-libre" style={{ marginLeft: '20px', marginRight: '20px' }} onClick={handleBack} />
         My Watch List
       </div>
       <XAccountList xList={xList} handleSearch={searchUser} loading={loading} onRefresh={refresh} />
