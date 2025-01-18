@@ -1,5 +1,6 @@
 import SuperLoading from '@/components/common/SuperLoading';
 import { createContext, useState, useContext, ReactNode } from 'react';
+import AppPriviyProvider from './Privy';
 
 interface LoadingContextProps {
   showLoading: (desc?: string) => void;
@@ -23,10 +24,12 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <LoadingContext.Provider value={{ showLoading, hideLoading }}>
-      {children}
-      {loading && <SuperLoading desc={desc} />}
-    </LoadingContext.Provider>
+    <AppPriviyProvider>
+      <LoadingContext.Provider value={{ showLoading, hideLoading }}>
+        {children}
+        {loading && <SuperLoading desc={desc} />}
+      </LoadingContext.Provider>
+    </AppPriviyProvider>
   );
 };
 

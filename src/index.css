@@ -1,4 +1,3 @@
-/* 添加字体声明 */
 @font-face {
   font-family: 'Press Start 2P';
   src: url('@/assets/fonts/Press Start 2P.ttf') format('truetype');
@@ -6,8 +5,8 @@
   font-style: normal;
 }
 @font-face {
-  font-family: 'Inknut Antiqua';
-  src: url('@/assets/fonts/InknutAntiqua-Regular.ttf') format('truetype');
+  font-family: 'Averia Serif Libre';
+  src: url('@/assets/fonts/AveriaSerifLibre-Regular-7.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -25,15 +24,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 使用 CSS 属性 scrollbar-width */
 * {
   -ms-overflow-style: none;
-  /* IE 和 Edge */
+  /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
 }
 
-/* 再配合 webkit 的方案 */
 *::-webkit-scrollbar {
   display: none;
   /* Chrome, Safari, Opera */
@@ -44,7 +41,6 @@ body {
   min-width: 450px;
 }
 
-/* 清理 a 原生样式 */
 a {
   @apply text-blue-500 decoration-none;
 }
@@ -53,7 +49,6 @@ a:hover {
   @apply text-blue-600 decoration-none;
 }
 
-/* 清理 button 原生样式 */
 button {
   @apply bg-transparent;
   @apply border-none;
@@ -74,7 +69,6 @@ button:focus-visible {
   @apply border-none;
 }
 
-/* 清理 ul li原生样式 */
 ul,
 li {
   list-style: none;
@@ -83,8 +77,50 @@ li {
   font-family: inherit;
 }
 
-/* 清理 input 原生样式 */
 input {
+  border: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+}
+
+input[type='checkbox'] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: white;
+  border: 2px solid #ccc;
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+}
+
+input[type='checkbox']:checked {
+  background-color: #2cc83e;
+  border-color: #2cc83e;
+  color: #f0f3f4;
+  background-image: url('../src/assets/icons/tick.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
+}
+
+/* input[type='checkbox']:checked::after {
+  content: '✔';
+  color: white;
+  font-size: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+} */
+
+input[type='checkbox']:hover {
+  border-color: #2cc83e;
+}
+
+textarea {
   border: none;
   outline: none;
   color: inherit;

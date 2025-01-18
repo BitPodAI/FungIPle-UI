@@ -12,7 +12,6 @@ type GiftModalProps = {
 
 const GiftModal: React.FC<GiftModalProps> = ({ isOpen, onConfirm, onClose }) => {
   const [isLoading, setIsLoading] = useState(false);
-  // todo: 打开宝箱动画
   const handleOpenBox = () => {
     setIsLoading(true);
     setTimeout(() => {

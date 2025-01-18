@@ -1,10 +1,28 @@
 import React from 'react';
-import MemoPng from '@/assets/images/temp/memo.png';
+import MemoList from './components/MemoList';
+import { ChatInput } from '../Chat/components/ChatInput';
+import PixBorder from '@/components/common/PixBorder';
+import topImg from '@/assets/images/border-bg/top.png';
+import bottomImg from '@/assets/images/border-bg/bottom.png';
+import leftImg from '@/assets/images/border-bg/left.png';
+import rightImg from '@/assets/images/border-bg/right.png';
 
 const Memo: React.FC = () => {
-  return <div className="page press-start-2p max-w-[490px]">
-    <img src={MemoPng} style={{ margin: '10px', width: '80%', height: '100%' }}/>
-  </div>;
+  const createMemo = async (notes: string) => {
+    console.log(notes);
+  };
+
+  return (
+    <div className="page press-start-2p max-w-[490px]">
+      <div className="w-full text-left averia-serif-libre">
+        <h3 className="ml-20px p-0 mb-0">Memo</h3>
+      </div>
+      <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent box-border w-[calc(100%-40px)]">
+        <ChatInput placeholder={'Note something...'} onSend={createMemo} />
+      </PixBorder>
+      <MemoList />
+    </div>
+  );
 };
 
 export default Memo;

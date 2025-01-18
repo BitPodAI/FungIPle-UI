@@ -26,7 +26,7 @@ const AgentCustomized: React.FC = () => {
     const fetchStyles = async () => {
       showLoading('Loading...');
       try {
-        const { data } = await authService.getConfig();
+        const data = await authService.getConfig();
         setStyles(data?.styles || []);
         setAgentStyle(data?.styles[0] || '');
       } catch (error) {
@@ -54,12 +54,14 @@ const AgentCustomized: React.FC = () => {
         throw new Error('User not logged in');
       }
 
+      const agentname = name;
       // 构建profile更新对象
       const profileUpdate = {
-        name,
+        userId,
+        agentname,
         gender,
         bio: [
-          `I'm ${name}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
+          `I'm ${agentname}, a ${gender.toLowerCase()} agent with ${agentStyle.toLowerCase()} style`,
           `Specializing in ${agentStyle.toLowerCase()} interactions and responses`,
           `Ready to engage with unique ${agentStyle.toLowerCase()} perspective`,
         ],

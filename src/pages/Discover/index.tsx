@@ -1,23 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ReactSVG } from 'react-svg';
 import BackIcon from '@/assets/icons/back.svg';
 import { useNavigate } from 'react-router-dom';
-import FollowPng from '@/assets/images/temp/followlist.png';
+import XAccountList from './XAccountList';
+import { useGetXList } from './hook/useGetXList';
 
 const Discover: React.FC = () => {
   const navigate = useNavigate();
+  const { xList, loading, searchUser, refresh } = useGetXList();
 
   const handleBack = async () => {
     navigate('/plugin/watch-list');
   };
 
-  return <div className="page press-start-2p max-w-[490px]">
-    <div className="press-start-2p flex flex-row flex-start gap-1 w-full" style={{ textAlign: 'left' }}>
-      <ReactSVG src={BackIcon} className="color-inherit" style={{ marginLeft: '20px', marginRight: '20px' }} onClick={handleBack}/>
-      My Watch List
+  useEffect(() => {
+    refresh();
+  }, []);
+
+  return (
+    <div className="page press-start-2p max-w-[490px] averia-serif-libre">
+      <div className="press-start-2p flex flex-row flex-start gap-1 w-full m-6 averia-serif-libre" style={{ textAlign: 'left' }}>
+        <ReactSVG src={BackIcon} className="color-inherit averia-serif-libre" style={{ marginLeft: '20px', marginRight: '20px' }} onClick={handleBack} />
+        My Watch List
+      </div>
+      <XAccountList xList={xList} handleSearch={searchUser} loading={loading} onRefresh={refresh} />
     </div>
-    <img src={FollowPng} style={{ margin: '20px', width: '80%', height: '100%' }}/>
-  </div>;
+  );
 };
 
 export default Discover;

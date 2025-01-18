@@ -34,7 +34,6 @@ api.interceptors.response.use(
   (error: AxiosError<ApiError>): Promise<never> => {
     if (error.response?.status === 401) {
       storage.clear();
-      // 跳转到login页面
       window.location.href = '/login';
     }
     return Promise.reject(error);

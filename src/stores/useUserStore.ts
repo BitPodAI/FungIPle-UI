@@ -2,44 +2,46 @@ import { create } from 'zustand';
 import { UserProfile, TwitterProfile } from '@/types/auth';
 
 interface UserState {
-  // 状态
-  userProfile: UserProfile | null; // 用户档案
-  twitterProfile: TwitterProfile | null; // Twitter档案
-  isAuthenticated: boolean; // 是否已认证
+  // State
+  userProfile: UserProfile | null; // UserProfile
+  twitterProfile: TwitterProfile | null; // Twitter
+  isAuthenticated: boolean; // Authed
 
-  // 操作方法
-  setUserProfile: (profile: UserProfile | null) => void; // 设置用户档案
-  setTwitterProfile: (profile: TwitterProfile | null) => void; // 设置Twitter档案
-  login: (userProfile: UserProfile, twitterProfile: TwitterProfile) => void; // 登录
-  logout: () => void; // 登出
-  updateProfile: (profile: UserProfile) => void; // 更新用户档案
+  // Operation
+  setUserProfile: (profile: UserProfile | null) => void;
+  setTwitterProfile: (profile: TwitterProfile | null) => void;
+  login: (userProfile: UserProfile) => void;
+  logout: (userId: string) => void;
+  updateProfile: (profile: UserProfile) => void;
 
-  // 获取器
-  getUserId: () => string | null; // 获取用户ID
+  // Getter
+  getUserId: () => string | null;
+  getXUsername: () => string | null;
+  getXAccessToken: () => string | null;
+  getWatchlist: () => string[] | null;
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
-  // 初始状态
+  // Init State
   userProfile: null,
   twitterProfile: null,
   isAuthenticated: false,
 
-  // 状态操作方法
+  // Operations
   setUserProfile: profile => set({ userProfile: profile }),
 
   setTwitterProfile: profile => set({ twitterProfile: profile }),
 
-  login: (userProfile, twitterProfile) => {
+  login: userProfile => {
     set({
       userProfile,
-      twitterProfile,
       isAuthenticated: true,
     });
 
-    // 持久化到本地存储
+    // Local Storage
     localStorage.setItem('userProfile', JSON.stringify(userProfile));
-    localStorage.setItem('twitterProfile', JSON.stringify(twitterProfile));
-    localStorage.setItem('userId', userProfile.username);
+    //localStorage.setItem('twitterProfile', JSON.stringify(twitterProfile));
+    localStorage.setItem('userId', userProfile.userId);
   },
 
   logout: () => {
@@ -49,17 +51,21 @@ export const useUserStore = create<UserState>((set, get) => ({
       isAuthenticated: false,
     });
 
-    // 清除本地存储
+    // Clear local storage
     localStorage.removeItem('userProfile');
     localStorage.removeItem('twitterProfile');
     localStorage.removeItem('userId');
   },
 
   updateProfile: profile => {
+    if(!profile) return;
     set({ userProfile: profile });
     localStorage.setItem('userProfile', JSON.stringify(profile));
   },
 
-  // 工具方法
-  getUserId: () => get().userProfile?.username || null,
+  // Getter
+  getUserId: () => get().userProfile?.userId || null,
+  getXUsername: () => get().userProfile?.tweetProfile?.username || null,
+  getXAccessToken: () => get().userProfile?.tweetProfile?.accessToken || null,
+  getWatchlist: () => get().userProfile?.twitterWatchList?.map(item => item.username) || [],
 }));

@@ -1,5 +1,6 @@
 @import './styles/cursor.css';
 @import './styles/custom.css';
+@import './styles/animate.css';
 
 /* 像素字体 */
 .press-start-2p {
@@ -7,8 +8,8 @@
 }
 
 /* 正文字体 */
-.inknut-antiqua {
-  font-family: 'Inknut Antiqua';
+.averia-serif-libre {
+  font-family: 'Averia Serif Libre';
 }
 
 /* 自定义样式 */

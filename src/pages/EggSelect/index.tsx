@@ -20,6 +20,7 @@ const EggSelect: React.FC = () => {
   };
 
   const handleEggClick = (color: EGG_COLOR) => {
+    if (color !== EGG_COLOR.RED) return;
     setSelectedEgg(color);
   };
 
@@ -32,15 +33,19 @@ const EggSelect: React.FC = () => {
       <div className="text-center w-auto min-w-[290px] mx-[20px] mt-[120px] mb-[50px]">
         <h1 className="press-start-2p text-xl">SELECT AN AGENT EGG</h1>
       </div>
-      {/* grid布局，两行一行四个 */}
       <div className="grid grid-cols-4 gap-[10px]">
         {Object.values(EGG_COLOR).map(color => (
           <EggWrap key={color} isSelected={selectedEgg === color} onClick={() => handleEggClick(color)} className="w-[95px] h-[95px]">
-            <EggItem color={color} />
+            <EggItem color={color} isLocked={color !== EGG_COLOR.RED} />
           </EggWrap>
         ))}
       </div>
-      <Button color={BTNCOLOR.BLACK} className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[60px] text-white" type="submit" onClick={handleNext}>
+      <Button
+        color={BTNCOLOR.BLACK}
+        className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[60px] text-white"
+        type="submit"
+        onClick={handleNext}
+      >
         OK
       </Button>
     </div>

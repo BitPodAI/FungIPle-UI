@@ -1,0 +1,26 @@
+.modal-content {
+  background-color: white;
+  margin: 15%;
+  border-radius: 8px;
+  position: relative;
+  position: fixed;
+  height: 300px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1050;
+}
+
+.modal-overlay {
+  position: relative;
+  background-color: rgb(140, 137, 137);
+  padding: 20px;
+  border-radius: 8px;
+  width: 100px;
+  height: 300px;
+  margin: 0 auto;  /* center */
+  top: 50%;  /* middle */
+  left: 50%;  /* center */
+  z-index: 1040;
+}

@@ -1,4 +1,3 @@
-// 按钮组件,支持黑色、橙色、绿色和紫色三种颜色
 import './index.css';
 import { BTNCOLOR } from '@/constant/button';
 

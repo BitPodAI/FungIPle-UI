@@ -4,18 +4,35 @@ import AppRoutes from './router';
 import { useWindowResize } from './hooks/useWindowResize';
 import { LoadingProvider } from './context/LoadingContext';
 import './App.css';
-import './mock'; // 引入 mock 服务
+import './mock';
+import { useUserStore } from './stores/useUserStore';
+import { ToastContainer } from 'react-toastify';
 
 const App: React.FC = () => {
-  const { width } = useWindowResize(500); // 使用200ms的节流时间
+  const { width } = useWindowResize(500);
+  const { setUserProfile } = useUserStore();
 
-  // 根据窗口宽度设置根元素的样式
+  React.useEffect(() => {
+    const res = localStorage.getItem('userProfile');
+    if (res) {
+      setUserProfile(JSON.parse(res));
+    }
+  }, []);
+
   React.useEffect(() => {
     document.documentElement.style.setProperty('--window-width', `${width}px`);
   }, [width]);
 
   return (
     <LoadingProvider>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        pauseOnHover={false}
+        theme="colored"
+      />
       <Router>
         <AppRoutes />
       </Router>

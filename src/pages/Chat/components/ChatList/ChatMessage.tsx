@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Message } from '@/types/chat';
 import { ReactSVG } from 'react-svg';
-import tempGroupIcon from '@/assets/icons/temp-group-1.svg';
+import ShareSVG from '@/assets/icons/share.svg';
+import MemoSVG from '@/assets/icons/memo.svg';
+import TranslateSVG from '@/assets/icons/translate.svg';
+import CopySVG from '@/assets/icons/copy.svg';
+import RefreshSVG from '@/assets/icons/refresh.svg';
+import HYTickSVG from '@/assets/icons/hy_tick.svg';
+import useCopyToClipboard from '@/hooks/useCopyToClipboard';
+import useShare from '@/hooks/useShare';
+import useTranslate from '@/hooks/useTranslate';
+import useRespeak from '@/hooks/useRespeak';
 
-export const ChatMessage: React.FC<Message> = ({ text, user, title, updatedAt }) => {
+export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
+  const [text, setText] = useState(initialText);
   const isUser = user === 'user';
+  const { handleShareClick } = useShare();
+  const { handleTranslateClick } = useTranslate();
+  const { handleRespeakClick } = useRespeak();
+
+  const { copy, isCopied } = useCopyToClipboard();
+  const handleCopy = async (text: string) => {
+    await copy(text);
+  };
+
+  const handleTranslate = async (text: string) => {
+    const translatedText = await handleTranslateClick(text);
+    setText(translatedText);
+  };
+
+  const handleRespeak = async (text: string) => {
+    const respeakText = await handleRespeakClick(text);
+    setText(respeakText);
+  };
 
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} mb-4 animate-fade-in`}>
@@ -16,16 +44,49 @@ export const ChatMessage: React.FC<Message> = ({ text, user, title, updatedAt })
         }`}
       >
         {updatedAt && (
-          <p className="w-full text-[12px] inknut-antiqua text-gray-400" style={{ textAlign: 'left' }}>{updatedAt}</p>
+          <p className="w-full text-[12px] averia-serif-libre text-gray-600" style={{ textAlign: 'left' }}>
+            {updatedAt}
+          </p>
         )}
         {title && (
-          <p className="w-full text-[14px] inknut-antiqua" style={{ textAlign: 'left', fontWeight: 'bold' }}>{title}</p>
+          <p className="w-full text-[14px] averia-serif-libre" style={{ textAlign: 'left', fontWeight: 'bold' }}>
+            {title}
+          </p>
         )}
-        {title ? <p className="text-[12px] inknut-antiqua text-gray-600">{text}</p>
-          : <p className="text-[12px] inknut-antiqua">{text}</p>}
+        {title ? (
+          <p className="text-[12px] averia-serif-libre text-gray-800" style={{ whiteSpace: 'pre-line' }}>
+            {text}
+          </p>
+        ) : (
+          <p className="text-[12px] averia-serif-libre">{text}</p>
+        )}
         {!isUser && (
-          <div className="w-full flex items-center justify-end">
-            <ReactSVG src={tempGroupIcon} />
+          <div className="w-full flex items-center justify-end gap-4">
+            <ReactSVG
+              src={ShareSVG}
+              className="text-#C7C7C7 hover:text-gray-500"
+              onClick={e => {
+                e.stopPropagation();
+                e.preventDefault();
+                handleShareClick(text);
+              }}
+            />
+            <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500" />
+            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleTranslate(text)}/>
+            {!isCopied ? (
+              <ReactSVG
+                src={CopySVG}
+                className="text-gray-400 hover:text-gray-500"
+                onClick={e => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  handleCopy(text);
+                }}
+              />
+            ) : (
+              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
+            )}
+            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleRespeak(text)}/>
           </div>
         )}
       </div>
