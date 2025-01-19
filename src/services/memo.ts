@@ -1,5 +1,5 @@
-import { Memo } from '../types/memo';/
-import api from './axios';/
+import { Memo } from '../types/memo';
+import api from './axios';
 
 class MemoApi {
   //private cursor: string = '';
@@ -23,7 +23,7 @@ class MemoApi {
     }
 
     try {
-      const response = await api.get(`/memo`, { userId });
+      const response = await api.get(`/memo`, {params: { userId }});
       const data: Memo[] = response.data.data.memos;
 
       // set for each item
@@ -51,7 +51,7 @@ class MemoApi {
 
   async deleteMomo(ids: string[], userId: string): Promise<string> {
       try {
-        const response = await api.delete(`/memo`, { ids, userId });
+        const response = await api.delete(`/memo`, {params: { ids, userId }});
         return response.data;
       } catch (error) {
         console.error('Delete Memo error:', error);

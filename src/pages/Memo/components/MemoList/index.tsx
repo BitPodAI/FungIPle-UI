@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import MemoItem from '../MemoItem';
 import TrashSVG from '@/assets/icons/trash.svg';
 import { ReactSVG } from 'react-svg';
-import { Memo } from "@types/memo";
+import { Memo } from "../../../../types/memo";
 
 
 const MemoList: React.FC = () => {
