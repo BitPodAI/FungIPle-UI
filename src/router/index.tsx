@@ -15,6 +15,8 @@ const Gift = lazy(() => import('../pages/Gift'));
 const Device = lazy(() => import('../pages/Device'));
 const Help = lazy(() => import('../pages/Help'));
 const Setting = lazy(() => import('../pages/Setting'));
+const PopupLogin = lazy(() => import('../pages/Popup/login'));
+const PopupWallet = lazy(() => import('../pages/Popup/wallet'));
 
 const isAuthenticated = () => {
   const userId = localStorage.getItem('userId');
@@ -60,6 +62,8 @@ const AppRoutes: React.FC = () => {
             <Route id="setting" path="setting" element={<Setting />} />
           </Route>
           <Route path="*" element={<Navigate to="plugin" replace />} />
+          <Route id="popup-login" path="/popup-login" element={<PopupLogin />} />
+          <Route id="popup-wallet" path="/popup-wallet" element={<PopupWallet />} />
         </Routes>
       </Suspense>
     </div>
