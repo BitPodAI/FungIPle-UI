@@ -2,10 +2,8 @@ import avatarIcon from '@/assets/images/chat/avatar.png';
 import walletIcon from '@/assets/icons/wallet.svg';
 import lifeBarIcon from '@/assets/icons/life-bar.svg';
 import './index.css';
-import { useEffect } from "react";
+import { useEffect } from 'react';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
-import { usePrivy } from '@privy-io/react-auth';
-import { useWallets } from '@privy-io/react-auth';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PixModal from '@/components/common/PixModal';
@@ -20,112 +18,51 @@ type AgentHeaderProps = {
 
 const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const { level, experience, nextLevelExp, agentname } = useAgentInfo();
-  const { user, linkWallet } = usePrivy();
-  const { wallets } = useWallets();
-  const [walletAddress, setWalletAddress] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { userProfile, setUserProfile } = useUserStore();
-  /*const { connection } = useConnection();
-  const { publicKey, connected, connect, wallet } = useWallet();
-
-  useEffect(() => {
-    const updateConnection = async () => {
-      if (!connection || !publicKey) {
-        console.log("Wallet not connected or connection unavailable");
-        return;
-      }
-      try {
-        connection.onAccountChange(
-          publicKey,
-          updatedAccountInfo => {
-            console.log(updatedAccountInfo);
-          },
-          "confirmed",
-        );
-        const accountInfo = await connection.getAccountInfo(publicKey);
-        if (accountInfo) {
-          console.log(accountInfo);
-        } else {
-          throw new Error("Account info not found");
-        }
-      } catch (error) {
-        console.error("Failed to retrieve account info:", error);
-      }
-    };
-    updateConnection();
-  }, [connection, publicKey]);
-
-  useEffect(() => {
-    if (wallet && !connected) {
-      connect().catch(error => {
-        console.error("Connect Wallet on Effect Error: ", error);
-      });
-    }
-  }, [wallet, connected]);
-
-  const handlePhantomLogin = async() => {
-    try {
-      //await select("Phantom");
-      if (wallet && !connected) {
-        await connect();
-      }
-    } catch (error) {
-      console.error("Connect Wallet Error: ", error);
-    }
-  };*/
-  const handleWalletConnect = async() => {
-    try {
-      if (user) {
-        await linkWallet();
-      }
-      else {
-        // Popup tips
-        setIsModalOpen(true);
-      }
-    } catch (error) {
-      console.error("Connect Wallet Error: ", error);
+  const handleWalletConnect = async () => {
+    if (userProfile?.gmail) {
+      window.open('https://web3ai.cloud/#/popup-wallet', 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+    } else {
+      // Popup tips
+      setIsModalOpen(true);
     }
   };
 
-  /*const handleWalletChange = async() => {
+  // 提取更新钱包地址的逻辑
+  const updateWalletAddress = async (address: string) => {
     try {
-      if (user) {
-        await logout();
-      }
-      else {
-        // Popup tips
-        setIsModalOpen(true);
+      if (userProfile) {
+        const updatedProfile = { ...userProfile, walletAddress: address };
+        setUserProfile(updatedProfile); // 更新状态
+        await authService.updateProfile(updatedProfile.userId, updatedProfile); // 更新后台数据
       }
     } catch (error) {
-      console.error("Connect Wallet Error: ", error);
+      console.error('Failed to update wallet address:', error);
     }
-  };*/
+  };
+
+  // 处理父窗口消息
+  const handleWalletMessage = async (event: MessageEvent) => {
+    console.warn('handleWalletMessage', event);
+    const { type, data } = event.data;
+
+    // 安全检查：确保我们只处理 LINK_WALLET_SUCCESS 类型的消息
+    if (type === 'LINK_WALLET_SUCCESS' && data) {
+      await updateWalletAddress(data); // 更新后台数据
+    }
+  };
 
   useEffect(() => {
-    const updateWalletAddress = async (address: string) => {
-      try {
-        if (userProfile) {
-          userProfile.walletAddress = address;
-          setUserProfile(userProfile);
-          await authService.updateProfile(userProfile.userId, userProfile);
-        }
-      } catch (error) {
-        console.error("Failed to update wallet address:", error);
-      }
-    };
+    // 监听父窗口发送的消息
+    window.addEventListener('message', handleWalletMessage);
 
-    if (user && user.wallet) {
-      const address = user.wallet.address;
-      setWalletAddress(address);
-      updateWalletAddress(address);
-    }
-    if (wallets && wallets[0]) {
-      const address = wallets[0].address;
-      setWalletAddress(address);
-      updateWalletAddress(address);
-    }
-  }, [user, wallets]);
+    // 清理事件监听器
+    return () => {
+      window.removeEventListener('message', handleWalletMessage);
+    };
+  }, [userProfile]);
 
   const closeModal = (e?: React.MouseEvent) => {
     e?.preventDefault();
@@ -134,7 +71,6 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
 
   return (
     <div className="w-[calc(100%-40px)] mx-[20px] mt-[20px] flex items-center justify-between">
-      
       <PixModal isOpen={isModalOpen} onClose={closeModal}>
         <div className="flex flex-col gap-4 max-w-[400px] averia-serif-libre">
           <h2 className="text-center my-0">Login Tips</h2>
@@ -179,11 +115,16 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
         </div>
       </div>
       {isShowConnect && (
-        <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre"
-          onClick={handleWalletConnect}>
+        <div
+          className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre"
+          onClick={handleWalletConnect}
+        >
           <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
-          {walletAddress ? <span className="capitalize text-black text-xs ellipsis">{walletAddress}</span>
-          : <span className="capitalize text-black text-xs">connect</span>}
+          {userProfile?.walletAddress ? (
+            <span className="capitalize text-black text-xs ellipsis">{userProfile.walletAddress}</span>
+          ) : (
+            <span className="capitalize text-black text-xs">connect</span>
+          )}
         </div>
       )}
     </div>
