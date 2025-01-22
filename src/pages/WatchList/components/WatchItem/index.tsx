@@ -19,6 +19,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
   const { handleShareClick } = useShare();
   const { handleTranslateClick } = useTranslate();
   const { copy, isCopied } = useCopyToClipboard();
+
   const handleCopy = async (text: string) => {
     await copy(text);
   };
@@ -83,7 +84,9 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
       };
     
       // Format the date in "YYYY-MM-DD HH:mm:ss"
-      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\/\d+/g, '-'); 
+      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\/\d+/g, '-');
+      console.log(timestamp);
+      console.log(formattedDate);
       return formattedDate;
     }
   };

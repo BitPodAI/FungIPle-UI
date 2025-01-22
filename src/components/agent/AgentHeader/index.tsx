@@ -12,6 +12,8 @@ import ShortButton from '../../../pages/Chat/components/ShortButton';
 import { authService } from '@/services/auth';
 import { useUserStore } from '@/stores/useUserStore';
 
+const HOST_URL = import.meta.env.VITE_API_HOST_URL;
+
 type AgentHeaderProps = {
   isShowConnect?: boolean;
 };
@@ -23,7 +25,7 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const { userProfile, setUserProfile } = useUserStore();
   const handleWalletConnect = async () => {
     if (userProfile?.gmail) {
-      window.open('https://web3ai.cloud/#/popup-wallet', 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+      window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
     } else {
       // Popup tips
       setIsModalOpen(true);
