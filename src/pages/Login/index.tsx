@@ -6,10 +6,11 @@ import { BTNCOLOR } from '@/constant/button';
 import { usePrivy } from '@privy-io/react-auth';
 //import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
+import { storage } from '@/utils/storage';
 
 
 export default function Login() {
-  const { login, user } = usePrivy();
+  const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,10 @@ export default function Login() {
     const login = async () => {
       try {
         if (user && user.google) {
+          const token = await getAccessToken();
+          if (token) {
+            storage.setToken(token);
+          }
           const userId = user.id || "guest";
           const gmail = user.google.email || "gmail";
           await authService.login(userId, gmail);
@@ -118,6 +123,7 @@ export default function Login() {
         <h1 className="press-start-2p text-xl">CREATE YOUR OWN</h1>
         <h1 className="press-start-2p text-xl">SOCIAL AGENT</h1>
       </div>
+
       <div className="fcc-center gap-[20px] box-border mx-[50px]">
         <Button
           color={BTNCOLOR.PURPLE} // Twitter Color?

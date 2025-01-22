@@ -89,7 +89,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
   };
 
   return (
-    <div className={`flex justify-center mb-4 animate-fade-in`}>
+    <div className={`flex justify-center mb-4 animate-fade-in averia-serif-libre`}>
       <div
         className={`flex flex-col max-w-[80%] items-center px-6 py-2 ${
           isUser

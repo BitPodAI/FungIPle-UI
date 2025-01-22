@@ -60,7 +60,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         onKeyUp={handleKeyUp}
         placeholder={placeholder}
         disabled={disabled || isLoading}
-        className="w-full text-black bg-white border-none outline-none resize-none text-xs"
+        className="w-full text-black bg-white border-none outline-none resize-none text-xs averia-serif-libre"
       />
     </div>
   );

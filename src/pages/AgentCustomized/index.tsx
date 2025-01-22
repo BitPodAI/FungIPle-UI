@@ -55,7 +55,7 @@ const AgentCustomized: React.FC = () => {
       }
 
       const agentname = name;
-      // 构建profile更新对象
+      // profile
       const profileUpdate = {
         userId,
         agentname,

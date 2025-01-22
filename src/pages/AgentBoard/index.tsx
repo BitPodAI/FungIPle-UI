@@ -201,7 +201,7 @@ const AgentBoard: React.FC = () => {
         </div>
 
         <div className="w-full mt-[20px]">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between averia-serif-libre">
             <span className="text-[14px]">X Takeover by Agent </span>
             <Switch
               checked={enabled}
@@ -212,12 +212,12 @@ const AgentBoard: React.FC = () => {
             </Switch>
           </div>
         </div>
-        <form className="mt-[20px] bg-[#F3F3F3] rounded-[24px] p-[24px]">
-          <div className="mb-[20px] w-full flex flex-col items-start justify-start gap-[16px]">
+        <form className="mt-[20px] bg-[#F3F3F3] rounded-[24px] p-[24px] averia-serif-libre">
+          <div className="mb-[20px] w-full flex flex-col items-start justify-start gap-[16px] averia-serif-libre">
             <span className="text-[14px]">Post interval</span>
             <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
               <Menu>
-                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]">
+                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF] averia-serif-libre">
                   <span className="text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                     {interval}
                   </span>
@@ -231,7 +231,7 @@ const AgentBoard: React.FC = () => {
                 >
                   {INTERVAL_OPTIONS.map(option => (
                     <MenuItem key={option} as="div">
-                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3] averia-serif-libre">
                         {option}
                       </div>
                     </MenuItem>
@@ -240,11 +240,11 @@ const AgentBoard: React.FC = () => {
               </Menu>
             </div>
           </div>
-          <div className="w-full flex flex-col items-start justify-start gap-[16px]">
-            <span className="text-[14px]">Imitate @</span>
+          <div className="w-full flex flex-col items-start justify-start gap-[16px] averia-serif-libre">
+            <span className="text-[14px] averia-serif-libre">Imitate @</span>
             <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
               <Menu>
-                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]">
+                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF] averia-serif-libre">
                   <span className="text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                     {imitate}
                   </span>
@@ -258,7 +258,7 @@ const AgentBoard: React.FC = () => {
                 >
                   {IMIATE_OPTIONS.map(option => (
                     <MenuItem key={option} as="div">
-                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3] averia-serif-libre">
                         {option}
                       </div>
                     </MenuItem>
