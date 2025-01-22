@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Background from '@/components/common/Background';
-import Button from '@/components/common/Button';
-import { BTNCOLOR } from '@/constant/button';
+//import Button from '@/components/common/Button';
+//import { BTNCOLOR } from '@/constant/button';
 //import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
 import { storage } from '@/utils/storage';
@@ -18,7 +18,7 @@ export default function Login() {
   // const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
     window.open(`${HOST_URL}/#/popup-login`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
@@ -144,7 +144,7 @@ export default function Login() {
       setError(err instanceof Error ? err.message : 'Guest authentication failed');
       console.log(error);
     } finally {
-      setLoading(false);
+      //setLoading(false);
     }
   };
 
