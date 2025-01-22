@@ -1,6 +1,8 @@
 import avatarIcon from '@/assets/images/chat/avatar.png';
 import walletIcon from '@/assets/icons/wallet.svg';
 import lifeBarIcon from '@/assets/icons/life-bar.svg';
+import BoyIcon from '@/assets/icons/boy.svg';
+import GirlIcon from '@/assets/icons/girl.svg';
 import './index.css';
 import { useEffect } from 'react';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
@@ -21,6 +23,8 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
   const { userProfile, setUserProfile } = useUserStore();
+  console.warn(userProfile);
+
   const handleWalletConnect = async () => {
     if (userProfile?.gmail) {
       window.open('https://web3ai.cloud/#/popup-wallet', 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
@@ -94,10 +98,13 @@ const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
       <div className="flex items-center justify-start">
         <div className="relative frc-center agent-stage-avatarwrap">
           <img src={avatarIcon} alt="avatar" className="w-[30px] h-[30px] object-cover" />
+          <div className="absolute bottom-[-6px] right-[-6px] agent-stage-avatarwrap flex items-center justify-center" style={{ width: '16px', height: '16px',backgroundSize: '16px 16px' }}>
+            <img src={userProfile?.gender === 'Girl' ? GirlIcon : BoyIcon} className="ml-[2px] h-[12px]"></img>
+          </div>
         </div>
-        <div className="ml-[16px] flex flex-col items-start justify-center gap-1">
+        <div className="ml-[16px] flex flex-col items-start justify-center gap-1 Tiny5">
           <span className="flex items-center gap-2">
-            <span className="text-[12px]">{agentname}</span>
+            <span className="text-[18px] Tiny5">{agentname}</span>
             <span className="text-[12px] text-[#39CE78]">Level {level}</span>
           </span>
           <span className="flex items-center gap-2">

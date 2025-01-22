@@ -37,6 +37,7 @@ export interface WatchItem {
 export interface UserProfile {
   userId: string;
   gmail?: string;
+  gender?: string
   agentname: string;
   bio?: string | string[];
   walletAddress?: string;
