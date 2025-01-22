@@ -6,7 +6,11 @@ import { BTNCOLOR } from '@/constant/button';
 //import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
 import { storage } from '@/utils/storage';
-
+import Yun from '@/assets/images/login/yun.png';
+import Sun from '@/assets/images/login/Sun.png';
+import LoginGoogle from '@/assets/images/login/login-google.png';
+import LoginOther from '@/assets/images/login/login-other.png';
+import GuestLogin from '@/assets/images/login/guest-login.png';
 export default function Login() {
   // const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
@@ -19,7 +23,7 @@ export default function Login() {
   useEffect(() => {
     const handleAuthMessage = async (event: MessageEvent) => {
       console.warn('handleAuthMessage', event);
-      
+
       const { type, data } = event.data;
 
       // 安全检查：确保我们只处理预期的消息类型
@@ -33,7 +37,7 @@ export default function Login() {
           console.warn('login', id, gmail);
           await authService.login(id, gmail);
           console.warn('login success');
-          
+
           navigate('/egg-select');
         }
       }
@@ -146,35 +150,30 @@ export default function Login() {
       <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
         <Background />
       </div>
-      <div className="text-center w-auto min-w-[290px] mx-[50px] mt-[100px] mb-[50px]">
-        <h1 className="press-start-2p text-xl">CREATE YOUR OWN</h1>
-        <h1 className="press-start-2p text-xl">SOCIAL AGENT</h1>
+      <div className="m-x-auto max-w-[450px] relative w-full h-[161px]">
+        <img src={Yun} className="absolute top-[10%] left-[5%] w-[98px] h-[98px]" />
+        <img src={Yun} className="absolute top-[50px] right-[80px] w-[98px] h-[98px]" />
+        <img src={Sun} className="absolute top-0 right-0 w-[89px] h-[89px]" />
       </div>
-
-      <div className="fcc-center gap-[20px] box-border mx-[50px]">
-        <Button
-          color={BTNCOLOR.PURPLE} // Twitter Color?
-          className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px] text-white frc-center gap-[10px]"
-          onClick={handleAuth}
-        >
-          Login
-        </Button>
+      <div className="text-center w-auto mt-[33px] mb-[50px]">
+        <h1 className="press-start-2p font-size-5 text-xl">CREATE YOUR OWN</h1>
+        <h1 className="press-start-2p font-size-5 text-xl">SOCIAL AGENT</h1>
       </div>
-      {/* Guest */}
-      <div className="fcc-center gap-[20px] box-border mx-[50px]">
-        {/* {error && (
-          <div className="text-red-500 text-sm mt-2">{error}</div>
-        )} */}
-        <Button
-          color={BTNCOLOR.PURPLE}
-          className="w-auto min-w-[346px] px-[28px] h-[48px] mt-[42px] text-white frc-center gap-[10px]"
-          onClick={handleGuestAuth}
-          disabled={loading}
-        >
-          {/* <img src={guestIcon} alt="guest" className="w-[24px] h-[24px]" /> */}
-          {/* {loading ? 'CONNECTING...' : 'Guest visit'} */}
-          {false ? 'CONNECTING...' : 'Anonymous '}
-        </Button>
+      {/* <div className="m-x-auto w-[298px] relative">
+        <img src={LoginGoogle} className="w-[298px]" />
+        <div className="h-[48px] w-full absolute top-0" onClick={handleAuth}></div>
+        <div className="h-[25px] w-[120px] absolute bottom-0 left-[50%] ml-[-60px]" onClick={handleGuestAuth}></div>
+      </div> */}
+      <img src={LoginGoogle} className="w-[298px] btn-scale" onClick={handleAuth} />
+      <div className='text-center mt-[30px] Geologica text-[15px] color-[#b9b9b9] mr-[10px]'>or</div>
+      <img className='w-[90px] mt-[29px]' src={GuestLogin} onClick={handleGuestAuth}></img>
+      <div className="m-x-auto mt-[100px] w-[283px] relative">
+        <img src={LoginOther} className="w-[283px]" />
+        <div className="h-[25px] w-full absolute flex top-0">
+          <div className="h-[25px] flex-1"></div>
+          <div className="h-[25px] flex-1"></div>
+          <div className="h-[25px] flex-1"></div>
+        </div>
       </div>
     </div>
   );

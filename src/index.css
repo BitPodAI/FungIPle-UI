@@ -4,6 +4,14 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'Geologica';
+  src: url('@/assets/fonts/Geologica.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 @font-face {
   font-family: 'Averia Serif Libre';
   src: url('@/assets/fonts/AveriaSerifLibre-Regular-7.ttf') format('truetype');
@@ -38,7 +46,7 @@
 
 body {
   margin: 0;
-  min-width: 450px;
+  /* min-width: 450px; */
 }
 
 a {

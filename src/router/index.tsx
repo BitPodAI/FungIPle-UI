@@ -1,7 +1,7 @@
 import React, { lazy, Suspense, ReactNode } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
-const Login = lazy(() => import('../pages/Login/index'));
+const Login = lazy(() => import('../pages/Login'));
 const EggSelect = lazy(() => import('../pages/EggSelect'));
 const AgentCustomized = lazy(() => import('../pages/AgentCustomized'));
 const PluginLayout = lazy(() => import('../layout/PluginLayout'));

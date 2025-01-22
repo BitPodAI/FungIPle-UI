@@ -7,6 +7,10 @@
   font-family: 'Press Start 2P';
 }
 
+.Geologica {
+  font-family: 'Geologica';
+}
+
 /* 正文字体 */
 .averia-serif-libre {
   font-family: 'Averia Serif Libre';
@@ -42,4 +46,12 @@
   background-position: center;
   background-repeat: no-repeat;
   color: #ffffff;
+}
+
+.btn-scale {
+  transition: all .1s;
+}
+
+.btn-scale:hover {
+  transform: scale(1.05);
 }
