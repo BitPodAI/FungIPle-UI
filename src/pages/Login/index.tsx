@@ -1,24 +1,27 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Background from '@/components/common/Background';
-import Button from '@/components/common/Button';
-import { BTNCOLOR } from '@/constant/button';
+//import Button from '@/components/common/Button';
+//import { BTNCOLOR } from '@/constant/button';
 //import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
 import { storage } from '@/utils/storage';
 import Yun from '@/assets/images/login/yun.png';
-import Sun from '@/assets/images/login/Sun.png';
+import Sun from '@/assets/images/login/sun.png';
 import LoginGoogle from '@/assets/images/login/login-google.png';
 import LoginOther from '@/assets/images/login/login-other.png';
 import GuestLogin from '@/assets/images/login/guest-login.png';
+
+const HOST_URL = import.meta.env.VITE_API_HOST_URL;
+
 export default function Login() {
   // const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
+  //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
-    window.open('https://web3ai.cloud/#/popup-login', 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+    window.open(`${HOST_URL}/#/popup-login`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
   };
   useEffect(() => {
     const handleAuthMessage = async (event: MessageEvent) => {
@@ -141,7 +144,7 @@ export default function Login() {
       setError(err instanceof Error ? err.message : 'Guest authentication failed');
       console.log(error);
     } finally {
-      setLoading(false);
+      //setLoading(false);
     }
   };
 

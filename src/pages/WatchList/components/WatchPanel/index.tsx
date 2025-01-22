@@ -56,7 +56,7 @@ const WatchPanel: React.FC = () => {
 
   const getWatchTextLoop = async () => {
     const timerlooper = setInterval(handleWatchMessage, 60000);
-    // console.log('getWatchTextLoop timeerlooper: ' + timerlooper);
+    console.log('getWatchTextLoop timeerlooper: ' + timerlooper);
   };
 
   useEffect(() => {
