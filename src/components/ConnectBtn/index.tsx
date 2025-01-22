@@ -2,19 +2,28 @@ import { useUserStore } from '@/stores/useUserStore';
 import PixModal from '../common/PixModal';
 import ShortButton from '@/pages/Chat/components/ShortButton';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import walletIcon from '@/assets/icons/wallet.svg';
+import { usePrivy } from '@privy-io/react-auth';
+import { authService } from '@/services/auth';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 const ConnectBtn = () => {
-  const { userProfile } = useUserStore();
+  const { userProfile, setUserProfile } = useUserStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { linkWallet } = usePrivy();
 
   const handleWalletConnect = async () => {
+    // 检查当前环境是否为 HTTPS
+    const isHttps = window.location.protocol === 'https:';
     if (userProfile?.gmail) {
-      window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+      if (isHttps) {
+        linkWallet();
+      } else {
+        window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+      }
     } else {
       // Popup tips
       setIsModalOpen(true);
@@ -25,6 +34,40 @@ const ConnectBtn = () => {
     e?.preventDefault();
     setIsModalOpen(false);
   };
+
+  // 提取更新钱包地址的逻辑
+  const updateWalletAddress = async (address: string) => {
+    try {
+      if (userProfile) {
+        const updatedProfile = { ...userProfile, walletAddress: address };
+        setUserProfile(updatedProfile); // 更新状态
+        await authService.updateProfile(updatedProfile.userId, updatedProfile); // 更新后台数据
+      }
+    } catch (error) {
+      console.error('Failed to update wallet address:', error);
+    }
+  };
+
+  // 处理父窗口消息
+  const handleWalletMessage = async (event: MessageEvent) => {
+    console.warn('handleWalletMessage', event);
+    const { type, data } = event.data;
+
+    // 安全检查：确保我们只处理 LINK_WALLET_SUCCESS 类型的消息
+    if (type === 'LINK_WALLET_SUCCESS' && data) {
+      await updateWalletAddress(data); // 更新后台数据
+    }
+  };
+
+  useEffect(() => {
+    // 监听父窗口发送的消息
+    window.addEventListener('message', handleWalletMessage);
+
+    // 清理事件监听器
+    return () => {
+      window.removeEventListener('message', handleWalletMessage);
+    };
+  }, [userProfile]);
 
   return (
     <>

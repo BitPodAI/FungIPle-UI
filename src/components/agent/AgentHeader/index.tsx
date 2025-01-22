@@ -17,40 +17,7 @@ type AgentHeaderProps = {
 
 const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const { level, experience, nextLevelExp, agentname } = useAgentInfo();
-  const { userProfile, setUserProfile } = useUserStore();
-  // 提取更新钱包地址的逻辑
-  const updateWalletAddress = async (address: string) => {
-    try {
-      if (userProfile) {
-        const updatedProfile = { ...userProfile, walletAddress: address };
-        setUserProfile(updatedProfile); // 更新状态
-        await authService.updateProfile(updatedProfile.userId, updatedProfile); // 更新后台数据
-      }
-    } catch (error) {
-      console.error('Failed to update wallet address:', error);
-    }
-  };
 
-  // 处理父窗口消息
-  const handleWalletMessage = async (event: MessageEvent) => {
-    console.warn('handleWalletMessage', event);
-    const { type, data } = event.data;
-
-    // 安全检查：确保我们只处理 LINK_WALLET_SUCCESS 类型的消息
-    if (type === 'LINK_WALLET_SUCCESS' && data) {
-      await updateWalletAddress(data); // 更新后台数据
-    }
-  };
-
-  useEffect(() => {
-    // 监听父窗口发送的消息
-    window.addEventListener('message', handleWalletMessage);
-
-    // 清理事件监听器
-    return () => {
-      window.removeEventListener('message', handleWalletMessage);
-    };
-  }, [userProfile]);
 
   return (
     <div className="w-[calc(100%-40px)] mx-[20px] mt-[20px] flex items-center justify-between">
