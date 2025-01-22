@@ -4,7 +4,7 @@ import AppRoutes from './router';
 import { useWindowResize } from './hooks/useWindowResize';
 import { LoadingProvider } from './context/LoadingContext';
 import './App.css';
-import './mock';
+// import './mock';
 import { useUserStore } from './stores/useUserStore';
 import { ToastContainer } from 'react-toastify';
 
