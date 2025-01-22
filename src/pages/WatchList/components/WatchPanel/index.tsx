@@ -28,10 +28,10 @@ const WatchPanel: React.FC = () => {
       const cachedMsgsObj = localStorage.getItem(LOCALSTORAGE_ITEM_WATCHLIST);
       const cachedMsgs = cachedMsgsObj ? JSON.parse(cachedMsgsObj) : [];
 
-      // Use the 'msg. updatedAt' field as the key to remove duplicates
-      const existingMessageIdsSet = new Set(cachedMsgs.map((msg: Message) => msg.updatedAt));
+       // Use the 'msg. updatedAt + msg.title' field as the key to remove duplicates
+      const existingMessageIdsSet = new Set(cachedMsgs.map((msg: Message) => (msg.updatedAt ?? '') + msg.title));
       newMsgs.forEach(msg => {
-        if (!existingMessageIdsSet.has(msg.updatedAt)) {
+        if (!existingMessageIdsSet.has((msg.updatedAt ?? '') + msg.title)) {
           cachedMsgs.push(msg);
         }
       });
@@ -45,7 +45,7 @@ const WatchPanel: React.FC = () => {
   const handleWatchMessage = async () => {
     try {
       const items = await watchApi.getMyWatchList();
-      console.log('handleWatchMessage called items len : ', items.length);
+      console.log('handleWatchMessage called items length : ', items.length);
       // console.log('handleWatchMessage called items: ', JSON.stringify(items));
 
       addMessages(items); // new msgs
