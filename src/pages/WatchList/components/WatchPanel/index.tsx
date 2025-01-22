@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { WatchList } from '../WatchList';
 //import WatchPng from '@/assets/images/temp/watchlist.png';
 
-const LOCALSTORAGE_ITEM_WATCHLIST = '_web3agent_watchlist_';
+const LOCALSTORAGE_ITEM_WATCHLIST = '_web3agent_watchlist_new_';
 
 const WatchPanel: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -25,8 +25,18 @@ const WatchPanel: React.FC = () => {
 
   const addMessages = (newMsgs: Message[]) => {
     setMessages(() => {
-      const updatedMsgs = [...messages, ...newMsgs];
-      const msgsToSave = updatedMsgs.length > 20 ? updatedMsgs.slice(-20) : updatedMsgs;
+      const cachedMsgsObj = localStorage.getItem(LOCALSTORAGE_ITEM_WATCHLIST);
+      const cachedMsgs = cachedMsgsObj ? JSON.parse(cachedMsgsObj) : [];
+
+      // Use the 'msg. updatedAt' field as the key to remove duplicates
+      const existingMessageIdsSet = new Set(cachedMsgs.map((msg: Message) => msg.updatedAt));
+      newMsgs.forEach(msg => {
+        if (!existingMessageIdsSet.has(msg.updatedAt)) {
+          cachedMsgs.push(msg);
+        }
+      });
+
+      const msgsToSave = cachedMsgs.length > 20 ? cachedMsgs.slice(-20) : cachedMsgs;
       localStorage.setItem(LOCALSTORAGE_ITEM_WATCHLIST, JSON.stringify(msgsToSave));
       return msgsToSave;
     });
@@ -35,6 +45,9 @@ const WatchPanel: React.FC = () => {
   const handleWatchMessage = async () => {
     try {
       const items = await watchApi.getMyWatchList();
+      console.log('handleWatchMessage called items len : ', items.length);
+      // console.log('handleWatchMessage called items: ', JSON.stringify(items));
+
       addMessages(items); // new msgs
     } catch (error) {
       console.error('Error fetching watch list:', error);
@@ -42,13 +55,20 @@ const WatchPanel: React.FC = () => {
   };
 
   const getWatchTextLoop = async () => {
-    await handleWatchMessage();
+    const timerlooper = setInterval(handleWatchMessage, 60000);
+    // console.log('getWatchTextLoop timeerlooper: ' + timerlooper);
   };
 
   useEffect(() => {
-    //watchApi.reset();
     setMessages([]);
-    getWatchTextLoop();
+    const timer = setTimeout(() => {
+      handleWatchMessage();
+      getWatchTextLoop();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   return (
