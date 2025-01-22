@@ -6,6 +6,7 @@ import Background from '@/components/common/Background';
 //import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
 import { storage } from '@/utils/storage';
+import { useUserStore } from '@/stores/useUserStore';
 import Yun from '@/assets/images/login/yun.png';
 import Sun from '@/assets/images/login/sun.png';
 import LoginGoogle from '@/assets/images/login/login-google.png';
@@ -18,6 +19,7 @@ export default function Login() {
   const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
+  const { userProfile } = useUserStore();
   //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -30,7 +32,7 @@ export default function Login() {
         setError("Already logged in.");
       }
   };
-  
+
   useEffect(() => {
     const login = async () => {
       try {
@@ -49,9 +51,7 @@ export default function Login() {
       }
     };
 
-    const userId = localStorage.getItem('userId');
-    const userProfile = localStorage.getItem('userProfile');
-    if (userId && userProfile) {
+    if (userProfile && userProfile.gmail) {
       navigate('/plugin/chat'); // already login
       return;
     }

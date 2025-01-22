@@ -2,8 +2,6 @@ import './index.css';
 import { AGENT_IMAGES_1 } from '@/config/image';
 import stageIcon from '@/assets/images/agent/stage.png';
 import giftBoxIcon from '@/assets/icons/gift-box.svg';
-import heartIcon from '@/assets/icons/heart.svg';
-import battleIcon from '@/assets/icons/bottle.svg';
 import { useEffect, useMemo, useState } from 'react';
 import { usePixModal } from '@/hooks/usePixModal.hook';
 import AgentHeader from '@/components/agent/AgentHeader';
@@ -63,12 +61,12 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
     }, 5000);
   };
 
-  const handleBattleMode = () => {
+  /*const handleBattleMode = () => {
     setStatusIcon(AGENT_IMAGES_1[`1_${level}_2`]);
     setTimeout(() => {
       setStatusIcon('');
     }, 5000);
-  };
+  };*/
 
   return (
     <div className={`relative transition-all duration-300 w-full ${isHidden ? 'h-0 opacity-0' : 'h-[30%] opacity-100'}`}>

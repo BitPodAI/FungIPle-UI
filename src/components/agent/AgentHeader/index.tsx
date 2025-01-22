@@ -3,10 +3,7 @@ import lifeBarIcon from '@/assets/icons/life-bar.svg';
 import BoyIcon from '@/assets/icons/boy.svg';
 import GirlIcon from '@/assets/icons/girl.svg';
 import './index.css';
-import { useEffect } from 'react';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
-//import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { authService } from '@/services/auth';
 import { useUserStore } from '@/stores/useUserStore';
 import ConnectBtn from '@/components/ConnectBtn';
 
@@ -17,6 +14,7 @@ type AgentHeaderProps = {
 
 const AgentHeader: React.FC<AgentHeaderProps> = ({ isShowConnect = true }) => {
   const { level, experience, nextLevelExp, agentname } = useAgentInfo();
+  const { userProfile } = useUserStore();
 
 
   return (
