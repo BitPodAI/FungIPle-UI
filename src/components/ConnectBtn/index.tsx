@@ -16,7 +16,8 @@ const ConnectBtn = () => {
   const { linkWallet, user, getAccessToken } = usePrivy();
 
   const handleWalletConnect = async () => {
-    if (userProfile?.gmail) {
+    const accessToken = await getAccessToken();
+    if (user && accessToken && userProfile?.gmail) {
       if (import.meta.env.VITE_MODE_WEB === '1') {
         linkWallet();
       } else {
