@@ -1,26 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MemoItem from '../MemoItem';
 import TrashSVG from '@/assets/icons/trash.svg';
 import { ReactSVG } from 'react-svg';
-import { Memo } from "../../../../types/memo";
+import { Memo } from '@/types/memo';
+import { memoApi } from '@/services/memo';
 
+interface MemoListProps {
+  memos: Memo[];
+  onDelete: (data: string[]) => void;
+}
 
-const MemoList: React.FC = () => {
-  const [memos, setMemos] = useState<Memo[]>([
-    {
-      id: '1',
-      title: 'Introducing Memo',
-      content: 'Memo is your exclusive AI knowledge base. You can collect any webpage, AI chat records, images, and PDF...',
-      date: '2024/12/20',
-    },
-    {
-      id: '2',
-      title: 'IPLAUSDT for BINANCE: PLAUSDT by TraianIonita',
-      content: 'In this article, the author expresses their belief that Bitcoin will never reach certain past prices again...',
-      date: '2024/12/20',
-    },
-  ]);
-
+const MemoList: React.FC<MemoListProps> = ({ memos, onDelete }) => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   const handleSelectAll = (checked: boolean) => {
@@ -40,12 +30,12 @@ const MemoList: React.FC = () => {
   };
 
   const handleDeleteSelected = () => {
-    setMemos(prev => prev.filter(memo => !selectedIds.includes(memo.id)));
+    onDelete(selectedIds);
     setSelectedIds([]);
   };
 
   return (
-    <div className="p-4">
+    <div className="box-border p-[16px] w-full">
       <div className="flex items-center justify-between mb-4">
         <label className="flex items-center">
           <input
@@ -66,15 +56,7 @@ const MemoList: React.FC = () => {
       </div>
 
       {memos.map(memo => (
-        <MemoItem
-          key={memo.id}
-          title={memo.title}
-          content={memo.content}
-          date={memo.date}
-          imageUrl={memo.imageUrl}
-          checked={selectedIds.includes(memo.id)}
-          onCheck={checked => handleSelect(memo.id, checked)}
-        />
+        <MemoItem key={memo.id} data={memo} checked={selectedIds.includes(memo.id)} onCheck={checked => handleSelect(memo.id, checked)} />
       ))}
     </div>
   );

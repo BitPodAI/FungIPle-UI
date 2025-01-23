@@ -17,14 +17,15 @@ class MemoApi {
   }
 
   // Get from server
-  async getMemoList(userId: string): Promise<Memo[]> {
+  async getMemoList(): Promise<Memo[]> {
     if (!this.hasMore) {
       return [];
     }
 
     try {
-      const response = await api.get(`/memo`, {params: { userId }});
-      const data: Memo[] = response.data.data.memos;
+      const response = await api.get(`/memo`);
+
+      const data: Memo[] = response.data;
 
       // set for each item
       return data;
@@ -34,14 +35,13 @@ class MemoApi {
     }
   }
 
-
   /**
    * Add a memo item
    * @returns
    */
-  async addMemo(title: string, content: string, userId: string) {
+  async addMemo(content: string) {
     try {
-      const response = await api.post(`/memo`, { title, content, userId });
+      const response = await api.post(`/memo`, { content });
       return response.data;
     } catch (error) {
       console.error('Add Memo error:', error);
@@ -49,16 +49,15 @@ class MemoApi {
     }
   }
 
-  async deleteMomo(ids: string[], userId: string): Promise<string> {
-      try {
-        const response = await api.delete(`/memo`, {params: { ids, userId }});
-        return response.data;
-      } catch (error) {
-        console.error('Delete Memo error:', error);
-        throw error;
-      }
+  async deleteMomo(ids: string[]): Promise<string> {
+    try {
+      const response = await api.delete(`/memo`, { data: ids });
+      return response.data;
+    } catch (error) {
+      console.error('Delete Memo error:', error);
+      throw error;
+    }
   }
-
 }
 
 export const memoApi = new MemoApi();
