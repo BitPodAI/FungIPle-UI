@@ -44,14 +44,14 @@ const MemoList: React.FC<MemoListProps> = ({ memos, onDelete }) => {
             checked={selectedIds.length === memos.length && memos.length > 0}
             onChange={e => handleSelectAll(e.target.checked)}
           />
-          <span className="text-sm averia-serif-libre">Select All</span>
+          <span className="text-sm Geologica">Select All</span>
         </label>
         <div
           className="px-4 py-1 border-2 border-solid border-#CFCFCF text-gray-400 hover:border-red-200 hover:text-red-200  rounded-xl text-xs py-2 rounded disabled:opacity-50 frc-center gap-2"
           onClick={handleDeleteSelected}
         >
           <ReactSVG src={TrashSVG} className="w-4 h-4" />
-          <span className="text-sm averia-serif-libre">Delete</span>
+          <span className="text-sm Geologica">Delete</span>
         </div>
       </div>
 

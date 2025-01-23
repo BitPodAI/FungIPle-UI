@@ -40,7 +40,7 @@ const MemoItem: React.FC<MemoItemProps> = ({ data, checked, onCheck }) => {
           <h3 className="Geologica font-bold averia-serif-libre text-normal mt-0 mb-4">{title}</h3>
           <p className="Geologica text-sm averia-serif-libre text-gray-600">{content}</p>
         </div> */}
-        <div className="flex-1 Geologica">{data.content}</div>
+        <div className="flex-1 Geologica text-[13px]">{data.content}</div>
       </div>
       <div className="w-full box-border flex items-center justify-between mt-2 bg-[#E7E6E650] p-2 rounded-bl-2xl rounded-br-2xl">
         <div className="frc-center gap-4 pl-[12px]">

@@ -98,7 +98,7 @@ const ConnectBtn = () => {
           </div>
         </div>
       </PixModal>
-      <div className="ml-[10px] overflow-hidden flex-1 max-w-[180px] flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white"
+      <div className="ml-[10px] overflow-hidden  max-w-[180px] flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white"
         onClick={handleWalletConnect}>
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
         {userProfile?.walletAddress ? (
