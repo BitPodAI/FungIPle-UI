@@ -34,7 +34,7 @@ export default function Login() {
   };
 
   useEffect(() => {
-    const login = async () => {
+    const loginAgent = async () => {
       try {
         if (user && user.google) {
           const token = await getAccessToken();
@@ -46,20 +46,21 @@ export default function Login() {
           await authService.login(userId, gmail);
           navigate('/egg-select');
         }
+        else {
+          await login();
+        }
       } catch (error) {
         console.error("Failed to update wallet address:", error);
       }
     };
 
-    if (userProfile && userProfile.gmail) {
+    if (user && user.google && userProfile && userProfile.gmail) {
       navigate('/plugin/chat'); // already login
       return;
     }
 
     // Firstly login by privy
-    if (user && (user.google || user.twitter)) {
-      login();
-    }
+    loginAgent();
   });
 
   function simpleHash(input: string) {

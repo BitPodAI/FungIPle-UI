@@ -13,12 +13,13 @@ const ConnectBtn = () => {
   const { userProfile, setUserProfile } = useUserStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { linkWallet } = usePrivy();
+  const { linkWallet, user, getAccessToken } = usePrivy();
 
   const handleWalletConnect = async () => {
-    // 检查当前环境是否为 HTTPS
+    // Check HTTPS for ChromeExtension or not
     const isHttps = window.location.protocol === 'https:';
-    if (userProfile?.gmail) {
+    const accessToken = await getAccessToken();
+    if (user && accessToken && userProfile?.gmail) {
       if (isHttps) {
         linkWallet();
       } else {
@@ -26,6 +27,7 @@ const ConnectBtn = () => {
       }
     } else {
       // Popup tips
+      localStorage.clear();
       setIsModalOpen(true);
     }
   };
@@ -35,35 +37,40 @@ const ConnectBtn = () => {
     setIsModalOpen(false);
   };
 
-  // 提取更新钱包地址的逻辑
+  // Get the wallet address
   const updateWalletAddress = async (address: string) => {
     try {
       if (userProfile) {
         const updatedProfile = { ...userProfile, walletAddress: address };
-        setUserProfile(updatedProfile); // 更新状态
-        await authService.updateProfile(updatedProfile.userId, updatedProfile); // 更新后台数据
+        setUserProfile(updatedProfile);
+        await authService.updateProfile(updatedProfile.userId, updatedProfile);
       }
     } catch (error) {
       console.error('Failed to update wallet address:', error);
     }
   };
 
-  // 处理父窗口消息
+  // Message from parent
   const handleWalletMessage = async (event: MessageEvent) => {
     console.warn('handleWalletMessage', event);
     const { type, data } = event.data;
 
-    // 安全检查：确保我们只处理 LINK_WALLET_SUCCESS 类型的消息
+    // LINK_WALLET_SUCCESS
     if (type === 'LINK_WALLET_SUCCESS' && data) {
-      await updateWalletAddress(data); // 更新后台数据
+      await updateWalletAddress(data);
+    }
+  
+    console.log(user);
+    if (user && user.wallet && user.wallet.address) {
+      await updateWalletAddress(user.wallet.address);
     }
   };
 
   useEffect(() => {
-    // 监听父窗口发送的消息
+    // Listen the message from parent
     window.addEventListener('message', handleWalletMessage);
 
-    // 清理事件监听器
+    // clean message listener
     return () => {
       window.removeEventListener('message', handleWalletMessage);
     };
