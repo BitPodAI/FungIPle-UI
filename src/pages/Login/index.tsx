@@ -29,13 +29,11 @@ export default function Login() {
 
       const { type, data } = event.data;
 
-      // 安全检查：确保我们只处理预期的消息类型
       if (type === 'GOOGLE_AUTH_SUCCESS' && data) {
         const { token, id = 'guest', google } = data;
         const gmail = google?.email || 'gmail';
 
         if (token) {
-          // 存储token并进行登录处理
           storage.setToken(token);
           console.warn('login', id, gmail);
           await authService.login(id, gmail);
@@ -53,10 +51,8 @@ export default function Login() {
       return;
     }
 
-    // 监听父窗口发送的消息
     window.addEventListener('message', handleAuthMessage);
 
-    // 清理事件监听器
     return () => {
       window.removeEventListener('message', handleAuthMessage);
     };
