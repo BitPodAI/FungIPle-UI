@@ -34,9 +34,9 @@ export default function Login() {
 
         if (token) {
           storage.setToken(token);
-          console.warn('login', id, gmail);
+          //console.warn('login', id, gmail);
           await authService.login(id, gmail);
-          console.warn('login success');
+          //console.warn('login success');
 
           navigate('/egg-select');
         }
