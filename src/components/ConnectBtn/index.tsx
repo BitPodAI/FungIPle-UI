@@ -17,9 +17,8 @@ const ConnectBtn = () => {
 
   const handleWalletConnect = async () => {
     // 检查当前环境是否为 HTTPS
-    const isHttps = window.location.protocol === 'https:';
     if (userProfile?.gmail) {
-      if (isHttps) {
+      if (import.meta.env.VITE_MODE_WEB === '1') {
         linkWallet();
       } else {
         window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');

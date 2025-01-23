@@ -2,6 +2,7 @@ import React, { lazy, Suspense, ReactNode } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 
 const Login = lazy(() => import('../pages/Login/index'));
+const LoginWeb = lazy(() => import('../pages/Login/indexWeb'));
 const EggSelect = lazy(() => import('../pages/EggSelect'));
 const AgentCustomized = lazy(() => import('../pages/AgentCustomized'));
 const PluginLayout = lazy(() => import('../layout/PluginLayout'));
@@ -45,13 +46,21 @@ const AppRoutes: React.FC = () => {
       <Suspense fallback={<div className="frc-center w-full h-screen">Loading...</div>}>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route id="login" path="/login" element={<Login />} />
+          <Route id="login" path="/login" element={import.meta.env.VITE_MODE_WEB === '1' ? <LoginWeb /> : <Login />} />
           <Route id="egg-select" path="/egg-select" element={<EggSelect />} />
           <Route id="egg-config" path="/egg-config" element={<AgentCustomized />} />
           <Route id="plugin" path="/plugin" element={<PluginLayout />}>
             <Route path="" element={<Navigate to="/plugin/chat" />} />
             <Route id="chat" path="chat" element={<Chat />} />
-            <Route id="agent" path="agent" element={<ProtectedRoute><AgentBoard /></ProtectedRoute>} />
+            <Route
+              id="agent"
+              path="agent"
+              element={
+                <ProtectedRoute>
+                  <AgentBoard />
+                </ProtectedRoute>
+              }
+            />
             <Route id="watch-list" path="watch-list" element={<WatchList />} />
             <Route id="discover" path="discover" element={<Discover />} />
             <Route id="memo" path="memo" element={<Memo />} />

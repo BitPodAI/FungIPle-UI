@@ -11,41 +11,38 @@ import Sun from '@/assets/images/login/sun.png';
 import LoginGoogle from '@/assets/images/login/login-google.png';
 import LoginOther from '@/assets/images/login/login-other.png';
 import GuestLogin from '@/assets/images/login/guest-login.png';
-import { usePrivy } from '@privy-io/react-auth';
 
+const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 export default function Login() {
-  const { login, user, getAccessToken } = usePrivy();
+  // const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
   //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
-    if (!user) {
-        let res = await login();
-        console.log(res);
-      }
-      else {
-        console.log(user);
-        setError("Already logged in.");
-      }
+    window.open(`${HOST_URL}/#/popup-login`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
   };
-  
   useEffect(() => {
-    const login = async () => {
-      try {
-        if (user && user.google) {
-          const token = await getAccessToken();
-          if (token) {
-            storage.setToken(token);
-          }
-          const userId = user.id || "guest";
-          const gmail = user.google.email || "gmail";
-          await authService.login(userId, gmail);
+    const handleAuthMessage = async (event: MessageEvent) => {
+      console.warn('handleAuthMessage', event);
+
+      const { type, data } = event.data;
+
+      // 安全检查：确保我们只处理预期的消息类型
+      if (type === 'GOOGLE_AUTH_SUCCESS' && data) {
+        const { token, id = 'guest', google } = data;
+        const gmail = google?.email || 'gmail';
+
+        if (token) {
+          // 存储token并进行登录处理
+          storage.setToken(token);
+          console.warn('login', id, gmail);
+          await authService.login(id, gmail);
+          console.warn('login success');
+
           navigate('/egg-select');
         }
-      } catch (error) {
-        console.error("Failed to update wallet address:", error);
       }
     };
 
@@ -56,11 +53,44 @@ export default function Login() {
       return;
     }
 
-    // Firstly login by privy
-    if (user && (user.google || user.twitter)) {
-      login();
-    }
-  });
+    // 监听父窗口发送的消息
+    window.addEventListener('message', handleAuthMessage);
+
+    // 清理事件监听器
+    return () => {
+      window.removeEventListener('message', handleAuthMessage);
+    };
+  }, []);
+  // useEffect(() => {
+  //   const login = async () => {
+  //     try {
+  //       if (user && user.google) {
+  //         const token = await getAccessToken();
+  //         if (token) {
+  //           storage.setToken(token);
+  //         }
+  //         const userId = user.id || "guest";
+  //         const gmail = user.google.email || "gmail";
+  //         await authService.login(userId, gmail);
+  //         navigate('/egg-select');
+  //       }
+  //     } catch (error) {
+  //       console.error("Failed to update wallet address:", error);
+  //     }
+  //   };
+
+  //   const userId = localStorage.getItem('userId');
+  //   const userProfile = localStorage.getItem('userProfile');
+  //   if (userId && userProfile) {
+  //     navigate('/plugin/chat'); // already login
+  //     return;
+  //   }
+
+  //   // Firstly login by privy
+  //   if (user && (user.google || user.twitter)) {
+  //     login();
+  //   }
+  // });
 
   function simpleHash(input: string) {
     let hash = 0;
