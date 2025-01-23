@@ -13,10 +13,9 @@ const ConnectBtn = () => {
   const { userProfile, setUserProfile } = useUserStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { linkWallet } = usePrivy();
+  const { linkWallet, user, getAccessToken } = usePrivy();
 
   const handleWalletConnect = async () => {
-    // 检查当前环境是否为 HTTPS
     if (userProfile?.gmail) {
       if (import.meta.env.VITE_MODE_WEB === '1') {
         linkWallet();
@@ -25,6 +24,7 @@ const ConnectBtn = () => {
       }
     } else {
       // Popup tips
+      localStorage.clear();
       setIsModalOpen(true);
     }
   };
@@ -34,35 +34,39 @@ const ConnectBtn = () => {
     setIsModalOpen(false);
   };
 
-  // 提取更新钱包地址的逻辑
+  // Get the wallet address
   const updateWalletAddress = async (address: string) => {
     try {
       if (userProfile) {
         const updatedProfile = { ...userProfile, walletAddress: address };
-        setUserProfile(updatedProfile); // 更新状态
-        await authService.updateProfile(updatedProfile.userId, updatedProfile); // 更新后台数据
+        setUserProfile(updatedProfile);
+        await authService.updateProfile(updatedProfile.userId, updatedProfile);
       }
     } catch (error) {
       console.error('Failed to update wallet address:', error);
     }
   };
 
-  // 处理父窗口消息
+  // Message from parent
   const handleWalletMessage = async (event: MessageEvent) => {
-    console.warn('handleWalletMessage', event);
+    //console.warn('handleWalletMessage', event);
     const { type, data } = event.data;
 
-    // 安全检查：确保我们只处理 LINK_WALLET_SUCCESS 类型的消息
+    // LINK_WALLET_SUCCESS
     if (type === 'LINK_WALLET_SUCCESS' && data) {
-      await updateWalletAddress(data); // 更新后台数据
+      await updateWalletAddress(data);
+    }
+
+    if (user && user.wallet && user.wallet.address) {
+      await updateWalletAddress(user.wallet.address);
     }
   };
 
   useEffect(() => {
-    // 监听父窗口发送的消息
+    // Listen the message from parent
     window.addEventListener('message', handleWalletMessage);
 
-    // 清理事件监听器
+    // clean message listener
     return () => {
       window.removeEventListener('message', handleWalletMessage);
     };
@@ -89,12 +93,13 @@ const ConnectBtn = () => {
           </div>
         </div>
       </PixModal>
-      <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white">
+      <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white"
+        onClick={handleWalletConnect}>
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
         {userProfile?.walletAddress ? (
           <span className="capitalize text-black text-xs ellipsis">{userProfile.walletAddress}</span>
         ) : (
-          <span onClick={handleWalletConnect} className="capitalize text-black text-xs">
+          <span className="capitalize text-black text-xs">
             connect
           </span>
         )}

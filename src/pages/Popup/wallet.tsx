@@ -2,7 +2,6 @@ import { usePrivy, useWallets } from '@privy-io/react-auth';
 import { useEffect } from 'react';
 
 const PopupWallet = () => {
-    
   const { linkWallet,ready } = usePrivy();
   const { wallets } = useWallets();
 

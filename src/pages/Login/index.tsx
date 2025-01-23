@@ -61,36 +61,6 @@ export default function Login() {
       window.removeEventListener('message', handleAuthMessage);
     };
   }, []);
-  // useEffect(() => {
-  //   const login = async () => {
-  //     try {
-  //       if (user && user.google) {
-  //         const token = await getAccessToken();
-  //         if (token) {
-  //           storage.setToken(token);
-  //         }
-  //         const userId = user.id || "guest";
-  //         const gmail = user.google.email || "gmail";
-  //         await authService.login(userId, gmail);
-  //         navigate('/egg-select');
-  //       }
-  //     } catch (error) {
-  //       console.error("Failed to update wallet address:", error);
-  //     }
-  //   };
-
-  //   const userId = localStorage.getItem('userId');
-  //   const userProfile = localStorage.getItem('userProfile');
-  //   if (userId && userProfile) {
-  //     navigate('/plugin/chat'); // already login
-  //     return;
-  //   }
-
-  //   // Firstly login by privy
-  //   if (user && (user.google || user.twitter)) {
-  //     login();
-  //   }
-  // });
 
   function simpleHash(input: string) {
     let hash = 0;
