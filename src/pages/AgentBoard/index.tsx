@@ -182,7 +182,7 @@ const AgentBoard: React.FC = () => {
   }, [Xusername]);
 
   return (
-    <div className="page press-start-2p max-w-[490px] Geologica">
+    <div className="page press-start-2p max-w-[450px] Geologica">
       <AgentHeader />
 
       <PixModal isOpen={isModalOpen} onClose={closeModal}>

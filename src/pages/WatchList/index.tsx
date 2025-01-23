@@ -14,7 +14,7 @@ const WatchList: React.FC = () => {
   };
 
   return (
-    <div className="page press-start-2p max-w-[490px] GeologicaRegular">
+    <div className="page press-start-2p max-w-[450px] GeologicaRegular">
       <div className="press-start-2p flex flex-row flex-start flex-items-center gap-1 w-full m-6 GeologicaRegular">
         <ReactSVG src={BackIcon} className="color-inherit" style={{ marginLeft: '20px', marginRight: '20px' }} />
         <span className='text-[24px]'>

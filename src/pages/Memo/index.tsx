@@ -35,12 +35,12 @@ const MemoApp: React.FC = () => {
   }, []);
   if (loading)
     return (
-      <div className="page press-start-2p max-w-[490px] fcc-center">
+      <div className="page press-start-2p max-w-[450px] fcc-center">
           <PixLoading />
       </div>
     );
   return (
-    <div className="page press-start-2p max-w-[490px]">
+    <div className="page press-start-2p max-w-[450px]">
       <div className="w-full text-left GeologicaRegular">
         <h3 className="ml-20px p-0 mb-0">Memo</h3>
       </div>
