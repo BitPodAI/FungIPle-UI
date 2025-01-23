@@ -52,15 +52,14 @@ const ConnectBtn = () => {
 
   // Message from parent
   const handleWalletMessage = async (event: MessageEvent) => {
-    console.warn('handleWalletMessage', event);
+    //console.warn('handleWalletMessage', event);
     const { type, data } = event.data;
 
     // LINK_WALLET_SUCCESS
     if (type === 'LINK_WALLET_SUCCESS' && data) {
       await updateWalletAddress(data);
     }
-  
-    console.log(user);
+
     if (user && user.wallet && user.wallet.address) {
       await updateWalletAddress(user.wallet.address);
     }

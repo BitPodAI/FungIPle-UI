@@ -3,15 +3,15 @@ import { PrivyProvider } from '@privy-io/react-auth';
 const VITE_PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID;
 
 export default function AppPriviyProvider({ children }: { children: React.ReactNode }) {
-  // 检查当前环境是否为 HTTPS
+  // Check HTTPS
   const isHttps = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
   
-  // 如果不在 HTTPS 环境中，直接返回子组件
+  // Whether Https
   if (!isHttps) {
-    console.warn('PrivyProvider 未启用：当前协议不是 HTTPS');
+    //console.warn('PrivyProvider Un-used for not HTTPS');
     return <>{children}</>;
   }
-  console.warn('PrivyProvider 启用');
+  //console.warn('PrivyProvider used');
   return (
     <PrivyProvider
       appId={VITE_PRIVY_APP_ID}
