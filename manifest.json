@@ -12,7 +12,9 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "48": "public/icon48.png"
+      "16": "public/logo16.png",
+      "48": "public/logo48.png",
+      "128": "public/logo128.png"
     }
   },
   "side_panel": {

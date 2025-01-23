@@ -36,7 +36,7 @@ const Sidebar = () => {
   }, [location]);
 
   return (
-    <div className="w-[60px] h-screen py-[16px] box-border flex flex-col justify-between items-center bg-[##fafafa]">
+    <div className="flex-shrink-0 w-[60px] h-screen py-[16px] box-border flex flex-col justify-between items-center bg-[##fafafa]">
       <div className="fcc-center">
         <ul className="fcc-center gap-[20px]">
           {!isWeb && (

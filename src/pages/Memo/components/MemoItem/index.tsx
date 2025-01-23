@@ -39,12 +39,12 @@ const MemoItem: React.FC<MemoItemProps> = ({ title, content, date, imageUrl, che
         <input type="checkbox" className="w-5 h-5 mr-4 cursor-pointer" checked={checked} onChange={e => onCheck(e.target.checked)} />
         {imageUrl && <img src={imageUrl} alt={title} className="w-16 h-16 rounded mr-4" />}
         <div className="flex-1">
-          <h3 className="font-bold averia-serif-libre text-normal mt-0 mb-4">{title}</h3>
-          <p className="text-sm averia-serif-libre text-gray-600">{content}</p>
+          <h3 className="Geologica font-bold averia-serif-libre text-normal mt-0 mb-4">{title}</h3>
+          <p className="Geologica text-sm averia-serif-libre text-gray-600">{content}</p>
         </div>
       </div>
-      <div className="w-full box-border flex items-center justify-between mt-2 bg-#E7E6E6 p-2 rounded-bl-2xl rounded-br-2xl">
-        <div className="frc-center gap-4">
+      <div className="w-full box-border flex items-center justify-between mt-2 bg-[#E7E6E650] p-2 rounded-bl-2xl rounded-br-2xl">
+        <div className="frc-center gap-4 pl-[12px]">
           <img src={FileSVG} className="w-4 h-4" />
           <span className="text-xs averia-serif-libre text-gray-500">Note · {formatDate(date)}</span>
         </div>
