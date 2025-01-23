@@ -1,8 +1,8 @@
 import React, { useState, useRef } from 'react';
 import sendIcon from '@/assets/icons/send.svg';
-// import voiceIcon from '@/assets/icons/voice.svg';
 import { ReactSVG } from 'react-svg';
 import loadingIcon from '@/assets/icons/loading.svg';
+
 interface ChatInputProps {
   onSend: (message: string) => Promise<void>;
   disabled?: boolean;
@@ -12,9 +12,10 @@ interface ChatInputProps {
 export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, placeholder = 'I want to...' }) => {
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {   
     e.preventDefault();
     if (!message.trim() || isLoading || disabled) return;
 
@@ -26,6 +27,9 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
     } finally {
       setMessage('');
       setIsLoading(false);
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 100);
     }
   };
 
@@ -38,7 +42,7 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
 
   return (
     <form onSubmit={handleSubmit} className="flex-1 border-t border-gray-200">
-      <div className="flex flex-col items-end space-x-2">
+      <div className="flex flex-items-end">
         <div className="flex-1 w-full h-full">
           <textarea
             ref={textareaRef}
@@ -46,25 +50,23 @@ export const ChatInput: React.FC<ChatInputProps> = ({ onSend, disabled = false, 
             onChange={e => setMessage(e.target.value)}
             onKeyDown={handleKeyUp}
             placeholder={placeholder}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             disabled={disabled || isLoading}
-            rows={2}
-            className="box-border w-full h-20 px-2 py-1 resize-none rounded-lg bg-white text-black averia-serif-libre border border-gray-300 placeholder-gray-400 focus:outline-none"
+            className="Geologica box-border p0 w-full  resize-none rounded-lg bg-white text-[13px]  line-height-[13px] text-black averia-serif-libre border border-gray-300 placeholder-gray-400 focus:outline-none transition-all duration-300"
+            style={{
+              height: isFocused || message ? '60px' : '13px', // 高度变化
+              maxHeight: '83px',
+              outline: 'none',
+              borderRadius: '0px',
+            }}
           />
         </div>
         <div className="flex items-center justify-end">
-          {/* <button
-            type="submit"
-            disabled={!message.trim() || isLoading || disabled}
-            className={`frc-center font-medium text-[#B6B6B6] ${
-              !message.trim() || isLoading || disabled ? 'cursor-not-allowed' : 'hover:text-blue-600'
-            }`}
-          >
-            {isLoading ? <ArrowPathIcon className="h-5 w-5" /> : <ReactSVG src={voiceIcon} className="h-5 w-5 frc-center" />}
-          </button> */}
           <button
             type="submit"
             disabled={!message.trim() || isLoading || disabled}
-            className={`frc-center font-medium text-[#B6B6B6] ${
+            className={`frc-center font-medium text-[#B6B6B6] bg-[#fff] ${
               !message.trim() || isLoading || disabled ? 'cursor-not-allowed' : 'hover:text-blue-600'
             }`}
           >

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "FungIPle",
+  "name": "Mai Agent",
   "version": "0.1.0",
   "description": "Autonomous AI Agent, IP, Assets for Web3",
   "background": {

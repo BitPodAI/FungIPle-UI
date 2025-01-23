@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Background from '@/components/common/Background';
-//import Button from '@/components/common/Button';
-//import { BTNCOLOR } from '@/constant/button';
-//import guestIcon from '@/assets/icons/agent.svg';
 import { authService } from '@/services/auth';
 import { storage } from '@/utils/storage';
 import Yun from '@/assets/images/login/yun.png';
@@ -15,18 +12,14 @@ import GuestLogin from '@/assets/images/login/guest-login.png';
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 export default function Login() {
-  // const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
-  //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
     window.open(`${HOST_URL}/#/popup-login`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
   };
   useEffect(() => {
     const handleAuthMessage = async (event: MessageEvent) => {
-      console.warn('handleAuthMessage', event);
-
       const { type, data } = event.data;
 
       if (type === 'GOOGLE_AUTH_SUCCESS' && data) {
@@ -81,10 +74,6 @@ export default function Login() {
     return simpleHash(name).toString();
   }
 
-  // function generateGuestEmail() {
-  //   return 'Guest@placeholder.com';
-  // }
-
   const handleGuestAuth = async () => {
     const userId = localStorage.getItem('userId');
     const userProfile = localStorage.getItem('userProfile');
@@ -128,11 +117,6 @@ export default function Login() {
         <h1 className="press-start-2p font-size-5 text-xl">CREATE YOUR OWN</h1>
         <h1 className="press-start-2p font-size-5 text-xl">SOCIAL AGENT</h1>
       </div>
-      {/* <div className="m-x-auto w-[298px] relative">
-        <img src={LoginGoogle} className="w-[298px]" />
-        <div className="h-[48px] w-full absolute top-0" onClick={handleAuth}></div>
-        <div className="h-[25px] w-[120px] absolute bottom-0 left-[50%] ml-[-60px]" onClick={handleGuestAuth}></div>
-      </div> */}
       <img src={LoginGoogle} className="w-[298px] btn-scale" onClick={handleAuth} />
       <div className='text-center mt-[30px] Geologica text-[15px] color-[#b9b9b9] mr-[10px]'>or</div>
       <img className='w-[90px] mt-[29px]' src={GuestLogin} onClick={handleGuestAuth}></img>

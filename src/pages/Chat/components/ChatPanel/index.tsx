@@ -63,12 +63,12 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
         </div>
         <ChatHistory messages={messages} />
       </div>
-      <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent">
+      {/* <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent">
         <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
-      </PixBorder>
-      {/* <div className="textarea-border border-box flex items-center justify-between m-2 p-2">
+      </PixBorder> */}
+      <div className="textarea-border border-box flex items-center justify-between m-2 p-[12px]">
         <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
-      </div> */}
+      </div>
     </div>
   );
 };
