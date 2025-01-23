@@ -16,17 +16,21 @@ const ConnectBtn = () => {
   const { linkWallet, user, getAccessToken } = usePrivy();
 
   const handleWalletConnect = async () => {
-    const accessToken = await getAccessToken();
-    if (user && accessToken && userProfile?.gmail) {
-      if (import.meta.env.VITE_MODE_WEB === '1') {
+    if (import.meta.env.VITE_MODE_WEB === '1') {
+      const accessToken = await getAccessToken();
+      if (user && accessToken && userProfile?.gmail) {
         linkWallet();
       } else {
-        window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+        setIsModalOpen(true);
       }
     } else {
-      // Popup tips
-      localStorage.clear();
-      setIsModalOpen(true);
+      if (userProfile?.gmail) {
+        window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+      } else {
+        // Popup tips
+        //localStorage.clear();
+        setIsModalOpen(true);
+      }
     }
   };
 
