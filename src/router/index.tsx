@@ -63,7 +63,7 @@ const AppRoutes: React.FC = () => {
             />
             <Route id="watch-list" path="watch-list" element={<WatchList />} />
             <Route id="discover" path="discover" element={<Discover />} />
-            <Route id="memo" path="memo" element={<Memo />} />
+            <Route id="memo" path="memo" element={<ProtectedRoute><Memo /></ProtectedRoute>} />
             <Route id="more" path="more" element={<More />} />
             <Route id="gift" path="gift" element={<Gift />} />
             <Route id="device" path="device" element={<Device />} />
