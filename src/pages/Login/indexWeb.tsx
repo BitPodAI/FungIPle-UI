@@ -52,8 +52,8 @@ export default function Login() {
         console.error("Failed to update wallet address:", error);
       }
     };
-
-    if (userProfile && userProfile.gmail) {
+    const userId = localStorage.getItem('userId')
+    if (userProfile && userProfile.gmail && userId) {
       navigate('/plugin/chat'); // already login
       return;
     }

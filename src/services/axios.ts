@@ -31,7 +31,7 @@ api.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
     if (response.status === 401) {
       storage.clear();
-      window.location.href = '/login';
+      window.location.href = '/';
       return response;
     }
     return response;
@@ -39,7 +39,7 @@ api.interceptors.response.use(
   (error: AxiosError<ApiError>): Promise<never> => {
     if (error.response?.status == 401) {
       storage.clear();
-      window.location.href = '/login';
+      window.location.href = '/';
     }
     return Promise.reject(error);
   }
