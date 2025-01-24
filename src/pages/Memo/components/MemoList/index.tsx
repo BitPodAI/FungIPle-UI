@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import MemoItem from '../MemoItem';
 import TrashSVG from '@/assets/icons/trash.svg';
 import { ReactSVG } from 'react-svg';
 import { Memo } from '@/types/memo';
-import { memoApi } from '@/services/memo';
+// import { memoApi } from '@/services/memo';
 
 interface MemoListProps {
   memos: Memo[];

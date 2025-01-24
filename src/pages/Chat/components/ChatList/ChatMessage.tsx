@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Message } from '@/types/chat';
 import { ReactSVG } from 'react-svg';
-import ShareSVG from '@/assets/icons/share.svg';
+// import ShareSVG from '@/assets/icons/share.svg';
 import ShareBtnSVG from '@/assets/icons/share-btn.svg';
 import MemoSVG from '@/assets/icons/memo.svg';
 import TranslateSVG from '@/assets/icons/translate.svg';

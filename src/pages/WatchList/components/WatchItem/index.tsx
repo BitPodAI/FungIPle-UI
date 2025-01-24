@@ -11,24 +11,25 @@ import RefreshSVG from '@/assets/icons/refresh.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
-import useTranslate from '@/hooks/useTranslate';
+// import useTranslate from '@/hooks/useTranslate';
 
 export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
   const [text, setText] = useState(initialText);
 
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
-  const { handleTranslateClick } = useTranslate();
+  // const { handleTranslateClick } = useTranslate();
   const { copy, isCopied } = useCopyToClipboard();
+  console.log(setText)
 
   const handleCopy = async (text: string) => {
     await copy(text);
   };
 
-  const handleTranslate = async (text: string) => {
-    const translatedText = await handleTranslateClick(text);
-    setText(translatedText);
-  };
+  // const handleTranslate = async (text: string) => {
+  //   const translatedText = await handleTranslateClick(text);
+  //   setText(translatedText);
+  // };
 
   const formatTimeDifference = (timestampString: string) => {
     if (/[^0-9]/.test(timestampString)) {

@@ -6,11 +6,11 @@ import { Message } from '@/types/chat';
 import { chatApi } from '@/services/chat';
 import { ReactSVG } from 'react-svg';
 import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
-import PixBorder from '@/components/common/PixBorder';
-import topImg from '@/assets/images/border-bg/top.png';
-import bottomImg from '@/assets/images/border-bg/bottom.png';
-import leftImg from '@/assets/images/border-bg/left.png';
-import rightImg from '@/assets/images/border-bg/right.png';
+// import PixBorder from '@/components/common/PixBorder';
+// import topImg from '@/assets/images/border-bg/top.png';
+// import bottomImg from '@/assets/images/border-bg/bottom.png';
+// import leftImg from '@/assets/images/border-bg/left.png';
+// import rightImg from '@/assets/images/border-bg/right.png';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
