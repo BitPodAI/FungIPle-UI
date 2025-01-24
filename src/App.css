@@ -2,17 +2,7 @@
 @import './styles/custom.css';
 @import './styles/animate.css';
 
-/* 像素字体 */
-.press-start-2p {
-  font-family: 'Press Start 2P';
-}
 
-.Geologica {
-  font-family: 'Geologica';
-}
-.Tiny5 {
-  font-family: 'Tiny5';
-}
 
 /* 正文字体 */
 .averia-serif-libre {

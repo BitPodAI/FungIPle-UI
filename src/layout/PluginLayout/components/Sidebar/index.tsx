@@ -4,11 +4,13 @@ import { mainNavs, extendNavs } from './config';
 import { useEffect, useState } from 'react';
 import { MAIN_NAVS, EXTEND_NAVS, OTHER_NAVS } from '@/constant/navs';
 import { useLocation } from 'react-router-dom';
+import Close from '@/assets/icons/close2.svg';
+import { ReactSVG } from 'react-svg';
 
 const Sidebar = () => {
   const location = useLocation();
   const [selectedNav, setSelectedNav] = useState<string>();
-
+  const isWeb = import.meta.env.VITE_MODE_WEB === '1';
   useEffect(() => {
     // Update selectedNav based on the current route
     const path = location.pathname;
@@ -34,12 +36,17 @@ const Sidebar = () => {
   }, [location]);
 
   return (
-    <div className="w-[60px] h-screen py-[16px] box-border flex flex-col justify-between items-center bg-[#F7F6F5]">
+    <div className="flex-shrink-0 w-[60px] h-screen py-[16px] box-border flex flex-col justify-between items-center bg-[##fafafa]">
       <div className="fcc-center">
-        <ul className="fcc-center gap-[16px]">
+        <ul className="fcc-center gap-[20px]">
+          {!isWeb && (
+            <li className="cursor-pointer">
+              <ReactSVG src={Close} onClick={() => window.close()} />
+            </li>
+          )}
           {mainNavs.map(nav => (
             <li key={nav.title}>
-              <Link to={nav.path}>
+              <Link to={nav.path} className="fcc-center">
                 <IconWrap
                   title={nav.title}
                   isShowTitle={false}
@@ -50,12 +57,13 @@ const Sidebar = () => {
                 >
                   {nav.icon}
                 </IconWrap>
+                <span className="Gantari text-[11px] color-[#333] mt-[6px]">{nav.title}</span>
               </Link>
             </li>
           ))}
         </ul>
-        <div className="w-[32px] h-[2px] bg-[#E3E3E3] mt-[16px] mb-[16px]"></div>
-        <ul className="fcc-center gap-[16px]">
+        <div className="w-[24px] h-[1px] bg-[#E3E3E3] mt-[16px] mb-[16px]"></div>
+        <ul className="fcc-center gap-[20px]">
           {extendNavs.map(nav => (
             <li key={nav.title}>
               <Link to={nav.path}>
@@ -69,6 +77,7 @@ const Sidebar = () => {
                 >
                   {nav.icon}
                 </IconWrap>
+                <span className="Gantari text-[11px] color-[#333] mt-[6px]">{nav.title}</span>
               </Link>
             </li>
           ))}

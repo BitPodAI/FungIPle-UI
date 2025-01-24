@@ -12,12 +12,14 @@ import LoginGoogle from '@/assets/images/login/login-google.png';
 import LoginOther from '@/assets/images/login/login-other.png';
 import GuestLogin from '@/assets/images/login/guest-login.png';
 import { usePrivy } from '@privy-io/react-auth';
+import { useUserStore } from '@/stores/useUserStore';
 
 
 export default function Login() {
   const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
+  const { userProfile } = useUserStore();
   //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -32,7 +34,7 @@ export default function Login() {
   };
   
   useEffect(() => {
-    const login = async () => {
+    const loginAsync = async () => {
       try {
         if (user && user.google) {
           const token = await getAccessToken();
@@ -43,24 +45,22 @@ export default function Login() {
           const gmail = user.google.email || "gmail";
           await authService.login(userId, gmail);
           navigate('/egg-select');
+        } else {
+          await login();
         }
       } catch (error) {
         console.error("Failed to update wallet address:", error);
       }
     };
 
-    const userId = localStorage.getItem('userId');
-    const userProfile = localStorage.getItem('userProfile');
-    if (userId && userProfile) {
+    if (userProfile && userProfile.gmail) {
       navigate('/plugin/chat'); // already login
       return;
     }
 
     // Firstly login by privy
-    if (user && (user.google || user.twitter)) {
-      login();
-    }
-  });
+    loginAsync();
+  }, []);
 
   function simpleHash(input: string) {
     let hash = 0;

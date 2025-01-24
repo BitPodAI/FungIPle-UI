@@ -1,12 +1,12 @@
 export enum MAIN_NAVS {
-  CHAT = 'chat',
-  AGENT = 'agent',
-  WATCH_LIST = 'watchList',
-  DISCOVER = 'discover',
+  CHAT = 'Chat',
+  AGENT = 'Agent',
+  WATCH_LIST = 'WatchList',
+  DISCOVER = 'Discover',
 }
 
 export enum EXTEND_NAVS {
-  MEMO = 'memo',
+  MEMO = 'Memo',
   MORE = 'more',
 }
 

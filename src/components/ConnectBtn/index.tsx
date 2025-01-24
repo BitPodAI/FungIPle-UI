@@ -16,16 +16,21 @@ const ConnectBtn = () => {
   const { linkWallet, user, getAccessToken } = usePrivy();
 
   const handleWalletConnect = async () => {
-    if (userProfile?.gmail) {
-      if (import.meta.env.VITE_MODE_WEB === '1') {
+    if (import.meta.env.VITE_MODE_WEB === '1') {
+      const accessToken = await getAccessToken();
+      if (user && accessToken && userProfile?.gmail) {
         linkWallet();
       } else {
-        window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+        setIsModalOpen(true);
       }
     } else {
-      // Popup tips
-      localStorage.clear();
-      setIsModalOpen(true);
+      if (userProfile?.gmail) {
+        window.open(`${HOST_URL}/#/popup-wallet`, 'popup', 'width=600,height=600,status=yes,scrollbars=yes');
+      } else {
+        // Popup tips
+        //localStorage.clear();
+        setIsModalOpen(true);
+      }
     }
   };
 
@@ -93,13 +98,13 @@ const ConnectBtn = () => {
           </div>
         </div>
       </PixModal>
-      <div className="flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white"
+      <div className="ml-[10px] overflow-hidden  max-w-[180px] flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white"
         onClick={handleWalletConnect}>
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
         {userProfile?.walletAddress ? (
-          <span className="capitalize text-black text-xs ellipsis">{userProfile.walletAddress}</span>
+          <span className="capitalize text-black text-xs ellipsis Geologica">{userProfile.walletAddress}</span>
         ) : (
-          <span className="capitalize text-black text-xs">
+          <span className="capitalize text-black text-xs Geologica">
             connect
           </span>
         )}

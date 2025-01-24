@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Message } from '@/types/chat';
 import { ReactSVG } from 'react-svg';
-import ShareSVG from '@/assets/icons/share.svg';
+// import ShareSVG from '@/assets/icons/share.svg';
+import ShareBtnSVG from '@/assets/icons/share-btn.svg';
 import MemoSVG from '@/assets/icons/memo.svg';
 import TranslateSVG from '@/assets/icons/translate.svg';
 import CopySVG from '@/assets/icons/copy.svg';
@@ -61,22 +62,22 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
           <p className="text-[12px] Geologica">{text}</p>
         )}
         {!isUser && (
-          <div className="w-full flex items-center justify-end gap-4">
+          <div className="w-full flex items-center justify-end gap-[15px]">
             <ReactSVG
-              src={ShareSVG}
-              className="text-#C7C7C7 hover:text-gray-500"
+              src={ShareBtnSVG}
+              className="text-#C7C7C7 hover:text-gray-500 btn-scale"
               onClick={e => {
                 e.stopPropagation();
                 e.preventDefault();
                 handleShareClick(text);
               }}
             />
-            <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500" />
-            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleTranslate(text)}/>
+            <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" />
+            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleTranslate(text)} />
             {!isCopied ? (
               <ReactSVG
                 src={CopySVG}
-                className="text-gray-400 hover:text-gray-500"
+                className="text-gray-400 hover:text-gray-500 btn-scale"
                 onClick={e => {
                   e.stopPropagation();
                   e.preventDefault();
@@ -84,9 +85,9 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
                 }}
               />
             ) : (
-              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
+              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500 btn-scale" />
             )}
-            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleRespeak(text)}/>
+            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleRespeak(text)} />
           </div>
         )}
       </div>

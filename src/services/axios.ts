@@ -29,10 +29,15 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response: AxiosResponse): AxiosResponse => {
+    if (response.status === 401) {
+      storage.clear();
+      window.location.href = '/login';
+      return response;
+    }
     return response;
   },
   (error: AxiosError<ApiError>): Promise<never> => {
-    if (error.response?.status === 401) {
+    if (error.response?.status == 401) {
       storage.clear();
       window.location.href = '/login';
     }

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "FungIPle",
+  "name": "Mai Agent",
   "version": "0.1.0",
   "description": "Autonomous AI Agent, IP, Assets for Web3",
   "background": {
@@ -12,7 +12,9 @@
   "action": {
     "default_popup": "index.html",
     "default_icon": {
-      "48": "public/icon48.png"
+      "16": "public/logo16.png",
+      "48": "public/logo48.png",
+      "128": "public/logo128.png"
     }
   },
   "side_panel": {

@@ -45,8 +45,18 @@ export default defineConfig({
     sourcemap: process.env.VITE_APP_ENV === 'develement',
     outDir: 'build',
     // polyfillModulePreload: true,
+    
     commonjsOptions: {
       transformMixedEsModules: true,
+    },
+    terserOptions: {
+      compress: {
+        drop_console: true, // 移除 console
+        drop_debugger: true, // 移除 debugger
+      },
+      output: {
+        comments: false, // 去除注释
+      },
     },
     rollupOptions: {
       // external: ['@walletconnect/jsonrpc-types', '@walletconnect/jsonrpc-utils'],
