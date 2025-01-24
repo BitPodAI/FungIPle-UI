@@ -123,7 +123,7 @@ export default function Login() {
       </div>
       <img src={LoginGoogle} className="w-[298px] btn-scale" onClick={handleAuth} />
       <div className='text-center mt-[30px] Geologica text-[15px] color-[#b9b9b9] mr-[10px]'>or</div>
-      <img className='w-[90px] mt-[29px]' src={GuestLogin} onClick={handleGuestAuth}></img>
+      <img className='w-[90px] mt-[29px] btn-scale' src={GuestLogin} onClick={handleGuestAuth}></img>
       <div className="m-x-auto mt-[100px] w-[283px] relative">
         <img src={LoginOther} className="w-[283px]" />
         <div className="h-[25px] w-full absolute flex top-0">
