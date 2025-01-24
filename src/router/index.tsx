@@ -70,9 +70,9 @@ const AppRoutes: React.FC = () => {
             <Route id="help" path="help" element={<Help />} />
             <Route id="setting" path="setting" element={<Setting />} />
           </Route>
-          <Route path="*" element={<Navigate to="plugin" replace />} />
           <Route id="popup-login" path="/popup-login" element={<PopupLogin />} />
           <Route id="popup-wallet" path="/popup-wallet" element={<PopupWallet />} />
+          <Route path="*" element={<Navigate to="plugin" replace />} />
         </Routes>
       </Suspense>
     </div>
