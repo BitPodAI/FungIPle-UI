@@ -60,7 +60,7 @@ export default function Login() {
 
     // Firstly login by privy
     loginAsync();
-  }, []);
+  }, [user]);
 
   function simpleHash(input: string) {
     let hash = 0;
