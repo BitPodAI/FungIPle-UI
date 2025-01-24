@@ -150,10 +150,14 @@ export const authService = {
     fromTokenAccountPubkey: string;
     toTokenAccountPubkey: string;
     ownerPubkey: string;
+    typestr: string;
+    userId: string;
     tokenAmount: number;
   }): Promise<ApiResponse<{ signature: string }>> {
     try {
-      const response = await api.post<ApiResponse<{ signature: string }>>('/transfer_sol', transferData);
+      //const response = await api.post<ApiResponse<{ signature: string }>>('/transfer_sol', transferData);
+      const response = await api.post<ApiResponse<{ signature: string }>>('/gain_rewards', transferData);
+
       return response.data;
     } catch (error) {
       console.error('Transfer SOL error:', error);
