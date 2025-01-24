@@ -1,5 +1,6 @@
 import React, { lazy, Suspense, ReactNode } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
+import { isWeb } from '@/utils/config';
 
 const Login = lazy(() => import('../pages/Login/index'));
 const LoginWeb = lazy(() => import('../pages/Login/indexWeb'));
@@ -46,7 +47,7 @@ const AppRoutes: React.FC = () => {
       <Suspense fallback={<div className="frc-center w-full h-screen">Loading...</div>}>
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
-          <Route id="login" path="/login" element={import.meta.env.VITE_MODE_WEB === '1' ? <LoginWeb /> : <Login />} />
+          <Route id="login" path="/login" element={isWeb() ? <LoginWeb /> : <Login />} />
           <Route id="egg-select" path="/egg-select" element={<EggSelect />} />
           <Route id="egg-config" path="/egg-config" element={<AgentCustomized />} />
           <Route id="plugin" path="/plugin" element={<PluginLayout />}>

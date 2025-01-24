@@ -6,11 +6,11 @@ import { MAIN_NAVS, EXTEND_NAVS, OTHER_NAVS } from '@/constant/navs';
 import { useLocation } from 'react-router-dom';
 import Close from '@/assets/icons/close2.svg';
 import { ReactSVG } from 'react-svg';
+import { isWeb } from '@/utils/config';
 
 const Sidebar = () => {
   const location = useLocation();
   const [selectedNav, setSelectedNav] = useState<string>();
-  const isWeb = import.meta.env.VITE_MODE_WEB === '1';
   useEffect(() => {
     // Update selectedNav based on the current route
     const path = location.pathname;
@@ -39,7 +39,7 @@ const Sidebar = () => {
     <div className="flex-shrink-0 w-[60px] h-screen py-[16px] box-border flex flex-col justify-between items-center bg-[##fafafa]">
       <div className="fcc-center">
         <ul className="fcc-center gap-[20px]">
-          {!isWeb && (
+          {!isWeb() && (
             <li className="cursor-pointer">
               <ReactSVG src={Close} onClick={() => window.close()} />
             </li>

@@ -1,4 +1,5 @@
 import { PrivyProvider } from '@privy-io/react-auth';
+import { isWeb } from '@/utils/config';
 
 const VITE_PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID;
 
@@ -7,7 +8,7 @@ export default function AppPriviyProvider({ children }: { children: React.ReactN
   //const isHttps = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
   
   // Whether Chrome Extension
-  if (import.meta.env.VITE_MODE_WEB !== '1') {
+  if (!isWeb()) {
     //console.warn('PrivyProvider Un-used for not HTTPS');
     return <>{children}</>;
   }

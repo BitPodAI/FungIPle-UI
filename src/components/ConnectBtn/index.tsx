@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import walletIcon from '@/assets/icons/wallet.svg';
 import { usePrivy } from '@privy-io/react-auth';
 import { authService } from '@/services/auth';
+import { isWeb } from '@/utils/config';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
@@ -16,7 +17,7 @@ const ConnectBtn = () => {
   const { linkWallet, user, getAccessToken } = usePrivy();
 
   const handleWalletConnect = async () => {
-    if (import.meta.env.VITE_MODE_WEB === '1') {
+    if (isWeb()) {
       const accessToken = await getAccessToken();
       if (user && accessToken && userProfile?.gmail) {
         linkWallet();
