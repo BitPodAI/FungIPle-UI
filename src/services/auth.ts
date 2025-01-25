@@ -201,6 +201,8 @@ export const authService = {
     async handleRevoke() {
       const userId = useUserStore.getState().getUserId();
       const response = await api.get('/twitter_oauth_revoke?userId=' + userId);
+      useUserStore.getState().setTwitterProfile(null);
+      console.warn('Twitter revoke success', useUserStore.getState());
       const result = response.data;
       return result.data;
     },

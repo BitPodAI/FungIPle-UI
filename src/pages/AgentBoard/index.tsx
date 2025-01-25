@@ -16,7 +16,7 @@ const SocialItem = ({
   account,
   onClick,
   onRevoke,
-}: {            
+}: {
   icon: React.ReactNode;
   account?: string;
   onClick?: () => void;
@@ -26,11 +26,17 @@ const SocialItem = ({
     <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px] ">
       {icon}
       {account ? (
-        <span className="green-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-white text-center" onClick={onRevoke}>
+        <span
+          className="green-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-white text-center"
+          onClick={onRevoke}
+        >
           {account}
         </span>
       ) : (
-        <span className="gray-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-[#737373] text-center" onClick={onClick}>
+        <span
+          className="gray-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-[#737373] text-center"
+          onClick={onClick}
+        >
           Go to Link
         </span>
       )}

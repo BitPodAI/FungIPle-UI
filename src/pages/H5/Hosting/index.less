@@ -57,7 +57,7 @@
       position: absolute;
       right: 126px;
       margin-top: 37px;
-      z-index: 2;
+      z-index: 3;
       .hosting-content-host-text {
         border: 2px solid #fff;
         height: 68px;
@@ -79,11 +79,13 @@
       }
       .hosting-content-host-icon {
         position: absolute;
-        top: -50px;
-        right: -140px;
+        width: 124px;
+        top: 0px;
+        right: -120px;
       }
     }
     .hosting-content-popup {
+      z-index: 2;
       position: relative;
       margin-top: 142px;
       display: flex;
@@ -105,13 +107,91 @@
         object-fit: cover;
       }
       .hosting-content-popup-main {
-        padding-top: 18px;
+        width: 100%;
         box-sizing: border-box;
         flex: 1;
         background: #fff;
-        .hosting-content-popup-text {
-            
-        }        
+
+        padding: 18px 16px;
+        .hosting-content-popup-main-title {
+          box-sizing: border-box;
+          padding: 0 8px;
+          display: flex;
+          align-items: center;
+          .hosting-content-popup-main-title-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: 2.66px 2.66px 2.66px rgba(0, 0, 0, 0.25);
+            transition: transform 0.2s ease; /* 过渡动画 */
+            &:active {
+              transform: scale(1.1); /* 点击时放大 */
+            }
+            img {
+              width: 24px;
+            }
+          }
+          .hosting-content-popup-main-title-text {
+            margin-left: 10px;
+            width: 164px;
+            transition: transform 0.2s ease; /* 过渡动画 */
+            &:active {
+              transform: scale(1.1); /* 点击时放大 */
+            }
+          }
+        }
+        .hosting-content-popup-main-form {
+          box-sizing: border-box;
+          width: 100%;
+          margin-top: 18px;
+          padding: 18px;
+          box-shadow: 0px 2px 14px rgba(0, 0, 0, 0.1);
+          border-radius: 20px;
+          .hosting-content-popup-main-form-label {
+            font-size: 14px;
+          }
+          .hosting-content-popup-main-form-select {
+            box-sizing: border-box;
+            height: 42px;
+            border-radius: 10px;
+            border: 1px solid #d0d6e0;
+            background: none; /* 移除背景 */
+            outline: none; /* 移除 focus 的默认外边框 */
+            font: inherit; /* 继承父元素字体 */
+            color: inherit; /* 继承字体颜色 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+
+      .hosting-content-popup-main-footer {
+        position: absolute;
+        bottom: 43px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        .hosting-content-popup-main-footer-item {
+          display: flex;
+          align-items: center;
+          margin-right: 20px;
+          &:last-of-type {
+            margin-right: 0;
+          }
+          .hosting-content-popup-main-footer-item-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+          }
+          .hosting-content-popup-main-footer-item-text {
+            font-size: 11px;
+            font-family: 'Geologica';
+          }
+        }
       }
     }
   }
