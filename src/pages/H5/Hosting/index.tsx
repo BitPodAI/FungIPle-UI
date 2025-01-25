@@ -69,11 +69,11 @@ const Hosting = () => {
   };
 
   const handleTwitterAuth = () => {
-    if (!useUserStore.getState().getUserId()) {
-      setIsModalOpen(true);
-    }
     if (enabled) return;
     setTimeout(async () => {
+      if (!useUserStore.getState().getUserId()) {
+        setIsModalOpen(true);
+      }
       try {
         // 1. Get URL
         const { url, state } = await authService.twitterOAuth.getAuthUrl();
