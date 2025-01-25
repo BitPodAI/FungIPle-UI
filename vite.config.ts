@@ -16,7 +16,7 @@ export default defineConfig({
     'process.env': process.env,
   },
   server: {
-    host: 'localhost',
+    host: '0.0.0.0',
     cors: true,
     proxy: {
       '/dev': {
