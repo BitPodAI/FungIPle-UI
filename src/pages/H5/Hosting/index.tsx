@@ -4,7 +4,7 @@ import avatar from '@/assets/images/hosting/avatar.png';
 import sj from '@/assets/images/hosting/sj.png';
 import host from '@/assets/images/hosting/host.png';
 import popup from '@/assets/images/hosting/popup.png';
-import TitleText from '@/components/common/title-text.png';
+import TitleText from '@/assets/images/hosting/title-text.png';
 const Hosting = () => {
   return (
     <div className="hosting">
