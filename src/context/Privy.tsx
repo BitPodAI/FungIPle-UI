@@ -1,5 +1,8 @@
 import { PrivyProvider } from '@privy-io/react-auth';
 import { isWeb } from '@/utils/config';
+import {toSolanaWalletConnectors} from '@privy-io/react-auth/solana';
+
+const solanaConnectors = toSolanaWalletConnectors();
 
 const VITE_PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID;
 
@@ -23,7 +26,7 @@ export default function AppPriviyProvider({ children }: { children: React.ReactN
           showWalletLoginFirst: false,
           walletList: ['detected_wallets', 'wallet_connect', 'coinbase_wallet'],
           logo: 'https://auth.privy.io/logos/privy-logo.png',
-          walletChainType: 'ethereum-and-solana',
+          walletChainType: 'solana-only',
         },
         loginMethods: ['google'],
         externalWallets: {
@@ -33,6 +36,7 @@ export default function AppPriviyProvider({ children }: { children: React.ReactN
           coinbaseWallet: {
             connectionOptions: 'all',
           },
+          solana: {connectors: solanaConnectors},
         },
         fundingMethodConfig: {
           moonpay: {
