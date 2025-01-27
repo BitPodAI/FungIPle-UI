@@ -1,7 +1,9 @@
 import AgentHeader from '@/components/agent/AgentHeader';
 import xIcon from '@/assets/icons/x.svg';
+import SearchIcon from '@/assets/icons/search.png';
 import telegramIcon from '@/assets/icons/telegram.svg';
 import { Menu, MenuButton, MenuItem, MenuItems, Switch } from '@headlessui/react';
+import { Combobox, ComboboxButton, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
 import ArrowdownIcon from '@/assets/icons/arrowdown.svg';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/useUserStore';
@@ -21,14 +23,20 @@ const SocialItem = ({
   onRevoke?: () => void;
 }) => {
   return (
-    <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px]">
+    <div className="flex-1 h-[120px] bg-[#F3F3F3] rounded-[16px] fcc-center gap-[16px] ">
       {icon}
       {account ? (
-        <span className="green-bg w-[100px] h-[22px] p-1 text-[12px] text-white text-center averia-serif-libre" onClick={onRevoke}>
+        <span
+          className="green-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-white text-center"
+          onClick={onRevoke}
+        >
           {account}
         </span>
       ) : (
-        <span className="gray-bg w-[100px] h-[22px] p-1 text-[12px] text-[#737373] text-center averia-serif-libre" onClick={onClick}>
+        <span
+          className="gray-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-[#737373] text-center"
+          onClick={onClick}
+        >
           Go to Link
         </span>
       )}
@@ -40,12 +48,18 @@ const INTERVAL_OPTIONS = ['1h', '2h', '3h', '12h', '24h'];
 const IMIATE_OPTIONS = ['elonmusk', 'cz_binance', 'aeyakovenko', 'jessepollak', 'shawmakesmagic', 'everythingempt0'];
 
 const AgentBoard: React.FC = () => {
+  const { userProfile } = useUserStore();
   const [Xusername, setXusername] = useState('');
   const [enabled, setEnabled] = useState(true);
   const [interval, setInterval] = useState('2h');
   const [imitate, setImitate] = useState('elonmusk');
   //const [tokenUsed, setTokenUsed] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [query, setQuery] = useState('');
+
+  const filteredOptions =
+    query === '' ? IMIATE_OPTIONS : IMIATE_OPTIONS.filter(option => option.toLowerCase().includes(query.toLowerCase()));
+  console.warn(filteredOptions);
 
   async function set_agent_cfg(enabled: boolean, interval: string, imitate: string) {
     try {
@@ -58,9 +72,8 @@ const AgentBoard: React.FC = () => {
         agentCfg: { enabled, interval, imitate },
       };
 
-      const userProfile = localStorage.getItem('userProfile');
       if (userProfile) {
-        const oldP = JSON.parse(userProfile);
+        const oldP = userProfile;// JSON.parse(userProfile);
         const updatedProfile = { ...oldP, ...profileUpd };
         await authService.updateProfile(userId, updatedProfile);
       }
@@ -84,6 +97,10 @@ const AgentBoard: React.FC = () => {
       setImitate(value);
       set_agent_cfg(enabled, interval, value);
     }
+  };
+  const handleImitateSelectionChange = (value: string) => {
+    setImitate(value);
+    set_agent_cfg(enabled, interval, value);
   };
 
   const handleTwitterAuth = async () => {
@@ -171,11 +188,11 @@ const AgentBoard: React.FC = () => {
   }, [Xusername]);
 
   return (
-    <div className="page press-start-2p max-w-[490px]">
+    <div className="page press-start-2p max-w-[450px] Geologica">
       <AgentHeader />
 
       <PixModal isOpen={isModalOpen} onClose={closeModal}>
-        <div className="flex flex-col gap-4 max-w-[400px] averia-serif-libre">
+        <div className="flex flex-col gap-4 max-w-[400px]">
           <h2 className="text-center my-0">Revoke Twitter Authorization</h2>
           <h3 className="text-center my-10">Confirm to Revoke the Twitter Authorization?</h3>
           <div className="flex justify-center gap-4">
@@ -195,13 +212,13 @@ const AgentBoard: React.FC = () => {
       </PixModal>
 
       <div className="w-[calc(100%-40px)] mx-[20px]">
-        <div className="w-full mt-[20px] frc-center gap-[16px]">
+        <div className="w-full mt-[27px] frc-center gap-[16px]">
           <SocialItem icon={<img src={xIcon} />} account={Xusername} onClick={handleTwitterAuth} onRevoke={beginRevoke} />
           <SocialItem icon={<img src={telegramIcon} />} />
         </div>
 
         <div className="w-full mt-[20px]">
-          <div className="flex items-center justify-between averia-serif-libre">
+          <div className="flex items-center justify-between">
             <span className="text-[14px]">X Takeover by Agent </span>
             <Switch
               checked={enabled}
@@ -212,16 +229,16 @@ const AgentBoard: React.FC = () => {
             </Switch>
           </div>
         </div>
-        <form className="mt-[20px] bg-[#F3F3F3] rounded-[24px] p-[24px] averia-serif-libre">
-          <div className="mb-[20px] w-full flex flex-col items-start justify-start gap-[16px] averia-serif-libre">
+        <form className="mt-[20px] bg-[#F3F3F3] rounded-[24px] p-[24px]">
+          <div className="mb-[20px] w-full flex flex-col items-start justify-start gap-[16px]">
             <span className="text-[14px]">Post interval</span>
-            <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
+            <div className="pix-input  w-[290px] h-[48px] px-[28px] frc-start">
               <Menu>
-                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF] averia-serif-libre">
-                  <span className="text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
+                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF]">
+                  <span className="Geologica text-[14px] text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                     {interval}
                   </span>
-                  <img src={ArrowdownIcon} alt="arrowdown" className="w-[10px] h-[10px]" />
+                  <img src={ArrowdownIcon} alt="arrowdown" className="w-[10px] h-[10px] ml-[10px]" />
                 </MenuButton>
                 <MenuItems
                   transition
@@ -231,7 +248,7 @@ const AgentBoard: React.FC = () => {
                 >
                   {INTERVAL_OPTIONS.map(option => (
                     <MenuItem key={option} as="div">
-                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3] averia-serif-libre">
+                      <div className="Geologica flex items-center gap-2 text-[13px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
                         {option}
                       </div>
                     </MenuItem>
@@ -240,31 +257,43 @@ const AgentBoard: React.FC = () => {
               </Menu>
             </div>
           </div>
-          <div className="w-full flex flex-col items-start justify-start gap-[16px] averia-serif-libre">
-            <span className="text-[14px] averia-serif-libre">Imitate @</span>
-            <div className="pix-input w-auto min-w-[290px] h-[48px] px-[28px] frc-start">
-              <Menu>
-                <MenuButton className="flex justify-between flex-1 items-center h-[38px] px-0 bg-[#FFFFFF] averia-serif-libre">
-                  <span className="text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]">
-                    {imitate}
-                  </span>
-                  <img src={ArrowdownIcon} alt="arrowdown" className="w-[10px] h-[10px]" />
-                </MenuButton>
-                <MenuItems
-                  transition
-                  anchor="bottom end"
-                  className="select-none rounded-xl bg-white w-[336px] translate-x-[25px] p-[2px] transition duration-100 ease-out border-3 border-solid border-[#E3E3E3]"
-                  onMouseUp={event => handleSelectionChange(event, 'imitate')}
-                >
-                  {IMIATE_OPTIONS.map(option => (
-                    <MenuItem key={option} as="div">
-                      <div className="flex items-center gap-2 text-[12px] text-black press-start-2p rounded-lg py-1.5 px-3 pl-[30px] data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3] averia-serif-libre">
-                        {option}
-                      </div>
-                    </MenuItem>
-                  ))}
-                </MenuItems>
-              </Menu>
+          <div className="w-full flex flex-col items-start justify-start gap-[16px]">
+            <span className="text-[14px]">Imitate @</span>
+            <div className="pix-input  w-[292px] h-[48px] px-[28px] frc-start pl-[26px]">
+              <img src={SearchIcon} className="w-[20px] mr-[18px]" />
+              <Combobox as="div" value={imitate} onChange={handleImitateSelectionChange} className="w-full">
+                <div className="relative ">
+                  <ComboboxInput
+                    className="Geologica text-[14px] text-black flex-1 flex items-center justify-start gap-2 p-1.5 rounded-lg border border-gray-300 focus:outline-none  data-[focus]:bg-[#E3E3E3] hover:bg-[#E3E3E3]"
+                    style={{ width: 'calc(100% - 30px)' }}
+                    placeholder="Search"
+                    onChange={e => setQuery(e.target.value)}
+                  />
+                  <ComboboxButton className="absolute inset-y-0 right-0 flex items-center px-0 bg-[#FFFFFF]">
+                    <img src={ArrowdownIcon} alt="arrowdown" className="w-[10px] h-[10px]" />
+                  </ComboboxButton>
+
+                  <ComboboxOptions className="absolute z-10 w-full mt-1 bg-white rounded-xl border border-[#E3E3E3] shadow-lg max-h-60 overflow-auto">
+                    {filteredOptions.length === 0 && query !== '' ? (
+                      <div className="p-2 text-center text-gray-500">No results found</div>
+                    ) : (
+                      filteredOptions.map(option => (
+                        <ComboboxOption key={option} value={option}>
+                          {({ active }) => (
+                            <div
+                              className={`Geologica flex items-center gap-2 text-[12px] text-black py-1.5 px-3 pl-[30px] rounded-lg ${
+                                active ? 'bg-[#E3E3E3]' : ''
+                              }`}
+                            >
+                              {option}
+                            </div>
+                          )}
+                        </ComboboxOption>
+                      ))
+                    )}
+                  </ComboboxOptions>
+                </div>
+              </Combobox>
             </div>
           </div>
         </form>

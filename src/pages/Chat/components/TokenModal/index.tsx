@@ -2,6 +2,7 @@ import PixModal from '@/components/common/PixModal';
 import Coin from '@/assets/images/agent/coin.png';
 import ShortButton from '../ShortButton';
 import { authService } from '@/services/auth';
+import { useUserStore } from '@/stores/useUserStore';
 
 type TokenModalProps = {
   isOpen: boolean;
@@ -24,6 +25,10 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
           onClick={async () => {
             await onConfirm();
 
+            const uID = useUserStore.getState().getUserId();
+            if (!uID) {
+                throw new Error('User not logged in');
+            }
             if (isOpen) {
               // Define transfer data
               const transferData = {
@@ -31,16 +36,18 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
                 toTokenAccountPubkey: 'Bu3SVA3b1wcTZH3u3R1bDHzckoX2WRaxUpBd89MBF1YJ',
                 ownerPubkey: 'Aqt3gNoArLCcomVLRbzSfb8epczukMi8tuVbtPKwHBTd',
                 tokenAmount: 7, // Amount of Ai16z tokens to transfer
+                typestr: 'base',
+                userId: uID
               };
 
               // Call transferSol function
               authService
                 .transferSol(transferData)
                 .then(response => {
-                  console.log('Transfer successful:', response);
+                  console.log('transferSol successful:', response);
                 })
                 .catch(error => {
-                  console.error('Transfer failed:', error);
+                  console.error('transferSol failed:', error);
                 });
             }
           }}

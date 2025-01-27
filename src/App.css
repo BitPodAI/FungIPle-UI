@@ -2,10 +2,7 @@
 @import './styles/custom.css';
 @import './styles/animate.css';
 
-/* 像素字体 */
-.press-start-2p {
-  font-family: 'Press Start 2P';
-}
+
 
 /* 正文字体 */
 .averia-serif-libre {
@@ -42,4 +39,12 @@
   background-position: center;
   background-repeat: no-repeat;
   color: #ffffff;
+}
+
+.btn-scale {
+  transition: all .1s;
+}
+
+.btn-scale:hover {
+  transform: scale(1.05);
 }

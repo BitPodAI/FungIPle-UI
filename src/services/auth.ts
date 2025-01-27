@@ -150,10 +150,14 @@ export const authService = {
     fromTokenAccountPubkey: string;
     toTokenAccountPubkey: string;
     ownerPubkey: string;
+    typestr: string;
+    userId: string;
     tokenAmount: number;
   }): Promise<ApiResponse<{ signature: string }>> {
     try {
-      const response = await api.post<ApiResponse<{ signature: string }>>('/transfer_sol', transferData);
+      //const response = await api.post<ApiResponse<{ signature: string }>>('/transfer_sol', transferData);
+      const response = await api.post<ApiResponse<{ signature: string }>>('/gain_rewards', transferData);
+
       return response.data;
     } catch (error) {
       console.error('Transfer SOL error:', error);
@@ -197,6 +201,8 @@ export const authService = {
     async handleRevoke() {
       const userId = useUserStore.getState().getUserId();
       const response = await api.get('/twitter_oauth_revoke?userId=' + userId);
+      useUserStore.getState().setTwitterProfile(null);
+      console.warn('Twitter revoke success', useUserStore.getState());
       const result = response.data;
       return result.data;
     },

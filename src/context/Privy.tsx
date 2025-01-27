@@ -1,9 +1,21 @@
 import { PrivyProvider } from '@privy-io/react-auth';
+import { isWeb } from '@/utils/config';
+import {toSolanaWalletConnectors} from '@privy-io/react-auth/solana';
+
+const solanaConnectors = toSolanaWalletConnectors();
 
 const VITE_PRIVY_APP_ID = import.meta.env.VITE_PRIVY_APP_ID;
 
-
 export default function AppPriviyProvider({ children }: { children: React.ReactNode }) {
+  // Check HTTPS
+  //const isHttps = window.location.protocol === 'https:' || window.location.hostname === 'localhost';
+  
+  // Whether Chrome Extension
+  if (!isWeb()) {
+    //console.warn('PrivyProvider Un-used for not HTTPS');
+    return <>{children}</>;
+  }
+  //console.warn('PrivyProvider used');
   return (
     <PrivyProvider
       appId={VITE_PRIVY_APP_ID}
@@ -12,9 +24,9 @@ export default function AppPriviyProvider({ children }: { children: React.ReactN
           accentColor: '#000000',
           theme: '#FFFFFF',
           showWalletLoginFirst: false,
-          walletList: ['detected_wallets','wallet_connect', 'coinbase_wallet'],
+          walletList: ['detected_wallets', 'wallet_connect', 'coinbase_wallet'],
           logo: 'https://auth.privy.io/logos/privy-logo.png',
-          walletChainType: 'ethereum-and-solana',
+          walletChainType: 'solana-only',
         },
         loginMethods: ['google'],
         externalWallets: {
@@ -24,6 +36,7 @@ export default function AppPriviyProvider({ children }: { children: React.ReactN
           coinbaseWallet: {
             connectionOptions: 'all',
           },
+          solana: {connectors: solanaConnectors},
         },
         fundingMethodConfig: {
           moonpay: {
