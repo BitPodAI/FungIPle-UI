@@ -86,9 +86,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
       };
 
       // Format the date in "YYYY-MM-DD HH:mm:ss"
-      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\/\d+/g, '-');
-      console.log(timestamp);
-      console.log(formattedDate);
+      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\//g, '-');
       return formattedDate;
     }
   };
