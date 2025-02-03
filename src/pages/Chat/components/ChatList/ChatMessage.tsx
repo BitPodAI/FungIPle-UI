@@ -12,6 +12,7 @@ import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 import useShare from '@/hooks/useShare';
 import useTranslate from '@/hooks/useTranslate';
 import useRespeak from '@/hooks/useRespeak';
+import { toast } from 'react-toastify';
 
 export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
   const [text, setText] = useState(initialText);
@@ -19,6 +20,7 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
   const { handleShareClick } = useShare();
   const { handleTranslateClick } = useTranslate();
   const { handleRespeakClick } = useRespeak();
+  const [isTranslating, setIsTranslating] = useState(false);
 
   const { copy, isCopied } = useCopyToClipboard();
   const handleCopy = async (text: string) => {
@@ -26,8 +28,17 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
   };
 
   const handleTranslate = async (text: string) => {
-    const translatedText = await handleTranslateClick(text);
-    setText(translatedText);
+    if (isTranslating) {
+      toast('Translation in progress, please wait...');
+      return;
+    }
+    setIsTranslating(true);
+    try {
+      const translatedText = await handleTranslateClick(text);
+      setText(translatedText);
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   const handleRespeak = async (text: string) => {
@@ -73,7 +84,7 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
               }}
             />
             <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" />
-            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleTranslate(text)} />
+            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => !isTranslating && handleTranslate(text)} />
             {!isCopied ? (
               <ReactSVG
                 src={CopySVG}
