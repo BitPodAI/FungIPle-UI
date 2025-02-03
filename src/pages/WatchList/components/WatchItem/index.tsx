@@ -11,14 +11,14 @@ import RefreshSVG from '@/assets/icons/refresh.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
-// import useTranslate from '@/hooks/useTranslate';
+import useTranslate from '@/hooks/useTranslate';
 
 export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
   const [text, setText] = useState(initialText);
 
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
-  // const { handleTranslateClick } = useTranslate();
+  const { handleTranslateClick } = useTranslate();
   const { copy, isCopied } = useCopyToClipboard();
   console.log(setText)
 
@@ -26,10 +26,10 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
     await copy(text);
   };
 
-  // const handleTranslate = async (text: string) => {
-  //   const translatedText = await handleTranslateClick(text);
-  //   setText(translatedText);
-  // };
+  const handleTranslate = async (text: string) => {
+    const translatedText = await handleTranslateClick(text);
+    setText(translatedText);
+  };
 
   const formatTimeDifference = (timestampString: string) => {
     if (/[^0-9]/.test(timestampString)) {
@@ -125,8 +125,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
             <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 " /> 
             <ReactSVG
               src={TranslateSVG}
-              className="text-#C7C7C7 hover:text-gray-500"
-            />
+              className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleTranslate(text)} />
             {!isCopied ? (
               <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500" onClick={() => handleCopy(text)} />
             ) : (
