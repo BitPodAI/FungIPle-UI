@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SearchInput } from '../SearchInput';
 import PixBorder from '@/components/common/PixBorder';
 import topImg from '@/assets/images/border-bg/top.png';
 import bottomImg from '@/assets/images/border-bg/bottom.png';
 import leftImg from '@/assets/images/border-bg/left.png';
 import rightImg from '@/assets/images/border-bg/right.png';
-import { XUserProfile } from '@/types/account';
 import defaultAvatar from '@/assets/images/chat/avatar.png';
 import PixLoading from '@/components/common/PixLoading';
 import { authService } from '@/services/auth';
@@ -19,7 +18,12 @@ const XAccountList: React.FC = () => {
   const { userProfile, setUserProfile } = useUserStore();
   const { xList, loading, searchUser, setXList } = useGetXList();
   const [focus, setFocus] = useState(false);
-  const handleClick = async (e: React.MouseEvent<HTMLDivElement>, account: XUserProfile) => {
+  const handleClick = async (
+    e: React.MouseEvent<HTMLDivElement>,
+    account: WatchItem & {
+      isWatched: boolean;
+    }
+  ) => {
     e.stopPropagation();
     if (userProfile) {
       const originTwitterWatchList = userProfile.twitterWatchList || [];

@@ -226,9 +226,7 @@ const AgentBoard: React.FC = () => {
           <h2 className="text-center my-10">Coming Soon</h2>
           <div className="flex justify-center gap-4">
             <ShortButton
-              onClick={(e: React.MouseEvent) => {
-                closeTgModal(e);
-              }}
+              onClick={closeTgModal}
               className="text-black text-center"
             >
               Yes

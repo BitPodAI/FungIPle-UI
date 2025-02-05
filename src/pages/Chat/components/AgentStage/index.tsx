@@ -6,12 +6,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { usePixModal } from '@/hooks/usePixModal.hook';
 import AgentHeader from '@/components/agent/AgentHeader';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
-import { useUserStore } from '@/stores/useUserStore';
-import { toast } from 'react-toastify';
 
 const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   const { openGiftModal } = usePixModal();
-  const { userProfile } = useUserStore();
 
   const tips = [
     'Always remember invest in the feature, not just the present!',
