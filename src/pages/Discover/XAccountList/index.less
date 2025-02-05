@@ -1,0 +1,77 @@
+.watch-list,
+.search-list {
+  margin-top: 35px;
+  height: calc(100vh - 180px);
+  .watch-list-item {
+    display: flex;
+    align-items: center;
+    font-family: InknutAntiquaRegular;
+    padding-bottom: 17px;
+    border-bottom: 1px solid #f1f1f1;
+    margin-bottom: 16px;
+    &:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .watch-list-item-avatar {
+      width: 44px;
+      height: 44px;
+      margin-right: 13px;
+      object-fit: cover;
+    }
+    .watch-list-item-detail {
+      flex: 1;
+      margin-right: 16px;
+      .watch-list-item-detail-header {
+        display: flex;
+        align-items: center;
+        .watch-list-item-detail-header-title {
+          font-size: 16px;
+          color: #151515;
+          margin-right: 13px;
+        }
+        .watch-list-item-detail-header-des {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+      .watch-list-item-detail-footer {
+        font-size: 14px;
+        color: #666;
+      }
+    }
+    .watch-list-item-btn {
+      width: 82px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      border: 1px solid #cfcfcf;
+      color: #333;
+      font-size: 12px;
+    }
+    .watch-list-item-btn-active{
+        color: #fff;
+        background: #222;
+        border-color: #222;
+    }
+  }
+}
+
+.search-list {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 25px 16px;
+  height: auto;
+  max-height: 479px;
+  position: absolute;
+  width: 99%;
+  top: 58px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  border: 2px solid #e3e3e3;
+  border-radius: 8px;
+  overflow: scroll;
+}
