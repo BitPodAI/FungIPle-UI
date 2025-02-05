@@ -32,11 +32,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
             if (isOpen) {
               // Define transfer data
               const transferData = {
-                fromTokenAccountPubkey: 'Aqt3gNoArLCcomVLRbzSfb8epczukMi8tuVbtPKwHBTd',
-                toTokenAccountPubkey: 'Bu3SVA3b1wcTZH3u3R1bDHzckoX2WRaxUpBd89MBF1YJ',
-                ownerPubkey: 'Aqt3gNoArLCcomVLRbzSfb8epczukMi8tuVbtPKwHBTd',
-                tokenAmount: 7, // Amount of Ai16z tokens to transfer
-                typestr: 'base',
+                typestr: 'sol-spl',
                 userId: uID
               };
 

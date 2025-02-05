@@ -67,9 +67,9 @@ const ConnectBtn = () => {
       await updateWalletAddress(data);
     }
 
-    if (user && user.wallet && user.wallet.address) {
-      await updateWalletAddress(user.wallet.address);
-    }
+    //if (user && user.wallet && user.wallet.address) {
+    //  await updateWalletAddress(user.wallet.address);
+    //}
   };
 
   useEffect(() => {
@@ -80,7 +80,7 @@ const ConnectBtn = () => {
     return () => {
       window.removeEventListener('message', handleWalletMessage);
     };
-  }, [userProfile]);
+  }, [user, userProfile]);
 
   return (
     <>

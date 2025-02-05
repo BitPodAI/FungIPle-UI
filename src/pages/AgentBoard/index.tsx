@@ -48,6 +48,7 @@ const INTERVAL_OPTIONS = ['1h', '2h', '3h', '12h', '24h'];
 const IMIATE_OPTIONS = ['elonmusk', 'cz_binance', 'aeyakovenko', 'jessepollak', 'shawmakesmagic', 'everythingempt0'];
 
 const AgentBoard: React.FC = () => {
+  const { userProfile } = useUserStore();
   const [Xusername, setXusername] = useState('');
   const [enabled, setEnabled] = useState(true);
   const [interval, setInterval] = useState('2h');
@@ -71,9 +72,8 @@ const AgentBoard: React.FC = () => {
         agentCfg: { enabled, interval, imitate },
       };
 
-      const userProfile = localStorage.getItem('userProfile');
       if (userProfile) {
-        const oldP = JSON.parse(userProfile);
+        const oldP = userProfile;// JSON.parse(userProfile);
         const updatedProfile = { ...oldP, ...profileUpd };
         await authService.updateProfile(userId, updatedProfile);
       }

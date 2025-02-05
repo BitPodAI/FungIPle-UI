@@ -1,7 +1,6 @@
 import React, { lazy, Suspense, ReactNode } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import { isWeb } from '@/utils/config';
-import Hosting from '@/pages/H5/Hosting';
 
 const Login = lazy(() => import('../pages/Login/index'));
 const LoginWeb = lazy(() => import('../pages/Login/indexWeb'));
@@ -75,7 +74,6 @@ const AppRoutes: React.FC = () => {
           <Route path="*" element={<Navigate to="plugin" replace />} />
           <Route id="popup-login" path="/popup-login" element={<PopupLogin />} />
           <Route id="popup-wallet" path="/popup-wallet" element={<PopupWallet />} />
-          <Route id="hosting" path="/hosting" element={<Hosting />} />
         </Routes>
       </Suspense>
     </div>

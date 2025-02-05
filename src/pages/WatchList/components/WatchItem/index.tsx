@@ -11,25 +11,36 @@ import RefreshSVG from '@/assets/icons/refresh.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
-// import useTranslate from '@/hooks/useTranslate';
+import useTranslate from '@/hooks/useTranslate';
+import { toast } from 'react-toastify';
 
 export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
   const [text, setText] = useState(initialText);
 
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
-  // const { handleTranslateClick } = useTranslate();
+  const { handleTranslateClick } = useTranslate();
   const { copy, isCopied } = useCopyToClipboard();
+  const [isTranslating, setIsTranslating] = useState(false);
   console.log(setText)
 
   const handleCopy = async (text: string) => {
     await copy(text);
   };
 
-  // const handleTranslate = async (text: string) => {
-  //   const translatedText = await handleTranslateClick(text);
-  //   setText(translatedText);
-  // };
+  const handleTranslate = async (text: string) => {
+    if (isTranslating) {
+      toast('Translation in progress, please wait...');
+      return;
+    }
+    setIsTranslating(true);
+    try {
+      const translatedText = await handleTranslateClick(text);
+      setText(translatedText);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
 
   const formatTimeDifference = (timestampString: string) => {
     if (/[^0-9]/.test(timestampString)) {
@@ -86,9 +97,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
       };
 
       // Format the date in "YYYY-MM-DD HH:mm:ss"
-      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\/\d+/g, '-');
-      console.log(timestamp);
-      console.log(formattedDate);
+      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\//g, '-');
       return formattedDate;
     }
   };
@@ -127,8 +136,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
             <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 " /> 
             <ReactSVG
               src={TranslateSVG}
-              className="text-#C7C7C7 hover:text-gray-500"
-            />
+              className="text-#C7C7C7 hover:text-gray-500" onClick={() => !isTranslating && handleTranslate(text)} />
             {!isCopied ? (
               <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500" onClick={() => handleCopy(text)} />
             ) : (
