@@ -3,6 +3,7 @@ import Coin from '@/assets/images/agent/coin.png';
 import ShortButton from '../ShortButton';
 import { authService } from '@/services/auth';
 import { useUserStore } from '@/stores/useUserStore';
+import { useEffect } from 'react';
 
 type TokenModalProps = {
   isOpen: boolean;
@@ -11,6 +12,30 @@ type TokenModalProps = {
 };
 
 const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) => {
+  useEffect(() => {
+    if (!isOpen) return;
+    const uID = useUserStore.getState().getUserId();
+    if (!uID) {
+      throw new Error('User not logged in');
+    }
+    if (isOpen) {
+      // Define transfer data
+      const transferData = {
+        typestr: 'sol-spl',
+        userId: uID,
+      };
+
+      // Call transferSol function
+      authService
+        .transferSol(transferData)
+        .then(response => {
+          console.log('transferSol successful:', response);
+        })
+        .catch(error => {
+          console.error('transferSol failed:', error);
+        });
+    }
+  }, [isOpen]);
   if (!isOpen) return null;
 
   return (
@@ -24,28 +49,6 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
         <ShortButton
           onClick={async () => {
             await onConfirm();
-
-            const uID = useUserStore.getState().getUserId();
-            if (!uID) {
-                throw new Error('User not logged in');
-            }
-            if (isOpen) {
-              // Define transfer data
-              const transferData = {
-                typestr: 'sol-spl',
-                userId: uID
-              };
-
-              // Call transferSol function
-              authService
-                .transferSol(transferData)
-                .then(response => {
-                  console.log('transferSol successful:', response);
-                })
-                .catch(error => {
-                  console.error('transferSol failed:', error);
-                });
-            }
           }}
           className="text-black"
         >
