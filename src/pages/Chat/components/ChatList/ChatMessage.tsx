@@ -13,15 +13,23 @@ import useShare from '@/hooks/useShare';
 import useTranslate from '@/hooks/useTranslate';
 import useRespeak from '@/hooks/useRespeak';
 import { toast } from 'react-toastify';
+import { memoApi } from '@/services/memo';
 
 export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
   const [text, setText] = useState(initialText);
+  const [isMemoAdded, setIsMemoAdded] = useState(false);
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
   const { handleTranslateClick } = useTranslate();
   const { handleRespeakClick } = useRespeak();
   const [isTranslating, setIsTranslating] = useState(false);
 
+  const handleMemoClick = async (content: string) => {
+    await memoApi.addMemo(content);
+    setTimeout(() => {
+      setIsMemoAdded(true);
+    }, 3000);
+  };
   const { copy, isCopied } = useCopyToClipboard();
   const handleCopy = async (text: string) => {
     await copy(text);
@@ -83,8 +91,16 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
                 handleShareClick(text);
               }}
             />
-            <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" />
-            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => !isTranslating && handleTranslate(text)} />
+            {isMemoAdded ? (
+              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
+            ) : (
+              <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleMemoClick(text)} />
+            )}
+            <ReactSVG
+              src={TranslateSVG}
+              className="text-#C7C7C7 hover:text-gray-500 btn-scale"
+              onClick={() => !isTranslating && handleTranslate(text)}
+            />
             {!isCopied ? (
               <ReactSVG
                 src={CopySVG}

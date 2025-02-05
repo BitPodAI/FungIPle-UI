@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { Message } from '@/types/chat';
 import { ReactSVG } from 'react-svg';
-import ShareSVG from '@/assets/icons/share-btn.svg';
-import MemoSVG from '@/assets/icons/memo2.svg';
+import MemoSVG from '@/assets/icons/memo.svg';
 import TranslateSVG from '@/assets/icons/translate.svg';
 import CopySVG from '@/assets/icons/copy.svg';
 import HYTickSVG from '@/assets/icons/hy_tick.svg';
-import RefreshSVG from '@/assets/icons/refresh.svg';
+import ShareBtnSVG from '@/assets/icons/share-btn.svg';
+
+// import RefreshSVG from '@/assets/icons/refresh.svg';
 //import CloseSVG from '@/assets/icons/close.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 import useTranslate from '@/hooks/useTranslate';
 import { toast } from 'react-toastify';
+import { memoApi } from '@/services/memo';
 
 export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
   const [text, setText] = useState(initialText);
@@ -21,13 +23,19 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
   const { handleShareClick } = useShare();
   const { handleTranslateClick } = useTranslate();
   const { copy, isCopied } = useCopyToClipboard();
+  const [isMemoAdded, setIsMemoAdded] = useState(false);
   const [isTranslating, setIsTranslating] = useState(false);
-  console.log(setText)
+  console.log(setText);
 
   const handleCopy = async (text: string) => {
     await copy(text);
   };
-
+  const handleMemoClick = async (content: string) => {
+    await memoApi.addMemo(content);
+    setTimeout(() => {
+      setIsMemoAdded(true);
+    }, 3000);
+  };
   const handleTranslate = async (text: string) => {
     if (isTranslating) {
       toast('Translation in progress, please wait...');
@@ -132,17 +140,23 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
         )}
         {!isUser && (
           <div className="w-full flex items-center justify-end gap-4 ">
-            <ReactSVG src={ShareSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
-            <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 " /> 
+            <ReactSVG src={ShareBtnSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
+            {isMemoAdded ? (
+              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
+            ) : (
+              <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 " onClick={() => handleMemoClick(text)} />
+            )}
             <ReactSVG
               src={TranslateSVG}
-              className="text-#C7C7C7 hover:text-gray-500" onClick={() => !isTranslating && handleTranslate(text)} />
+              className="text-#C7C7C7 hover:text-gray-500"
+              onClick={() => !isTranslating && handleTranslate(text)}
+            />
             {!isCopied ? (
               <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500" onClick={() => handleCopy(text)} />
             ) : (
               <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
             )}
-            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 " /> 
+            {/* <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 " />  */}
           </div>
         )}
       </div>
