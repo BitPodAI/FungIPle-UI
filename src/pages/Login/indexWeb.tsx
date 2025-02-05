@@ -9,11 +9,15 @@ import { storage } from '@/utils/storage';
 import Yun from '@/assets/images/login/yun.png';
 import Sun from '@/assets/images/login/sun.png';
 import LoginGoogle from '@/assets/images/login/login-google.png';
-import LoginOther from '@/assets/images/login/login-other.png';
 import GuestLogin from '@/assets/images/login/guest-login.png';
+
+import Twitter from '@/assets/icons/Twitter.png';
+import Website from '@/assets/icons/Website.png';
+import DexScreener from '@/assets/icons/DexScreener.png';
+
 import { usePrivy } from '@privy-io/react-auth';
 import { useUserStore } from '@/stores/useUserStore';
-
+import './index.less'
 
 export default function Login() {
   const { login, user, getAccessToken } = usePrivy();
@@ -24,15 +28,14 @@ export default function Login() {
 
   const handleAuth = async () => {
     if (!user) {
-        let res = await login();
-        console.log(res);
-      }
-      else {
-        console.log(user);
-        setError("Already logged in.");
-      }
+      let res = await login();
+      console.log(res);
+    } else {
+      console.log(user);
+      setError('Already logged in.');
+    }
   };
-  
+
   useEffect(() => {
     const loginAsync = async () => {
       try {
@@ -41,18 +44,18 @@ export default function Login() {
           if (token) {
             storage.setToken(token);
           }
-          const userId = user.id || "guest";
-          const gmail = user.google.email || "gmail";
+          const userId = user.id || 'guest';
+          const gmail = user.google.email || 'gmail';
           await authService.login(userId, gmail);
           navigate('/egg-select');
         } else {
-          await login();
+          // await login();
         }
       } catch (error) {
-        console.error("Failed to update wallet address:", error);
+        console.error('Failed to update wallet address:', error);
       }
     };
-    const userId = localStorage.getItem('userId')
+    const userId = localStorage.getItem('userId');
     if (userProfile && userProfile.gmail && userId) {
       navigate('/plugin/chat'); // already login
       return;
@@ -138,14 +141,35 @@ export default function Login() {
         <div className="h-[25px] w-[120px] absolute bottom-0 left-[50%] ml-[-60px]" onClick={handleGuestAuth}></div>
       </div> */}
       <img src={LoginGoogle} className="w-[298px] btn-scale" onClick={handleAuth} />
-      <div className='text-center mt-[30px] Geologica text-[15px] color-[#b9b9b9] mr-[10px]'>or</div>
-      <img className='w-[90px] mt-[29px]' src={GuestLogin} onClick={handleGuestAuth}></img>
-      <div className="m-x-auto mt-[100px] w-[283px] relative">
-        <img src={LoginOther} className="w-[283px]" />
-        <div className="h-[25px] w-full absolute flex top-0">
-          <div className="h-[25px] flex-1"></div>
-          <div className="h-[25px] flex-1"></div>
-          <div className="h-[25px] flex-1"></div>
+      <div className="text-center mt-[30px] Geologica text-[15px] color-[#b9b9b9] mr-[10px]">or</div>
+      <img className="w-[90px] mt-[29px] btn-scale" src={GuestLogin} onClick={handleGuestAuth}></img>
+      <div className="hosting-content-popup-main-footer">
+        <div
+          className="hosting-content-popup-main-footer-item btn-scale"
+          onClick={() => {
+            window.location.href = 'https://halagent.org/';
+          }}
+        >
+          <img className="hosting-content-popup-main-footer-item-icon" src={Website}></img>
+          <div className="hosting-content-popup-main-footer-item-text">Website</div>
+        </div>
+        <div
+          className="hosting-content-popup-main-footer-item btn-scale"
+          onClick={() => {
+            window.location.href = 'https://x.com/HALAI_SOL';
+          }}
+        >
+          <img className="hosting-content-popup-main-footer-item-icon" src={Twitter}></img>
+          <div className="hosting-content-popup-main-footer-item-text">Twitter</div>
+        </div>
+        <div
+          className="hosting-content-popup-main-footer-item btn-scale"
+          onClick={() => {
+            window.location.href = 'https://dexscreener.com/solana/6pcybkvfmopvbtsfy8fqatzolqq5s325b6st2sf7yzbw';
+          }}
+        >
+          <img className="hosting-content-popup-main-footer-item-icon" src={DexScreener}></img>
+          <div className="hosting-content-popup-main-footer-item-text">DexScreener</div>
         </div>
       </div>
     </div>

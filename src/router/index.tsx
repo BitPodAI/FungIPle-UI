@@ -47,7 +47,7 @@ const AppRoutes: React.FC = () => {
     <div className="w-full h-screen light">
       <Suspense fallback={<div className="frc-center w-full h-screen">Loading...</div>}>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
+          <Route path="/" element={<Navigate to="/plugin" />} />
           <Route id="login" path="/login" element={isWeb() ? <LoginWeb /> : <Login />} />
           <Route id="egg-select" path="/egg-select" element={<EggSelect />} />
           <Route id="egg-config" path="/egg-config" element={<AgentCustomized />} />

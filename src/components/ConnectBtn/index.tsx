@@ -7,6 +7,7 @@ import walletIcon from '@/assets/icons/wallet.svg';
 import { usePrivy } from '@privy-io/react-auth';
 import { authService } from '@/services/auth';
 import { isWeb } from '@/utils/config';
+import './index.less'
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
@@ -14,13 +15,16 @@ const ConnectBtn = () => {
   const { userProfile, setUserProfile } = useUserStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { linkWallet, user, getAccessToken } = usePrivy();
+  const { connectWallet, user } = usePrivy();
+  console.warn(user);
 
   const handleWalletConnect = async () => {
+    if (userProfile?.walletAddress) {
+      return;
+    }
     if (isWeb()) {
-      const accessToken = await getAccessToken();
-      if (user && accessToken && userProfile?.gmail) {
-        linkWallet();
+      if (userProfile?.userId) {
+        connectWallet();
       } else {
         setIsModalOpen(true);
       }
@@ -81,7 +85,7 @@ const ConnectBtn = () => {
   return (
     <>
       <PixModal isOpen={isModalOpen} onClose={closeModal}>
-        <div className="flex flex-col gap-4 max-w-[400px] averia-serif-libre">
+        <div className="flex flex-col gap-4 max-w-[400px] Gantari">
           <h2 className="text-center my-0">Login Tips</h2>
           <h3 className="text-center my-10">Please login firstly before connect wallet.</h3>
           <div className="flex justify-center gap-4">
@@ -99,16 +103,22 @@ const ConnectBtn = () => {
           </div>
         </div>
       </PixModal>
-      <div className="ml-[10px] overflow-hidden  max-w-[180px] flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white"
-        onClick={handleWalletConnect}>
+      <div
+        className="connect-btn ml-[10px]  max-w-[180px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white"
+        onClick={handleWalletConnect}
+      >
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
         {userProfile?.walletAddress ? (
           <span className="capitalize text-black text-xs ellipsis Geologica">{userProfile.walletAddress}</span>
         ) : (
-          <span className="capitalize text-black text-xs Geologica">
-            connect
-          </span>
+          <span className="capitalize text-black text-xs Geologica">connect</span>
         )}
+        <div
+          className="connect-btn-child flex items-center justify-around box-border border-black border-solid rounded-xl px-4 py-2 Gantari"
+          onClick={handleWalletConnect}
+        >
+          Disconnect
+        </div>
       </div>
     </>
   );
