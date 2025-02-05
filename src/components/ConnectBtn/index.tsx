@@ -39,6 +39,15 @@ const ConnectBtn = () => {
     }
   };
 
+  const disconnectWallet = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      await updateWalletAddress('');
+    } catch (error) {
+      console.error('Failed to disconnect wallet:', error);
+    }
+  };
+
   const closeModal = (e?: React.MouseEvent) => {
     e?.preventDefault();
     setIsModalOpen(false);
@@ -104,7 +113,7 @@ const ConnectBtn = () => {
         </div>
       </PixModal>
       <div
-        className="connect-btn ml-[10px]  max-w-[180px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white"
+        className={`${userProfile?.walletAddress ? 'connect-btn-active' : ''} connect-btn ml-[10px]  max-w-[180px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white`}
         onClick={handleWalletConnect}
       >
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
@@ -115,7 +124,7 @@ const ConnectBtn = () => {
         )}
         <div
           className="connect-btn-child flex items-center justify-around box-border border-black border-solid rounded-xl px-4 py-2 Gantari"
-          onClick={handleWalletConnect}
+          onClick={disconnectWallet}
         >
           Disconnect
         </div>

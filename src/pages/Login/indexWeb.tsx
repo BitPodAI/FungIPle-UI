@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useSearchParams } from 'react-router-dom';
 import Background from '@/components/common/Background';
 //import Button from '@/components/common/Button';
 //import { BTNCOLOR } from '@/constant/button';
@@ -20,10 +20,11 @@ import { useUserStore } from '@/stores/useUserStore';
 import './index.less'
 
 export default function Login() {
+  const [searchParams] = useSearchParams();
   const { login, user, getAccessToken } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
-  const { userProfile } = useUserStore();
+  const { logout,userProfile } = useUserStore();
   //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -37,6 +38,12 @@ export default function Login() {
   };
 
   useEffect(() => {
+    const clear = searchParams.get('clear');
+    if (clear) {
+      logout()
+      searchParams.set('clear', '');
+      return;
+    }
     const loginAsync = async () => {
       try {
         if (user && user.google) {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Background from '@/components/common/Background';
 import { authService } from '@/services/auth';
 import { storage } from '@/utils/storage';
@@ -17,9 +17,10 @@ import './index.less';
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 export default function Login() {
+  const [searchParams] = useSearchParams();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
-  const { userProfile } = useUserStore();
+  const { logout,userProfile } = useUserStore();
   //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -27,6 +28,11 @@ export default function Login() {
   };
 
   useEffect(() => {
+    const clear = searchParams.get('clear');
+    if (clear) {
+      logout()
+      searchParams.set('clear', '');
+    }
     const handleAuthMessage = async (event: MessageEvent) => {
       console.warn('handleAuthMessage', event);
 
