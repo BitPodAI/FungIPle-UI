@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate,useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Background from '@/components/common/Background';
 //import Button from '@/components/common/Button';
 //import { BTNCOLOR } from '@/constant/button';
@@ -17,14 +17,14 @@ import DexScreener from '@/assets/icons/DexScreener.png';
 
 import { usePrivy } from '@privy-io/react-auth';
 import { useUserStore } from '@/stores/useUserStore';
-import './index.less'
+import './index.less';
 
 export default function Login() {
   const [searchParams] = useSearchParams();
-  const { login, user, getAccessToken } = usePrivy();
+  const { login, user, getAccessToken, logout: logoutPrivy } = usePrivy();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
-  const { logout,userProfile } = useUserStore();
+  const { logout, userProfile } = useUserStore();
   //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -40,8 +40,10 @@ export default function Login() {
   useEffect(() => {
     const clear = searchParams.get('clear');
     if (clear) {
-      logout()
-      searchParams.set('clear', '');
+      logoutPrivy();
+      logout();
+      // 使用 navigate 来更新 URL
+      navigate(window.location.pathname, { replace: true });
       return;
     }
     const loginAsync = async () => {

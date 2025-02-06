@@ -30,8 +30,10 @@ export default function Login() {
   useEffect(() => {
     const clear = searchParams.get('clear');
     if (clear) {
-      logout()
-      searchParams.set('clear', '');
+      logout();
+      // 使用 navigate 来更新 URL
+      navigate(window.location.pathname, { replace: true });
+      return;
     }
     const handleAuthMessage = async (event: MessageEvent) => {
       console.warn('handleAuthMessage', event);
