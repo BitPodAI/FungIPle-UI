@@ -3,7 +3,24 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat; */
-  border: 2px solid #c2c2c2;
   border-radius: 10px;
-  transition: all .3s;
+  transition: all 0.3s;
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.12);
+}
+.chat-tag {
+  display: flex;
+  padding: 0 16px;
+  margin-top: 10px;
+}
+.chat-tag-item {
+  margin-right: 9px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  height: 34px;
+  border-radius: 8px;
+  color: #666;
+  font-family: 'Geologica';
+  font-size: 13px;
+  border: 1px solid #e5e5e5;
 }
