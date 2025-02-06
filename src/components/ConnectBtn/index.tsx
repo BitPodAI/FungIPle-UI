@@ -4,19 +4,19 @@ import ShortButton from '@/pages/Chat/components/ShortButton';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import walletIcon from '@/assets/icons/wallet.svg';
-import { usePrivy } from '@privy-io/react-auth';
+import { usePrivy,useSolanaWallets } from '@privy-io/react-auth';
 import { authService } from '@/services/auth';
 import { isWeb } from '@/utils/config';
-import './index.less'
+import './index.less';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 const ConnectBtn = () => {
-  const { userProfile, setUserProfile } = useUserStore();
+  const { userProfile } = useUserStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { connectWallet, user } = usePrivy();
-  console.warn(user);
+  const { wallets } = useSolanaWallets();
 
   const handleWalletConnect = async () => {
     if (userProfile?.walletAddress) {
@@ -42,7 +42,8 @@ const ConnectBtn = () => {
   const disconnectWallet = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      await updateWalletAddress('');
+      wallets.forEach(wallet => wallet.disconnect());
+      wallets.forEach(wallet => wallet.unlink());
     } catch (error) {
       console.error('Failed to disconnect wallet:', error);
     }
@@ -58,7 +59,6 @@ const ConnectBtn = () => {
     try {
       if (userProfile) {
         const updatedProfile = { ...userProfile, walletAddress: address };
-        setUserProfile(updatedProfile);
         await authService.updateProfile(updatedProfile.userId, updatedProfile);
       }
     } catch (error) {
@@ -80,6 +80,15 @@ const ConnectBtn = () => {
     //  await updateWalletAddress(user.wallet.address);
     //}
   };
+
+  useEffect(() => {
+    console.warn(wallets);
+    if (wallets.length > 0) {
+      updateWalletAddress(wallets[0].address);
+    }else{
+      updateWalletAddress('');
+    }
+  }, [wallets.length]);
 
   useEffect(() => {
     // Listen the message from parent
@@ -113,7 +122,9 @@ const ConnectBtn = () => {
         </div>
       </PixModal>
       <div
-        className={`${userProfile?.walletAddress ? 'connect-btn-active' : ''} connect-btn ml-[10px]  max-w-[180px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white`}
+        className={`${
+          userProfile?.walletAddress ? 'connect-btn-active' : ''
+        } connect-btn ml-[10px]  max-w-[180px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white`}
         onClick={handleWalletConnect}
       >
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />

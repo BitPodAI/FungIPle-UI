@@ -36,14 +36,17 @@ export default function Login() {
       setError('Already logged in.');
     }
   };
+  const layoutAll = async () => {
+    await logoutPrivy();
+    await logout();
+    // 使用 navigate 来更新 URL
+    navigate(window.location.pathname, { replace: true });
+  };
 
   useEffect(() => {
     const clear = searchParams.get('clear');
     if (clear) {
-      logoutPrivy();
-      logout();
-      // 使用 navigate 来更新 URL
-      navigate(window.location.pathname, { replace: true });
+      layoutAll()
       return;
     }
     const loginAsync = async () => {
