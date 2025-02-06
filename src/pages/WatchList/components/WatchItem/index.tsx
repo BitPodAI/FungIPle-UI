@@ -113,7 +113,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
   return (
     <div className={`flex justify-center mb-4 animate-fade-in Geologica`}>
       <div
-        className={`flex flex-col items-center p-[14px] ${
+        className={`w-full flex flex-col items-center p-[14px] ${
           isUser
             ? 'bg-#2A2A2A text-white rounded-tl-[24px] rounded-tr-[24px] rounded-bl-[24px] rounded-br-none'
             : 'bg-#F3F3F3 text-black rounded-tl-[24px] rounded-tr-[24px] rounded-bl-none rounded-br-[24px]'
