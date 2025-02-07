@@ -43,7 +43,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
       <div className="flex flex-col items-center justify-center gap-8">
         <h1 className="text-[12px] font-bold fcc-center">
           <span>Congratulations!</span>
-          <span> You Got 7 $Ai16z Tokens.</span>
+          <span> You Got Awarded Agent Tokens.</span>
         </h1>
         <img src={Coin} alt="gift-box" className="w-[72px] h-[72px]" />
         <ShortButton
