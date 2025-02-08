@@ -14,24 +14,23 @@ import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 
 const TokenName = [
-  'aixbt',
-  'trump',
+  'btc',
+  'eth',
+  'sol',
   'bnb',
-  'pepe',
+  'xrp',
+  'sui',
   'doge',
-  'flock',
-  'dcoin',
-  'elon',
-  'botify',
-  'xyro',
-  'om',
-  'maga',
-  'alpha',
+  'pepe',
+  'trump',
+  'ton',
+  'shib',
   'ondo',
-  'tex',
-  'ftxai',
-  'catton',
-  'grokai',
+  'wif',
+  'ai16z',
+  'aixbt',
+  'pnut',
+  'bera',
 ];
 
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
@@ -84,7 +83,15 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
       //   { title: 'AI Analysis', text: `${response.coin_analysis}`, user: 'agent', action: 'NONE', noRefresh: true },
       //   { title: 'AI Prediction', text: `${response.coin_prediction}`, user: 'agent', action: 'NONE', noRefresh: true },
       // ]);
-      setMessages([...messages, { text: `${queryUpperCase} Analysis\n\n${response.coin_analysis}\n\n\n${queryUpperCase} Prediction\n\n${response.coin_prediction}`, user: 'agent', action: 'NONE',noRefresh: true }]);
+      setMessages([
+        ...messages,
+        {
+          text: `${queryUpperCase} Analysis\n\n${response.coin_analysis}\n\n\n${queryUpperCase} Prediction\n\n${response.coin_prediction}`,
+          user: 'agent',
+          action: 'NONE',
+          noRefresh: true,
+        },
+      ]);
     } catch (error) {
       console.log(error);
     } finally {
