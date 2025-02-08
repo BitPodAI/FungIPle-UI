@@ -13,7 +13,29 @@ import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
 // import rightImg from '@/assets/images/border-bg/right.png';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 
+const TokenName = [
+  'aixbt',
+  'trump',
+  'bnb',
+  'pepe',
+  'doge',
+  'flock',
+  'dcoin',
+  'elon',
+  'botify',
+  'xyro',
+  'om',
+  'maga',
+  'alpha',
+  'ondo',
+  'tex',
+  'ftxai',
+  'catton',
+  'grokai',
+];
+
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
+  const [bnbQueryLoading, setBnbQueryLoading] = useState(false);
   const { agentname } = useAgentInfo();
   let mname = 'Blommy';
   if (agentname) {
@@ -47,6 +69,29 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
     }
   };
 
+  const bnbQuery = async () => {
+    if (bnbQueryLoading) {
+      return;
+    }
+    setBnbQueryLoading(true);
+    // 20 choose 1
+    const query = TokenName[Math.floor(Math.random() * TokenName.length)];
+    try {
+      const response = await chatApi.bnbQuery(query);
+      const queryUpperCase = query.toUpperCase();
+      // setMessages([
+      //   ...messages,
+      //   { title: 'AI Analysis', text: `${response.coin_analysis}`, user: 'agent', action: 'NONE', noRefresh: true },
+      //   { title: 'AI Prediction', text: `${response.coin_prediction}`, user: 'agent', action: 'NONE', noRefresh: true },
+      // ]);
+      setMessages([...messages, { text: `${queryUpperCase} Analysis\n\n${response.coin_analysis}\n\n\n${queryUpperCase} Prediction\n\n${response.coin_prediction}`, user: 'agent', action: 'NONE',noRefresh: true }]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setBnbQueryLoading(false);
+    }
+  };
+
   return (
     <div
       className={`bg-white z-10 w-full flex flex-col justify-between transition-all duration-300 ${
@@ -64,7 +109,9 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
         <ChatHistory messages={messages} />
       </div>
       <div className="chat-tag">
-        <div className="chat-tag-item btn-scale">Market Overview</div>
+        <div className="chat-tag-item btn-scale" onClick={bnbQuery}>
+          {bnbQueryLoading ? 'AI Prediction...' : 'AI Prediction'}
+        </div>
         <div className="chat-tag-item btn-scale">Bitcoin.D</div>
         <div className="chat-tag-item btn-scale">Altcoin Index</div>
       </div>

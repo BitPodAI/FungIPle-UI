@@ -15,7 +15,7 @@ import useRespeak from '@/hooks/useRespeak';
 import { toast } from 'react-toastify';
 import { memoApi } from '@/services/memo';
 
-export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
+export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt, noRefresh }) => {
   const [text, setText] = useState(initialText);
   const [isMemoAdded, setIsMemoAdded] = useState(false);
   const isUser = user === 'user';
@@ -78,7 +78,7 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
             {text}
           </p>
         ) : (
-          <p className="text-[12px] Geologica">{text}</p>
+          <p className="text-[12px] Geologica"  style={{ whiteSpace: 'break-spaces' }}>{text}</p>
         )}
         {!isUser && (
           <div className="w-full flex items-center justify-end gap-[15px]">
@@ -114,7 +114,9 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
             ) : (
               <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500 btn-scale" />
             )}
-            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleRespeak(text)} />
+            {!noRefresh && (
+              <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleRespeak(text)} />
+            )}
           </div>
         )}
       </div>

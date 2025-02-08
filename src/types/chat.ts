@@ -13,6 +13,7 @@ export interface Message {
   inReplyTo?: string;
   lectureReward?: string;
   lectureTxHash?: string;
+  noRefresh?: boolean;
 }
 
 export interface ChatSession {

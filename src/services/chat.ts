@@ -38,4 +38,12 @@ export const chatApi = {
     const response = await api.get(`/chat/${chatId}/messages`);
     return response.data.data;
   },
+
+  bnbQuery: async (query: string): Promise<{
+    coin_analysis: string;
+    coin_prediction: string;
+  }> => {
+    const response = await api.get(`/bnb_query?coinsymbol=` + query);
+    return response.data;
+  },
 };

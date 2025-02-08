@@ -73,6 +73,7 @@ export const ChatHistory: React.FC<ChatHistoryProps> = ({ messages, loading = fa
           title={message.title}
           updatedAt={message.updatedAt}
           action={message.action}
+          noRefresh={message.noRefresh}
         />
       ))}
 
