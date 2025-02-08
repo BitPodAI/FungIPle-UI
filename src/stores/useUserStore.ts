@@ -11,7 +11,7 @@ interface UserState {
   setUserProfile: (profile: UserProfile | null) => void;
   setTwitterProfile: (profile: TwitterProfile | null) => void;
   login: (userProfile: UserProfile) => void;
-  logout: (userId: string) => void;
+  logout: () => void;
   updateProfile: (profile: UserProfile) => void;
 
   // Getter

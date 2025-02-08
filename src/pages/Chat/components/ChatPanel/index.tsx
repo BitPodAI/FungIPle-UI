@@ -13,7 +13,28 @@ import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
 // import rightImg from '@/assets/images/border-bg/right.png';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
 
+const TokenName = [
+  'btc',
+  'eth',
+  'sol',
+  'bnb',
+  'xrp',
+  'sui',
+  'doge',
+  'pepe',
+  'trump',
+  'ton',
+  'shib',
+  'ondo',
+  'wif',
+  'ai16z',
+  'aixbt',
+  'pnut',
+  'bera',
+];
+
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
+  const [bnbQueryLoading, setBnbQueryLoading] = useState(false);
   const { agentname } = useAgentInfo();
   let mname = 'Blommy';
   if (agentname) {
@@ -47,6 +68,37 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
     }
   };
 
+  const bnbQuery = async () => {
+    if (bnbQueryLoading) {
+      return;
+    }
+    setBnbQueryLoading(true);
+    // 20 choose 1
+    const query = TokenName[Math.floor(Math.random() * TokenName.length)];
+    try {
+      const response = await chatApi.bnbQuery(query);
+      const queryUpperCase = query.toUpperCase();
+      // setMessages([
+      //   ...messages,
+      //   { title: 'AI Analysis', text: `${response.coin_analysis}`, user: 'agent', action: 'NONE', noRefresh: true },
+      //   { title: 'AI Prediction', text: `${response.coin_prediction}`, user: 'agent', action: 'NONE', noRefresh: true },
+      // ]);
+      setMessages([
+        ...messages,
+        {
+          text: `${queryUpperCase} Analysis\n\n${response.coin_analysis}\n\n\n${queryUpperCase} Prediction\n\n${response.coin_prediction}`,
+          user: 'agent',
+          action: 'NONE',
+          noRefresh: true,
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setBnbQueryLoading(false);
+    }
+  };
+
   return (
     <div
       className={`bg-white z-10 w-full flex flex-col justify-between transition-all duration-300 ${
@@ -63,10 +115,14 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
         </div>
         <ChatHistory messages={messages} />
       </div>
-      {/* <PixBorder top={topImg} bottom={bottomImg} left={leftImg} right={rightImg} className="bg-transparent">
-        <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
-      </PixBorder> */}
-      <div className="textarea-border border-box flex items-center justify-between m-2 p-[12px]">
+      <div className="chat-tag">
+        <div className="chat-tag-item btn-scale" onClick={bnbQuery}>
+          {bnbQueryLoading ? 'AI Prediction...' : 'AI Prediction'}
+        </div>
+        <div className="chat-tag-item btn-scale">Bitcoin.D</div>
+        <div className="chat-tag-item btn-scale">Altcoin Index</div>
+      </div>
+      <div className="textarea-border border-box flex items-center justify-between m-x-[16px] m-y-[10px] p-[12px]">
         <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
       </div>
     </div>

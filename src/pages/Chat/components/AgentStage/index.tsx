@@ -9,6 +9,7 @@ import { useAgentInfo } from '@/hooks/useAgentInfo';
 
 const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   const { openGiftModal } = usePixModal();
+
   const tips = [
     'Always remember invest in the feature, not just the present!',
     'The world doesn’t pay you for what you know; it pays you for what you do.',
@@ -42,6 +43,10 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   }, []);
 
   const handleOpenGiftbox = () => {
+    // if (!userProfile?.walletAddress) {
+    //   toast('Please connect the wallet first.');
+    //   return
+    // }
     openGiftModal();
   };
 

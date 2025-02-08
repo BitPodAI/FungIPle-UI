@@ -4,12 +4,16 @@ import { ReactSVG } from 'react-svg';
 
 interface SearchInputProps {
   onSearch: (message: string) => Promise<void>;
+  onFocus?: () => void;
+  onBlur?: () => void;
   className?: string;
   disabled?: boolean;
   placeholder?: string;
 }
 
 export const SearchInput: React.FC<SearchInputProps> = ({
+  onBlur,
+  onFocus,
   onSearch,
   disabled = false,
   placeholder = 'Enter X’s Username',
@@ -34,7 +38,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   const handleKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-        handleSubmit();
+      handleSubmit();
     }
   };
 
@@ -48,10 +52,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       >
         <ReactSVG src={magnifier} className="h-5 w-5 frc-center" />
       </button>
-      <div className='w-[1px] h-[20px] bg-[#ccc] ml-[10px]'></div>
+      <div className="w-[1px] h-[20px] bg-[#ccc] ml-[10px]"></div>
       <input
         ref={textareaRef}
         value={message}
+        onFocus={() => onFocus && onFocus()}
+        onBlur={() => onBlur && onBlur()}
         onChange={e => {
           e.preventDefault();
           setMessage(e.target.value);

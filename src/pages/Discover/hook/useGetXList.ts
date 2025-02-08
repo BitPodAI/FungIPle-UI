@@ -47,6 +47,7 @@ export const useGetXList = () => {
 
   return {
     xList,
+    setXList,
     loading,
     searchUser,
     refresh,
