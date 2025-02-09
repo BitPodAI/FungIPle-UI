@@ -37,8 +37,8 @@ export default function Login() {
     }
   };
   const layoutAll = async () => {
+    logout();
     await logoutPrivy();
-    await logout();
     // 使用 navigate 来更新 URL
     navigate(window.location.pathname, { replace: true });
   };

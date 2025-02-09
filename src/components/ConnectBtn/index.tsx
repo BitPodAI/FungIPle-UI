@@ -2,24 +2,30 @@ import { useUserStore } from '@/stores/useUserStore';
 import PixModal from '../common/PixModal';
 import ShortButton from '@/pages/Chat/components/ShortButton';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import walletIcon from '@/assets/icons/wallet.svg';
-import { usePrivy,useSolanaWallets } from '@privy-io/react-auth';
-import { authService } from '@/services/auth';
+import { useConnectWallet } from '@privy-io/react-auth';
 import { isWeb } from '@/utils/config';
 import './index.less';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 const ConnectBtn = () => {
-  const { userProfile } = useUserStore();
+  const { userProfile, wallet, setWallet } = useUserStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { connectWallet, user } = usePrivy();
-  const { wallets } = useSolanaWallets();
+  const { connectWallet } = useConnectWallet({
+    onSuccess: params => {
+      console.log('onSuccess', params);
+      setWallet(params.wallet);
+    },
+    onError: () => {
+      console.log('onError');
+    },
+  });
 
   const handleWalletConnect = async () => {
-    if (userProfile?.walletAddress) {
+    if (wallet?.address) {
       return;
     }
     if (isWeb()) {
@@ -42,8 +48,8 @@ const ConnectBtn = () => {
   const disconnectWallet = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      wallets.forEach(wallet => wallet.disconnect());
-      wallets.forEach(wallet => wallet.unlink());
+      wallet?.disconnect?.();
+      setWallet(null);
     } catch (error) {
       console.error('Failed to disconnect wallet:', error);
     }
@@ -54,51 +60,30 @@ const ConnectBtn = () => {
     setIsModalOpen(false);
   };
 
-  // Get the wallet address
-  const updateWalletAddress = async (address: string) => {
-    try {
-      if (userProfile) {
-        const updatedProfile = { ...userProfile, walletAddress: address };
-        await authService.updateProfile(updatedProfile.userId, updatedProfile);
-      }
-    } catch (error) {
-      console.error('Failed to update wallet address:', error);
-    }
-  };
+  // // Message from parent
+  // const handleWalletMessage = async (event: MessageEvent) => {
+  //   //console.warn('handleWalletMessage', event);
+  //   const { type, data } = event.data;
 
-  // Message from parent
-  const handleWalletMessage = async (event: MessageEvent) => {
-    //console.warn('handleWalletMessage', event);
-    const { type, data } = event.data;
+  //   // LINK_WALLET_SUCCESS
+  //   if (type === 'LINK_WALLET_SUCCESS' && data) {
+  //     await updateWalletAddress(data);
+  //   }
 
-    // LINK_WALLET_SUCCESS
-    if (type === 'LINK_WALLET_SUCCESS' && data) {
-      await updateWalletAddress(data);
-    }
+  //   //if (user && user.wallet && user.wallet.address) {
+  //   //  await updateWalletAddress(user.wallet.address);
+  //   //}
+  // };
 
-    //if (user && user.wallet && user.wallet.address) {
-    //  await updateWalletAddress(user.wallet.address);
-    //}
-  };
+  // useEffect(() => {
+  //   // Listen the message from parent
+  //   window.addEventListener('message', handleWalletMessage);
 
-  useEffect(() => {
-    console.warn(wallets);
-    if (wallets.length > 0) {
-      updateWalletAddress(wallets[0].address);
-    }else{
-      updateWalletAddress('');
-    }
-  }, [wallets.length]);
-
-  useEffect(() => {
-    // Listen the message from parent
-    window.addEventListener('message', handleWalletMessage);
-
-    // clean message listener
-    return () => {
-      window.removeEventListener('message', handleWalletMessage);
-    };
-  }, [user, userProfile]);
+  //   // clean message listener
+  //   return () => {
+  //     window.removeEventListener('message', handleWalletMessage);
+  //   };
+  // }, [user, userProfile]);
 
   return (
     <>
@@ -123,15 +108,17 @@ const ConnectBtn = () => {
       </PixModal>
       <div
         className={`${
-          userProfile?.walletAddress ? 'connect-btn-active' : ''
-        } connect-btn ml-[10px]  max-w-[180px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white`}
+          wallet?.address ? 'connect-btn-active' : ''
+        } connect-btn ml-[10px]  w-[130px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white`}
         onClick={handleWalletConnect}
       >
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
-        {userProfile?.walletAddress ? (
-          <span className="capitalize text-black text-xs ellipsis Geologica">{userProfile.walletAddress}</span>
+        {wallet?.address ? (
+          <span className="capitalize text-black text-xs Geologica flex-1 text-center">
+            {wallet.address.substring(0, 4) + '...' + wallet.address.substring(wallet.address.length - 4, wallet.address.length)}
+          </span>
         ) : (
-          <span className="capitalize text-black text-xs Geologica">connect</span>
+          <span className="capitalize text-black text-xs Geologica flex-1 text-center">connect</span>
         )}
         <div
           className="connect-btn-child flex items-center justify-around box-border border-black border-solid rounded-xl px-4 py-2 Gantari"
