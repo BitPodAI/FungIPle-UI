@@ -12,6 +12,7 @@ type TokenModalProps = {
 };
 
 const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) => {
+  const { wallet } = useUserStore();
   useEffect(() => {
     if (!isOpen) return;
     const uID = useUserStore.getState().getUserId();
@@ -21,7 +22,7 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
     if (isOpen) {
       // Define transfer data
       const transferData = {
-        typestr: 'sol-spl',
+        typestr: wallet?.type.substring(0, 3),
         userId: uID,
       };
 

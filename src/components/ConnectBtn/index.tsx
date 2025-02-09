@@ -7,6 +7,7 @@ import walletIcon from '@/assets/icons/wallet.svg';
 import { useConnectWallet } from '@privy-io/react-auth';
 import { isWeb } from '@/utils/config';
 import './index.less';
+import { authService } from '@/services/auth';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
@@ -18,6 +19,14 @@ const ConnectBtn = () => {
     onSuccess: params => {
       console.log('onSuccess', params);
       setWallet(params.wallet);
+      const latestUserProfile = useUserStore.getState().userProfile;
+      if (latestUserProfile) {
+        authService.updateProfile(latestUserProfile.userId, {
+          ...latestUserProfile,
+          walletChainType: params.wallet.type.substring(0, 3),
+          walletAddress: params.wallet.address,
+        });
+      }
     },
     onError: () => {
       console.log('onError');
@@ -84,7 +93,6 @@ const ConnectBtn = () => {
   //     window.removeEventListener('message', handleWalletMessage);
   //   };
   // }, [user, userProfile]);
-
   return (
     <>
       <PixModal isOpen={isModalOpen} onClose={closeModal}>

@@ -6,9 +6,12 @@ import { useEffect, useMemo, useState } from 'react';
 import { usePixModal } from '@/hooks/usePixModal.hook';
 import AgentHeader from '@/components/agent/AgentHeader';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
+import { useUserStore } from '@/stores/useUserStore';
+import { toast } from 'react-toastify';
 
 const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   const { openGiftModal } = usePixModal();
+  const { wallet } = useUserStore();
 
   const tips = [
     'Always remember invest in the feature, not just the present!',
@@ -43,10 +46,10 @@ const AgentStage = ({ isHidden }: { isHidden: boolean }) => {
   }, []);
 
   const handleOpenGiftbox = () => {
-    // if (!userProfile?.walletAddress) {
-    //   toast('Please connect the wallet first.');
-    //   return
-    // }
+    if (!wallet) {
+      toast('Please connect the wallet first.');
+      return
+    }
     openGiftModal();
   };
 
