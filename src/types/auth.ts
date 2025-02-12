@@ -42,6 +42,7 @@ export interface UserProfile {
   bio?: string | string[];
   walletAddress?: string;
   walletChainType?: string;
+  wallets?: Record<string, string>;
   level: number;
   experience: number;
   nextLevelExp: number;
