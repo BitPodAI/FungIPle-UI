@@ -19,12 +19,18 @@ const ConnectBtn = () => {
     onSuccess: params => {
       console.log('onSuccess', params);
       setWallet(params.wallet);
+      const chain = params.wallet.type;
+      const address = params.wallet.address;
       const latestUserProfile = useUserStore.getState().userProfile;
       if (latestUserProfile) {
         authService.updateProfile(latestUserProfile.userId, {
           ...latestUserProfile,
-          walletChainType: params.wallet.type.substring(0, 3),
-          walletAddress: params.wallet.address,
+          //walletChainType: params.wallet.type.substring(0, 3),
+          //walletAddress: params.wallet.address,
+          wallets: {
+            ...latestUserProfile.wallets,
+            [chain]: address
+        }
         });
       }
     },

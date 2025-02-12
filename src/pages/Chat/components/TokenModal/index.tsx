@@ -22,7 +22,8 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
     if (isOpen) {
       // Define transfer data
       const transferData = {
-        typestr: wallet?.type.substring(0, 3) as string,
+        //typestr: wallet?.type.substring(0, 3) as string,
+        typestr: wallet?.type as string,
         userId: uID,
       };
 
