@@ -8,6 +8,7 @@ export interface Message {
   text: string;
   user: 'user' | 'agent';
   action: 'NONE' | 'CONTINUE';
+  kol?:string
   title?: string;
   updatedAt?: string;
   inReplyTo?: string;

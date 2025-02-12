@@ -15,8 +15,9 @@ import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 import useTranslate from '@/hooks/useTranslate';
 import { toast } from 'react-toastify';
 import { memoApi } from '@/services/memo';
+import ArenaKOLList from '@/config/ArenaKOLList';
 
-export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
+export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt,kol }) => {
   const [text, setText] = useState(initialText);
 
   const isUser = user === 'user';
@@ -140,6 +141,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
         )}
         {!isUser && (
           <div className="w-full flex items-center justify-end gap-4 ">
+            {ArenaKOLList.includes(kol as string) && <div style={{marginRight:'auto',alignSelf:'flex-start'}}>In Arena</div>}
             <ReactSVG src={ShareBtnSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
             {isMemoAdded ? (
               <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />

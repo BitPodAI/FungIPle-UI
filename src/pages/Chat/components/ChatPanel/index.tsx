@@ -12,6 +12,7 @@ import arrowUpIcon from '@/assets/icons/arrow2-up.svg';
 // import leftImg from '@/assets/images/border-bg/left.png';
 // import rightImg from '@/assets/images/border-bg/right.png';
 import { useAgentInfo } from '@/hooks/useAgentInfo';
+import ArenaKOLList from '@/config/ArenaKOLList';
 
 const TokenName = [
   'btc',
@@ -35,6 +36,7 @@ const TokenName = [
 
 const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void }> = ({ isFullScreen, toggleFullScreen }) => {
   const [bnbQueryLoading, setBnbQueryLoading] = useState(false);
+  const [kolQueryLoading, setKolQueryLoading] = useState(false);
   const { agentname } = useAgentInfo();
   let mname = 'Blommy';
   if (agentname) {
@@ -99,6 +101,31 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
     }
   };
 
+  const kolQuery = async () => {
+    if (kolQueryLoading) {
+      return;
+    }
+    setKolQueryLoading(true);
+    const query = ArenaKOLList[Math.floor(Math.random() * ArenaKOLList.length)];
+    try {
+      const response = await chatApi.bnbQuery(query);
+      const queryUpperCase = query.toUpperCase();
+      setMessages([
+        ...messages,
+        {
+          text: `${queryUpperCase} Analysis\n\n${response.coin_analysis}`,
+          user: 'agent',
+          action: 'NONE',
+          noRefresh: true,
+        },
+      ]);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setKolQueryLoading(false);
+    }
+  };
+
   return (
     <div
       className={`bg-white z-10 w-full flex flex-col justify-between transition-all duration-300 ${
@@ -119,8 +146,9 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
         <div className="chat-tag-item btn-scale" onClick={bnbQuery}>
           {bnbQueryLoading ? 'AI Prediction...' : 'AI Prediction'}
         </div>
-        <div className="chat-tag-item btn-scale">Bitcoin.D</div>
-        <div className="chat-tag-item btn-scale">Altcoin Index</div>
+        <div className="chat-tag-item btn-scale" onClick={kolQuery}>
+          {kolQueryLoading ? 'Arena Assist...' : 'Arena Assist'}
+        </div>
       </div>
       <div className="textarea-border border-box flex items-center justify-between m-x-[16px] m-y-[10px] p-[12px]">
         <ChatInput placeholder={inputValue ? '' : 'Chat with me...'} onSend={handleSendMessage} />
