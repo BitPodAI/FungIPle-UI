@@ -108,7 +108,7 @@ const ChatPanel: React.FC<{ isFullScreen: boolean; toggleFullScreen: () => void 
     setKolQueryLoading(true);
     const query = ArenaKOLList[Math.floor(Math.random() * ArenaKOLList.length)];
     try {
-      const response = await chatApi.bnbQuery(query);
+      const response = await chatApi.kolQuery(query);
       const queryUpperCase = query.toUpperCase();
       setMessages([
         ...messages,
