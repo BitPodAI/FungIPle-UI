@@ -19,17 +19,28 @@ const ConnectBtn = () => {
     onSuccess: params => {
       console.log('onSuccess', params);
       setWallet(params.wallet);
-      let chain = params.wallet.type;
+      //const chain = params.wallet.type;
       const address = params.wallet.address;
+      let chainId = 'eth';
+      if ('chainId' in params.wallet) {
+        chainId = params.wallet.chainId || 'eth';
+      } else {
+        chainId = 'sol'; //TODO: Solana related
+      }
       // Diff chain
-      if (params.wallet.chainId === 'eip155:8453' || params.wallet.chainId === '8453') {
-        chain = 'base';
-      }
-      else if (params.wallet.chainId === 'eip155:56' || params.wallet.chainId === '56') {
-        chain = 'bsc';
-      }
-      else if (params.wallet.chainId === 'eip155:5003' || params.wallet.chainId === '5003') {
-        chain = 'mantle';
+      if (chainId) {
+        if (chainId === 'eip155:8453' || chainId === '8453') {
+          chainId = 'base';
+        }
+        else if (chainId === 'eip155:56' || chainId === '56') {
+          chainId = 'bsc';
+        }
+        else if (chainId === 'eip155:5003' || chainId === '5003') {
+          chainId = 'mantle';
+        }
+        else {
+          chainId = 'eth';
+        }
       }
       const latestUserProfile = useUserStore.getState().userProfile;
       if (latestUserProfile) {
@@ -39,7 +50,7 @@ const ConnectBtn = () => {
           //walletAddress: params.wallet.address,
           wallets: {
             ...latestUserProfile.wallets,
-            [chain]: address
+            [chainId]: address
         }
         });
       }
