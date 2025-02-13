@@ -22,7 +22,7 @@ const ConnectBtn = () => {
       setWallet(params.wallet);
       //const chain = params.wallet.type;
       const address = params.wallet.address;
-      const chainId = getChainIdByWallet(wallet);
+      const chainId = getChainIdByWallet(params.wallet);
       const latestUserProfile = useUserStore.getState().userProfile;
       if (latestUserProfile) {
         authService.updateProfile(latestUserProfile.userId, {
