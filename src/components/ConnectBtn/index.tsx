@@ -19,8 +19,18 @@ const ConnectBtn = () => {
     onSuccess: params => {
       console.log('onSuccess', params);
       setWallet(params.wallet);
-      const chain = params.wallet.type;
+      let chain = params.wallet.type;
       const address = params.wallet.address;
+      // Diff chain
+      if (params.wallet.chainId === 'eip155:8453' || params.wallet.chainId === '8453') {
+        chain = 'base';
+      }
+      else if (params.wallet.chainId === 'eip155:56' || params.wallet.chainId === '56') {
+        chain = 'bsc';
+      }
+      else if (params.wallet.chainId === 'eip155:5003' || params.wallet.chainId === '5003') {
+        chain = 'mantle';
+      }
       const latestUserProfile = useUserStore.getState().userProfile;
       if (latestUserProfile) {
         authService.updateProfile(latestUserProfile.userId, {
