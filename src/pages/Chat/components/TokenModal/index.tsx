@@ -4,6 +4,7 @@ import ShortButton from '../ShortButton';
 import { authService } from '@/services/auth';
 import { useUserStore } from '@/stores/useUserStore';
 import { useEffect } from 'react';
+import { getChainIdByWallet } from '@/utils/wallet';
 
 type TokenModalProps = {
   isOpen: boolean;
@@ -21,9 +22,10 @@ const TokenModal: React.FC<TokenModalProps> = ({ isOpen, onConfirm, onClose }) =
     }
     if (isOpen) {
       // Define transfer data
+      const chainId = getChainIdByWallet(wallet);
       const transferData = {
         //typestr: wallet?.type.substring(0, 3) as string,
-        typestr: wallet?.type as string,
+        typestr: chainId,
         userId: uID,
       };
 

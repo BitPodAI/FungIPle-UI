@@ -8,6 +8,7 @@ import { useConnectWallet } from '@privy-io/react-auth';
 import { isWeb } from '@/utils/config';
 import './index.less';
 import { authService } from '@/services/auth';
+import { getChainIdByWallet } from '@/utils/wallet';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
@@ -19,8 +20,9 @@ const ConnectBtn = () => {
     onSuccess: params => {
       console.log('onSuccess', params);
       setWallet(params.wallet);
-      const chain = params.wallet.type;
+      //const chain = params.wallet.type;
       const address = params.wallet.address;
+      const chainId = getChainIdByWallet(params.wallet);
       const latestUserProfile = useUserStore.getState().userProfile;
       if (latestUserProfile) {
         authService.updateProfile(latestUserProfile.userId, {
@@ -29,7 +31,7 @@ const ConnectBtn = () => {
           //walletAddress: params.wallet.address,
           wallets: {
             ...latestUserProfile.wallets,
-            [chain]: address
+            [chainId]: address
         }
         });
       }
