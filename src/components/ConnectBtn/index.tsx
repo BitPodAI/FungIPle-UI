@@ -8,6 +8,7 @@ import { useConnectWallet } from '@privy-io/react-auth';
 import { isWeb } from '@/utils/config';
 import './index.less';
 import { authService } from '@/services/auth';
+import { getChainIdByWallet } from '@/utils/wallet';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
@@ -21,27 +22,7 @@ const ConnectBtn = () => {
       setWallet(params.wallet);
       //const chain = params.wallet.type;
       const address = params.wallet.address;
-      let chainId = 'eth';
-      if ('chainId' in params.wallet) {
-        chainId = params.wallet.chainId || 'eth';
-      } else {
-        chainId = 'sol'; //TODO: Solana related
-      }
-      // Diff chain
-      if (chainId) {
-        if (chainId === 'eip155:8453' || chainId === '8453') {
-          chainId = 'base';
-        }
-        else if (chainId === 'eip155:56' || chainId === '56') {
-          chainId = 'bsc';
-        }
-        else if (chainId === 'eip155:5003' || chainId === '5003') {
-          chainId = 'mantle';
-        }
-        else {
-          chainId = 'eth';
-        }
-      }
+      const chainId = getChainIdByWallet(wallet);
       const latestUserProfile = useUserStore.getState().userProfile;
       if (latestUserProfile) {
         authService.updateProfile(latestUserProfile.userId, {
