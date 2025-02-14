@@ -8,7 +8,7 @@ const LoginPopup = () => {
     const token = await getAccessToken();
     window.opener.postMessage({ type: 'GOOGLE_AUTH_SUCCESS', data: { ...user, token } }, '*');
     window.close();
-
+  };
   const handleLogin = async () => {
     await login();
   };
