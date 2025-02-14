@@ -26,7 +26,7 @@ export default function AppPriviyProvider({ children }: { children: React.ReactN
           showWalletLoginFirst: false,
           walletList: ['detected_wallets', 'wallet_connect', 'coinbase_wallet'],
           logo: 'https://auth.privy.io/logos/privy-logo.png',
-          walletChainType: 'solana-only',
+          walletChainType: 'ethereum-and-solana',//'solana-only'
         },
         loginMethods: ['google'],
         externalWallets: {

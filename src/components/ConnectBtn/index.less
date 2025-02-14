@@ -1,0 +1,25 @@
+.connect-btn {
+  position: relative;
+  border-width: 1px;
+  .connect-btn-child {
+    box-sizing: border-box;
+    visibility: hidden;
+    position: absolute;
+    bottom: -110%;
+    width: calc(100% + 2px);
+    background: #000;
+    color: #fff;
+    font-size: 10px;
+    transition: visibility 0.3s ease, opacity 0.3s ease;
+    border: 1px solid #000 !important;
+    opacity: 0;
+  }
+}
+.connect-btn-active{
+  &:hover {
+    .connect-btn-child {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}

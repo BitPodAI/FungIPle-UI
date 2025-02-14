@@ -12,22 +12,41 @@ import useCopyToClipboard from '@/hooks/useCopyToClipboard';
 import useShare from '@/hooks/useShare';
 import useTranslate from '@/hooks/useTranslate';
 import useRespeak from '@/hooks/useRespeak';
+import { toast } from 'react-toastify';
+import { memoApi } from '@/services/memo';
 
-export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
+export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title, updatedAt, noRefresh }) => {
   const [text, setText] = useState(initialText);
+  const [isMemoAdded, setIsMemoAdded] = useState(false);
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
   const { handleTranslateClick } = useTranslate();
   const { handleRespeakClick } = useRespeak();
+  const [isTranslating, setIsTranslating] = useState(false);
 
+  const handleMemoClick = async (content: string) => {
+    await memoApi.addMemo(content);
+    setTimeout(() => {
+      setIsMemoAdded(true);
+    }, 3000);
+  };
   const { copy, isCopied } = useCopyToClipboard();
   const handleCopy = async (text: string) => {
     await copy(text);
   };
 
   const handleTranslate = async (text: string) => {
-    const translatedText = await handleTranslateClick(text);
-    setText(translatedText);
+    if (isTranslating) {
+      toast('Translation in progress, please wait...');
+      return;
+    }
+    setIsTranslating(true);
+    try {
+      const translatedText = await handleTranslateClick(text);
+      setText(translatedText);
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   const handleRespeak = async (text: string) => {
@@ -59,7 +78,7 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
             {text}
           </p>
         ) : (
-          <p className="text-[12px] Geologica">{text}</p>
+          <p className="text-[12px] Geologica"  style={{ whiteSpace: 'break-spaces' }}>{text}</p>
         )}
         {!isUser && (
           <div className="w-full flex items-center justify-end gap-[15px]">
@@ -72,8 +91,16 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
                 handleShareClick(text);
               }}
             />
-            <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" />
-            <ReactSVG src={TranslateSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleTranslate(text)} />
+            {isMemoAdded ? (
+              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
+            ) : (
+              <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleMemoClick(text)} />
+            )}
+            <ReactSVG
+              src={TranslateSVG}
+              className="text-#C7C7C7 hover:text-gray-500 btn-scale"
+              onClick={() => !isTranslating && handleTranslate(text)}
+            />
             {!isCopied ? (
               <ReactSVG
                 src={CopySVG}
@@ -87,7 +114,9 @@ export const ChatMessage: React.FC<Message> = ({ text: initialText, user, title,
             ) : (
               <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500 btn-scale" />
             )}
-            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleRespeak(text)} />
+            {!noRefresh && (
+              <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 btn-scale" onClick={() => handleRespeak(text)} />
+            )}
           </div>
         )}
       </div>

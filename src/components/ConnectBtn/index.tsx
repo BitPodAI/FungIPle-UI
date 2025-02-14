@@ -2,25 +2,52 @@ import { useUserStore } from '@/stores/useUserStore';
 import PixModal from '../common/PixModal';
 import ShortButton from '@/pages/Chat/components/ShortButton';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import walletIcon from '@/assets/icons/wallet.svg';
-import { usePrivy } from '@privy-io/react-auth';
-import { authService } from '@/services/auth';
+import { useConnectWallet } from '@privy-io/react-auth';
 import { isWeb } from '@/utils/config';
+import './index.less';
+import { authService } from '@/services/auth';
+import { getChainIdByWallet } from '@/utils/wallet';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 const ConnectBtn = () => {
-  const { userProfile, setUserProfile } = useUserStore();
+  const { userProfile, wallet, setWallet } = useUserStore();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { linkWallet, user, getAccessToken } = usePrivy();
+  const { connectWallet } = useConnectWallet({
+    onSuccess: params => {
+      console.log('onSuccess', params);
+      setWallet(params.wallet);
+      //const chain = params.wallet.type;
+      const address = params.wallet.address;
+      const chainId = getChainIdByWallet(params.wallet);
+      const latestUserProfile = useUserStore.getState().userProfile;
+      if (latestUserProfile) {
+        authService.updateProfile(latestUserProfile.userId, {
+          ...latestUserProfile,
+          //walletChainType: params.wallet.type.substring(0, 3),
+          //walletAddress: params.wallet.address,
+          wallets: {
+            ...latestUserProfile.wallets,
+            [chainId]: address
+        }
+        });
+      }
+    },
+    onError: () => {
+      console.log('onError');
+    },
+  });
 
   const handleWalletConnect = async () => {
+    if (wallet?.address) {
+      return;
+    }
     if (isWeb()) {
-      const accessToken = await getAccessToken();
-      if (user && accessToken && userProfile?.gmail) {
-        linkWallet();
+      if (userProfile?.userId) {
+        connectWallet();
       } else {
         setIsModalOpen(true);
       }
@@ -35,53 +62,49 @@ const ConnectBtn = () => {
     }
   };
 
+  const disconnectWallet = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      wallet?.disconnect?.();
+      setWallet(null);
+    } catch (error) {
+      console.error('Failed to disconnect wallet:', error);
+    }
+  };
+
   const closeModal = (e?: React.MouseEvent) => {
     e?.preventDefault();
     setIsModalOpen(false);
   };
 
-  // Get the wallet address
-  const updateWalletAddress = async (address: string) => {
-    try {
-      if (userProfile) {
-        const updatedProfile = { ...userProfile, walletAddress: address };
-        setUserProfile(updatedProfile);
-        await authService.updateProfile(updatedProfile.userId, updatedProfile);
-      }
-    } catch (error) {
-      console.error('Failed to update wallet address:', error);
-    }
-  };
+  // // Message from parent
+  // const handleWalletMessage = async (event: MessageEvent) => {
+  //   //console.warn('handleWalletMessage', event);
+  //   const { type, data } = event.data;
 
-  // Message from parent
-  const handleWalletMessage = async (event: MessageEvent) => {
-    //console.warn('handleWalletMessage', event);
-    const { type, data } = event.data;
+  //   // LINK_WALLET_SUCCESS
+  //   if (type === 'LINK_WALLET_SUCCESS' && data) {
+  //     await updateWalletAddress(data);
+  //   }
 
-    // LINK_WALLET_SUCCESS
-    if (type === 'LINK_WALLET_SUCCESS' && data) {
-      await updateWalletAddress(data);
-    }
+  //   //if (user && user.wallet && user.wallet.address) {
+  //   //  await updateWalletAddress(user.wallet.address);
+  //   //}
+  // };
 
-    //if (user && user.wallet && user.wallet.address) {
-    //  await updateWalletAddress(user.wallet.address);
-    //}
-  };
+  // useEffect(() => {
+  //   // Listen the message from parent
+  //   window.addEventListener('message', handleWalletMessage);
 
-  useEffect(() => {
-    // Listen the message from parent
-    window.addEventListener('message', handleWalletMessage);
-
-    // clean message listener
-    return () => {
-      window.removeEventListener('message', handleWalletMessage);
-    };
-  }, [user, userProfile]);
-
+  //   // clean message listener
+  //   return () => {
+  //     window.removeEventListener('message', handleWalletMessage);
+  //   };
+  // }, [user, userProfile]);
   return (
     <>
       <PixModal isOpen={isModalOpen} onClose={closeModal}>
-        <div className="flex flex-col gap-4 max-w-[400px] averia-serif-libre">
+        <div className="flex flex-col gap-4 max-w-[400px] Gantari">
           <h2 className="text-center my-0">Login Tips</h2>
           <h3 className="text-center my-10">Please login firstly before connect wallet.</h3>
           <div className="flex justify-center gap-4">
@@ -99,16 +122,26 @@ const ConnectBtn = () => {
           </div>
         </div>
       </PixModal>
-      <div className="ml-[10px] overflow-hidden  max-w-[180px] flex items-center justify-around gap-2 box-border border-1.5 hover:border-2 border-black border-solid rounded-xl px-4 py-2 averia-serif-libre bg-white"
-        onClick={handleWalletConnect}>
+      <div
+        className={`${
+          wallet?.address ? 'connect-btn-active' : ''
+        } connect-btn ml-[10px]  w-[130px] flex items-center justify-around gap-2 box-border border-black border-solid rounded-xl px-4 py-2 Gantari bg-white`}
+        onClick={handleWalletConnect}
+      >
         <img src={walletIcon} alt="wallet" className="w-[20px] h-[20px] object-contain link-cursor" />
-        {userProfile?.walletAddress ? (
-          <span className="capitalize text-black text-xs ellipsis Geologica">{userProfile.walletAddress}</span>
-        ) : (
-          <span className="capitalize text-black text-xs Geologica">
-            connect
+        {wallet?.address ? (
+          <span className="capitalize text-black text-xs Geologica flex-1 text-center">
+            {wallet.address.substring(0, 4) + '...' + wallet.address.substring(wallet.address.length - 4, wallet.address.length)}
           </span>
+        ) : (
+          <span className="capitalize text-black text-xs Geologica flex-1 text-center">connect</span>
         )}
+        <div
+          className="connect-btn-child flex items-center justify-around box-border border-black border-solid rounded-xl px-4 py-2 Gantari"
+          onClick={disconnectWallet}
+        >
+          Disconnect
+        </div>
       </div>
     </>
   );

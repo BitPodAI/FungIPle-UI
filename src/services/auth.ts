@@ -147,12 +147,12 @@ export const authService = {
    * @returns Transcation
    */
   async transferSol(transferData: {
-    fromTokenAccountPubkey: string;
-    toTokenAccountPubkey: string;
-    ownerPubkey: string;
+    // fromTokenAccountPubkey: string;
+    // toTokenAccountPubkey: string;
+    // ownerPubkey: string;
     typestr: string;
     userId: string;
-    tokenAmount: number;
+    // tokenAmount: number;
   }): Promise<ApiResponse<{ signature: string }>> {
     try {
       //const response = await api.post<ApiResponse<{ signature: string }>>('/transfer_sol', transferData);
@@ -186,8 +186,8 @@ export const authService = {
    * Logout
    * Logout for the userId and clear data
    */
-  logout(userId: string) {
-    useUserStore.getState().logout(userId);
+  logout() {
+    useUserStore.getState().logout();
   },
 
   twitterOAuth: {

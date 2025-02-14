@@ -32,7 +32,7 @@ const MemoItem: React.FC<MemoItemProps> = ({ data, checked, onCheck }) => {
   };
 
   return (
-    <div className="my-4 bg-[#F5F5F560] border-b border-gray-200 rounded-2xl py-4 pb-0 flex flex-col items-start">
+    <div className="my-4 bg-[#F5F5F560] border-b border-gray-200 rounded-2xl py-4 pb-0 flex flex-col items-start ">
       <div className="flex items-start w-full box-border p-x-[10px]">
         <input type="checkbox" className="w-5 h-5 mr-4 cursor-pointer" checked={checked} onChange={e => onCheck(e.target.checked)} />
         {/* {imageUrl && <img src={imageUrl} alt={title} className="w-16 h-16 rounded mr-4" />} */}
@@ -42,15 +42,15 @@ const MemoItem: React.FC<MemoItemProps> = ({ data, checked, onCheck }) => {
         </div> */}
         <div className="flex-1 Geologica text-[13px]">{data.content}</div>
       </div>
-      <div className="w-full box-border flex items-center justify-between mt-2 bg-[#E7E6E650] p-2 rounded-bl-2xl rounded-br-2xl">
+      <div className="w-full box-border flex items-center justify-between mt-2 bg-[#E7E6E650] p-2 rounded-bl-2xl rounded-br-2xl h-[42px]">
         <div className="frc-center gap-4 pl-[12px]">
           <img src={FileSVG} className="w-4 h-4" />
           <span className="text-xs averia-serif-libre text-gray-500">Note · {formatDate(data.id)}</span>
         </div>
-        <div className="frc-center gap-4 mr-4">
-          <ReactSVG src={ShareSVG} className="text-gray-400 hover:text-gray-600" onClick={() => handleShareClick(data.content)} />
+        <div className="frc-center gap-4 mr-4 ">
+          <ReactSVG src={ShareSVG} className="text-gray-400 hover:text-gray-600 w-[22px] h-[22px]" onClick={() => handleShareClick(data.content)} />
           {!isCopied ? (
-            <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500" onClick={() => handleCopy(data.content)} />
+            <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500 mb-[-3px]" onClick={() => handleCopy(data.content)} />
           ) : (
             <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
           )}

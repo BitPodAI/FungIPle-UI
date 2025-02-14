@@ -73,6 +73,7 @@ export const WatchList: React.FC<WatchListProps> = ({ messages, loading = false,
           title={message.title}
           updatedAt={message.updatedAt}
           action={message.action}
+          kol={message.kol}
         />
       ))}
 

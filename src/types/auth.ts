@@ -37,10 +37,12 @@ export interface WatchItem {
 export interface UserProfile {
   userId: string;
   gmail?: string;
-  gender?: string
+  gender?: string;
   agentname: string;
   bio?: string | string[];
   walletAddress?: string;
+  walletChainType?: string;
+  wallets?: Record<string, string>;
   level: number;
   experience: number;
   nextLevelExp: number;
@@ -65,7 +67,7 @@ export interface UserProfile {
     enabled: boolean;
     interval: string;
     imitate: string;
- };
+  };
   stats: {
     totalTweets: number;
     successfulTweets: number;

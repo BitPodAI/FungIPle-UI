@@ -12,8 +12,8 @@ const PopupWallet = () => {
 
   useEffect(() => {
     if (wallets.length > 0) {
-      window.opener.postMessage({ type: 'LINK_WALLET_SUCCESS', data: wallets[0].address }, '*'); // 第二个参数是目标窗口的origin，' * ' 允许任何来源
-      window.close(); // 登录成功后关闭弹窗
+      window.opener.postMessage({ type: 'LINK_WALLET_SUCCESS', data: wallets[0].address }, '*'); 
+      window.close(); 
     }
   }, [wallets]);
 

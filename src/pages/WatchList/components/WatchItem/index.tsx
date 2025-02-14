@@ -1,35 +1,55 @@
 import React, { useState } from 'react';
 import { Message } from '@/types/chat';
 import { ReactSVG } from 'react-svg';
-import ShareSVG from '@/assets/icons/share-btn.svg';
-import MemoSVG from '@/assets/icons/memo2.svg';
+import MemoSVG from '@/assets/icons/memo.svg';
 import TranslateSVG from '@/assets/icons/translate.svg';
 import CopySVG from '@/assets/icons/copy.svg';
 import HYTickSVG from '@/assets/icons/hy_tick.svg';
-import RefreshSVG from '@/assets/icons/refresh.svg';
+import ShareBtnSVG from '@/assets/icons/share-btn.svg';
+
+// import RefreshSVG from '@/assets/icons/refresh.svg';
 //import CloseSVG from '@/assets/icons/close.svg';
 import 'react-toastify/dist/ReactToastify.css';
 import useShare from '@/hooks/useShare';
 import useCopyToClipboard from '@/hooks/useCopyToClipboard';
-// import useTranslate from '@/hooks/useTranslate';
+import useTranslate from '@/hooks/useTranslate';
+import { toast } from 'react-toastify';
+import { memoApi } from '@/services/memo';
+import ArenaKOLList from '@/config/ArenaKOLList';
 
-export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt }) => {
+export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, updatedAt,kol }) => {
   const [text, setText] = useState(initialText);
 
   const isUser = user === 'user';
   const { handleShareClick } = useShare();
-  // const { handleTranslateClick } = useTranslate();
+  const { handleTranslateClick } = useTranslate();
   const { copy, isCopied } = useCopyToClipboard();
-  console.log(setText)
+  const [isMemoAdded, setIsMemoAdded] = useState(false);
+  const [isTranslating, setIsTranslating] = useState(false);
+  console.log(setText);
 
   const handleCopy = async (text: string) => {
     await copy(text);
   };
-
-  // const handleTranslate = async (text: string) => {
-  //   const translatedText = await handleTranslateClick(text);
-  //   setText(translatedText);
-  // };
+  const handleMemoClick = async (content: string) => {
+    await memoApi.addMemo(content);
+    setTimeout(() => {
+      setIsMemoAdded(true);
+    }, 3000);
+  };
+  const handleTranslate = async (text: string) => {
+    if (isTranslating) {
+      toast('Translation in progress, please wait...');
+      return;
+    }
+    setIsTranslating(true);
+    try {
+      const translatedText = await handleTranslateClick(text);
+      setText(translatedText);
+    } finally {
+      setIsTranslating(false);
+    }
+  };
 
   const formatTimeDifference = (timestampString: string) => {
     if (/[^0-9]/.test(timestampString)) {
@@ -86,9 +106,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
       };
 
       // Format the date in "YYYY-MM-DD HH:mm:ss"
-      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\/\d+/g, '-');
-      console.log(timestamp);
-      console.log(formattedDate);
+      const formattedDate = date.toLocaleString('en-US', options).replace(',', '').replace(/\//g, '-');
       return formattedDate;
     }
   };
@@ -96,7 +114,7 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
   return (
     <div className={`flex justify-center mb-4 animate-fade-in Geologica`}>
       <div
-        className={`flex flex-col items-center p-[14px] ${
+        className={`w-full flex flex-col items-center p-[14px] ${
           isUser
             ? 'bg-#2A2A2A text-white rounded-tl-[24px] rounded-tr-[24px] rounded-bl-[24px] rounded-br-none'
             : 'bg-#F3F3F3 text-black rounded-tl-[24px] rounded-tr-[24px] rounded-bl-none rounded-br-[24px]'
@@ -123,18 +141,24 @@ export const WatchItem: React.FC<Message> = ({ text: initialText, user, title, u
         )}
         {!isUser && (
           <div className="w-full flex items-center justify-end gap-4 ">
-            <ReactSVG src={ShareSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
-            <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 " /> 
+            {ArenaKOLList.includes(kol as string) && <div style={{marginRight:'auto',alignSelf:'flex-start'}}>In Arena</div>}
+            <ReactSVG src={ShareBtnSVG} className="text-#C7C7C7 hover:text-gray-500" onClick={() => handleShareClick(text)} />
+            {isMemoAdded ? (
+              <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
+            ) : (
+              <ReactSVG src={MemoSVG} className="text-#C7C7C7 hover:text-gray-500 " onClick={() => handleMemoClick(text)} />
+            )}
             <ReactSVG
               src={TranslateSVG}
               className="text-#C7C7C7 hover:text-gray-500"
+              onClick={() => !isTranslating && handleTranslate(text)}
             />
             {!isCopied ? (
               <ReactSVG src={CopySVG} className="text-gray-400 hover:text-gray-500" onClick={() => handleCopy(text)} />
             ) : (
               <ReactSVG src={HYTickSVG} className="w-[15px] h-[24px] text-green-400 hover:text-green-500" />
             )}
-            <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 " /> 
+            {/* <ReactSVG src={RefreshSVG} className="text-#C7C7C7 hover:text-gray-500 " />  */}
           </div>
         )}
       </div>

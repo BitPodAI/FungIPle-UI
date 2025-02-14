@@ -27,14 +27,14 @@ const SocialItem = ({
       {icon}
       {account ? (
         <span
-          className="green-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-white text-center"
+          className="btn-scale green-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-white text-center"
           onClick={onRevoke}
         >
           {account}
         </span>
       ) : (
         <span
-          className="gray-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-[#737373] text-center"
+          className="btn-scale gray-bg px-[16px] min-w-[100px] h-[22px] line-height-[22px] p-1 text-[12px] text-[#737373] text-center"
           onClick={onClick}
         >
           Go to Link
@@ -55,6 +55,7 @@ const AgentBoard: React.FC = () => {
   const [imitate, setImitate] = useState('elonmusk');
   //const [tokenUsed, setTokenUsed] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTgModalOpen, setIsTgModalOpen] = useState(false);
   const [query, setQuery] = useState('');
 
   const filteredOptions =
@@ -73,7 +74,7 @@ const AgentBoard: React.FC = () => {
       };
 
       if (userProfile) {
-        const oldP = userProfile;// JSON.parse(userProfile);
+        const oldP = userProfile; // JSON.parse(userProfile);
         const updatedProfile = { ...oldP, ...profileUpd };
         await authService.updateProfile(userId, updatedProfile);
       }
@@ -101,6 +102,15 @@ const AgentBoard: React.FC = () => {
   const handleImitateSelectionChange = (value: string) => {
     setImitate(value);
     set_agent_cfg(enabled, interval, value);
+  };
+
+  const handleTelegramAuth = async () => {
+    console.warn(1111);
+
+    setIsTgModalOpen(true);
+  };
+  const closeTgModal = async () => {
+    setIsTgModalOpen(false);
   };
 
   const handleTwitterAuth = async () => {
@@ -210,11 +220,25 @@ const AgentBoard: React.FC = () => {
           </div>
         </div>
       </PixModal>
+      <PixModal isOpen={isTgModalOpen} onClose={closeTgModal}>
+        <div className="flex flex-col gap-4 max-w-[400px]">
+          {/* <h2 className="text-center my-0">Revoke Twitter Authorization</h2> */}
+          <h2 className="text-center my-10">Coming Soon</h2>
+          <div className="flex justify-center gap-4">
+            <ShortButton
+              onClick={closeTgModal}
+              className="text-black text-center"
+            >
+              Yes
+            </ShortButton>
+          </div>
+        </div>
+      </PixModal>
 
       <div className="w-[calc(100%-40px)] mx-[20px]">
         <div className="w-full mt-[27px] frc-center gap-[16px]">
           <SocialItem icon={<img src={xIcon} />} account={Xusername} onClick={handleTwitterAuth} onRevoke={beginRevoke} />
-          <SocialItem icon={<img src={telegramIcon} />} />
+          <SocialItem icon={<img src={telegramIcon} />} onClick={handleTelegramAuth} />
         </div>
 
         <div className="w-full mt-[20px]">

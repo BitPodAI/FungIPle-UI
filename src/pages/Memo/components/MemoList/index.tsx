@@ -3,6 +3,7 @@ import MemoItem from '../MemoItem';
 import TrashSVG from '@/assets/icons/trash.svg';
 import { ReactSVG } from 'react-svg';
 import { Memo } from '@/types/memo';
+import './index.less'
 // import { memoApi } from '@/services/memo';
 
 interface MemoListProps {
@@ -35,7 +36,7 @@ const MemoList: React.FC<MemoListProps> = ({ memos, onDelete }) => {
   };
 
   return (
-    <div className="box-border p-[16px] w-full">
+    <div className="memo-list box-border p-[16px] w-full">
       <div className="flex items-center justify-between mb-4">
         <label className="flex items-center">
           <input
@@ -54,10 +55,11 @@ const MemoList: React.FC<MemoListProps> = ({ memos, onDelete }) => {
           <span className="text-sm Geologica">Delete</span>
         </div>
       </div>
-
-      {memos.map(memo => (
-        <MemoItem key={memo.id} data={memo} checked={selectedIds.includes(memo.id)} onCheck={checked => handleSelect(memo.id, checked)} />
-      ))}
+      <div className="memo-list-content">
+        {memos.map(memo => (
+          <MemoItem key={memo.id} data={memo} checked={selectedIds.includes(memo.id)} onCheck={checked => handleSelect(memo.id, checked)} />
+        ))}
+      </div>
     </div>
   );
 };

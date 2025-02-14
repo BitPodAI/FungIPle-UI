@@ -3,11 +3,16 @@ import { useUserStore } from '@/stores/useUserStore';
 import { toast } from 'react-toastify';
 
 const useShare = () => {
-  const userId = useUserStore.getState().getUserId();
-  const notify = () => toast('Shared on X');
+
   const handleShareClick = (text: string) => {
-    notify();
-    watchApi.reTweeted(text, userId ? userId : '');
+    const userId = useUserStore.getState().getUserId();
+    const twitterToken = useUserStore.getState().userProfile?.tweetProfile?.accessToken;
+    if (userId && twitterToken) {
+      toast('Shared on X');
+      watchApi.reTweeted(text, userId ? userId : '');
+    } else {
+      toast('Please authorize your X account on the Agent page first.');
+    }
   };
 
   return {

@@ -1,21 +1,26 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Background from '@/components/common/Background';
 import { authService } from '@/services/auth';
 import { storage } from '@/utils/storage';
 import Yun from '@/assets/images/login/yun.png';
 import Sun from '@/assets/images/login/sun.png';
 import LoginGoogle from '@/assets/images/login/login-google.png';
-import LoginOther from '@/assets/images/login/login-other.png';
+import Twitter from '@/assets/icons/Twitter.png';
+import Website from '@/assets/icons/Website.png';
+import DexScreener from '@/assets/icons/DexScreener.png';
 import GuestLogin from '@/assets/images/login/guest-login.png';
 import { useUserStore } from '@/stores/useUserStore';
+
+import './index.less';
 
 const HOST_URL = import.meta.env.VITE_API_HOST_URL;
 
 export default function Login() {
+  const [searchParams] = useSearchParams();
   const [error, setError] = useState<string>('');
   const navigate = useNavigate();
-  const { userProfile } = useUserStore();
+  const { logout,userProfile } = useUserStore();
   //const [loading, setLoading] = useState(false);
 
   const handleAuth = async () => {
@@ -23,8 +28,15 @@ export default function Login() {
   };
 
   useEffect(() => {
+    const clear = searchParams.get('clear');
+    if (clear) {
+      logout();
+      // 使用 navigate 来更新 URL
+      navigate(window.location.pathname, { replace: true });
+      return;
+    }
     const handleAuthMessage = async (event: MessageEvent) => {
-      //console.warn('handleAuthMessage', event);
+      console.warn('handleAuthMessage', event);
 
       const { type, data } = event.data;
 
@@ -109,29 +121,55 @@ export default function Login() {
 
   return (
     <div className="page press-start-2p">
-      <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
-        <Background />
+    <div className="absolute top-0 left-0 z-[-1] w-full h-full bg-white">
+      <Background />
+    </div>
+    <div className="m-x-auto max-w-[450px] relative w-full h-[161px]">
+      <img src={Yun} className="absolute top-[10%] left-[5%] w-[98px] h-[98px]" />
+      <img src={Yun} className="absolute top-[50px] right-[80px] w-[98px] h-[98px]" />
+      <img src={Sun} className="absolute top-0 right-0 w-[89px] h-[89px]" />
+    </div>
+    <div className="text-center w-auto mt-[33px] mb-[50px]">
+      <h1 className="press-start-2p font-size-5 text-xl">CREATE YOUR OWN</h1>
+      <h1 className="press-start-2p font-size-5 text-xl">SOCIAL AGENT</h1>
+    </div>
+    {/* <div className="m-x-auto w-[298px] relative">
+      <img src={LoginGoogle} className="w-[298px]" />
+      <div className="h-[48px] w-full absolute top-0" onClick={handleAuth}></div>
+      <div className="h-[25px] w-[120px] absolute bottom-0 left-[50%] ml-[-60px]" onClick={handleGuestAuth}></div>
+    </div> */}
+    <img src={LoginGoogle} className="w-[298px] btn-scale" onClick={handleAuth} />
+    <div className="text-center mt-[30px] Geologica text-[15px] color-[#b9b9b9] mr-[10px]">or</div>
+    <img className="w-[90px] mt-[29px] btn-scale" src={GuestLogin} onClick={handleGuestAuth}></img>
+    <div className="hosting-content-popup-main-footer">
+      <div
+        className="hosting-content-popup-main-footer-item btn-scale"
+        onClick={() => {
+          window.location.href = 'https://halagent.org/';
+        }}
+      >
+        <img className="hosting-content-popup-main-footer-item-icon" src={Website}></img>
+        <div className="hosting-content-popup-main-footer-item-text">Website</div>
       </div>
-      <div className="m-x-auto max-w-[450px] relative w-full h-[161px]">
-        <img src={Yun} className="absolute top-[10%] left-[5%] w-[98px] h-[98px]" />
-        <img src={Yun} className="absolute top-[50px] right-[80px] w-[98px] h-[98px]" />
-        <img src={Sun} className="absolute top-0 right-0 w-[89px] h-[89px]" />
+      <div
+        className="hosting-content-popup-main-footer-item btn-scale"
+        onClick={() => {
+          window.location.href = 'https://x.com/HALAI_SOL';
+        }}
+      >
+        <img className="hosting-content-popup-main-footer-item-icon" src={Twitter}></img>
+        <div className="hosting-content-popup-main-footer-item-text">Twitter</div>
       </div>
-      <div className="text-center w-auto mt-[33px] mb-[50px]">
-        <h1 className="press-start-2p font-size-5 text-xl">CREATE YOUR OWN</h1>
-        <h1 className="press-start-2p font-size-5 text-xl">SOCIAL AGENT</h1>
-      </div>
-      <img src={LoginGoogle} className="w-[298px] btn-scale" onClick={handleAuth} />
-      <div className='text-center mt-[30px] Geologica text-[15px] color-[#b9b9b9] mr-[10px]'>or</div>
-      <img className='w-[90px] mt-[29px] btn-scale' src={GuestLogin} onClick={handleGuestAuth}></img>
-      <div className="m-x-auto mt-[100px] w-[283px] relative">
-        <img src={LoginOther} className="w-[283px]" />
-        <div className="h-[25px] w-full absolute flex top-0">
-          <div className="h-[25px] flex-1"></div>
-          <div className="h-[25px] flex-1"></div>
-          <div className="h-[25px] flex-1"></div>
-        </div>
+      <div
+        className="hosting-content-popup-main-footer-item btn-scale"
+        onClick={() => {
+          window.location.href = 'https://dexscreener.com/solana/6pcybkvfmopvbtsfy8fqatzolqq5s325b6st2sf7yzbw';
+        }}
+      >
+        <img className="hosting-content-popup-main-footer-item-icon" src={DexScreener}></img>
+        <div className="hosting-content-popup-main-footer-item-text">DexScreener</div>
       </div>
     </div>
+  </div>
   );
 }
