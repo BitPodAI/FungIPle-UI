@@ -7,6 +7,7 @@ import { WatchList } from '../WatchList';
 //import WatchPng from '@/assets/images/temp/watchlist.png';
 
 const LOCALSTORAGE_ITEM_WATCHLIST = '_web3agent_watchlist_new_';
+const LOCAL_WATCH_LIST_SIZE = 30;
 
 const WatchPanel: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>(() => {
@@ -36,7 +37,8 @@ const WatchPanel: React.FC = () => {
         }
       });
 
-      const msgsToSave = cachedMsgs.length > 20 ? cachedMsgs.slice(-20) : cachedMsgs;
+      const msgsToSave = cachedMsgs.length > LOCAL_WATCH_LIST_SIZE
+          ? cachedMsgs.slice(-LOCAL_WATCH_LIST_SIZE) : cachedMsgs;
       localStorage.setItem(LOCALSTORAGE_ITEM_WATCHLIST, JSON.stringify(msgsToSave));
       return msgsToSave;
     });
