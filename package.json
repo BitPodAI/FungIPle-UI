@@ -17,6 +17,7 @@
     "@heroicons/react": "^2.2.0",
     "@privy-io/js-sdk-core": "^0.38.0",
     "@privy-io/react-auth": "^2.0.1",
+    "@react-oauth/google": "^0.12.1",
     "@solana/wallet-adapter-base": "^0.9.23",
     "@solana/wallet-adapter-coinbase": "^0.1.19",
     "@solana/wallet-adapter-phantom": "^0.9.24",
